@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GraphGram.MainPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="TableHeader" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+            <Style x:Key="TableBorder" TargetType="Border">
+                <Setter Property="Stroke" Value="#FFFFFF" />
+                <Setter Property="StrokeThickness" Value="1" />
+                <Setter Property="Grid.Row" Value="0" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="File">
+            <MenuFlyoutItem Text="foo"/>
+        </MenuBarItem>
+        <MenuBarItem Text="Edit">
+            <MenuFlyoutItem Text="foo"/>
+        </MenuBarItem>
+        <MenuBarItem Text="View">
+            <MenuFlyoutItem Text="foo"/>
+        </MenuBarItem>
+        <MenuBarItem Text="Settings">
+            <MenuFlyoutItem Text="foo"/>
+        </MenuBarItem>
+        <MenuBarItem Text="Help">
+            <MenuFlyoutItem Text="foo"/>
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
+
+    <HorizontalStackLayout>
+        <Grid ColumnSpacing="-2"
+              RowSpacing="-2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="70" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border Style="{StaticResource TableBorder}"
+                    Grid.Column="0"/>
+            <Border Style="{StaticResource TableBorder}"
+                    Grid.Column="1">
+                <Label Text="x"
+                       Style="{StaticResource TableHeader}" />
+            </Border>
+            <Border Style="{StaticResource TableBorder}"
+                    Grid.Column="2">
+                <Label Text="y"
+                       Style="{StaticResource TableHeader}" />
+            </Border>
+            <Border Style="{StaticResource TableBorder}"
+                    Grid.Column="3">
+                <Label Text="&#x0394;x"
+                       Style="{StaticResource TableHeader}" />
+            </Border>
+            <Border Style="{StaticResource TableBorder}"
+                    Grid.Column="4">
+                <Label Text="&#x0394;y"
+                       Style="{StaticResource TableHeader}" />
+            </Border>
+
+            <ScrollView VerticalScrollBarVisibility="Never"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="5">
+                <Grid x:Name="DataTable"
+                      ColumnSpacing="-2"
+                      RowSpacing="-2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="70" />
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </ScrollView>
+        </Grid>
+        <VerticalStackLayout x:Name="GraphingArea"/>
+    </HorizontalStackLayout>
+
+</ContentPage>
