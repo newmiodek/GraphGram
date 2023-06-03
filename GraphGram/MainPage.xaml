@@ -10,7 +10,7 @@
                 <Setter Property="VerticalOptions" Value="Center" />
             </Style>
             <Style x:Key="TableBorder" TargetType="Border">
-                <Setter Property="Stroke" Value="#FFFFFF" />
+                <Setter Property="Stroke" Value="{AppThemeBinding Light='#000000', Dark='#FFFFFF'}" />
                 <Setter Property="StrokeThickness" Value="1" />
                 <Setter Property="Grid.Row" Value="0" />
             </Style>

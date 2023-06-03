@@ -9,35 +9,45 @@ public partial class MainPage : ContentPage {
 
 	public MainPage() {
 		InitializeComponent();
+        Color cellEdgeColor = App.Current.RequestedTheme == AppTheme.Dark ? Colors.White : Colors.Black;
 		for (int i=0; i<defaultRowCount; i++) {
 			DataTable.AddRowDefinition(new RowDefinition(30));
-            DataTable.Add(new Border {
-                Stroke = Colors.White,
+
+            Label rowNumberLabel = new Label {
+                Text = (i + 1).ToString(),
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center
+            };
+            rowNumberLabel.SetAppThemeColor(Label.TextColorProperty, Colors.Black, Colors.White);
+
+            Border rowNumberLabelBorder = new Border {
                 StrokeThickness = 1,
-                Content = new Label {
-                    Text = (i + 1).ToString(),
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center
-                }
-            }, 0, i);
+                Content = rowNumberLabel
+            };
+            rowNumberLabelBorder.SetAppThemeColor(Border.StrokeProperty, Colors.Black, Colors.White);
+
+            DataTable.Add(rowNumberLabelBorder, 0, i);
+
             for (int j = 0; j < 4; j++) {
                 int localJ = 1 * j;
                 int localI = 1 * i;
-                Debug.WriteLine("Assigning to entry at " + localJ.ToString() + " " + localI.ToString());
+
                 entryTable[localJ, localI] = new Entry {
                     ReturnCommand = new Command(() => { 
-                        Debug.WriteLine(localJ);
-                        Debug.WriteLine(localI);
                         GraphingArea.Add(new Label { Text = entryTable[localJ, localI].Text });
                     })
                 };
-                DataTable.Add(new Border {
-                    Stroke = Colors.White,
+                entryTable[localJ, localI].SetAppThemeColor(Entry.TextColorProperty, Colors.Black, Colors.White);
+
+                Border entryBorder = new Border {
                     StrokeThickness = 1,
+                    Padding = -6,
                     Content = entryTable[localJ, localI]
-                }, localJ + 1, localI);
+                };
+                entryBorder.SetAppThemeColor(Border.StrokeProperty, Colors.Black, Colors.White);
+
+                DataTable.Add(entryBorder, localJ + 1, localI);
             }
         }
 	}
-	
 }
