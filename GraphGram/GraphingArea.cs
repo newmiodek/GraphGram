@@ -1,20 +1,42 @@
-﻿using System.Data;
-
-namespace GraphGram;
+﻿namespace GraphGram;
 
 public class GraphingArea : IDrawable {
 
-    public float[,] DataTable { get; set; }
+    private float[,] dataTable;
+    private bool isInputValid = true;
 
-    public bool IsInputValid { get; set; } = false;
+    public void PassDataTable(Entry[,] entryTable) {
+        // Parse the text from entryTable to represent it as doubles
+        float[,] parsedDataTable = new float[4, entryTable.GetLength(1)];
+        bool parseSucceded = true;
+        for (int i = 0; i < parsedDataTable.GetLength(1); i++) {
+            for (int j = 0; j < 4; j++) {
+                // The deal with these locals is the same as in the MainPage's constructor
+                int localJ = 1 * j;
+                int localI = 1 * i;
+                if (!float.TryParse(entryTable[localJ, localI].Text, out parsedDataTable[localJ, localI])) {
+                    parseSucceded = false;
+                    break;
+                }
+            }
+            if (!parseSucceded) break;
+        }
+
+        if (parseSucceded) {
+            dataTable = parsedDataTable;
+        }
+
+        isInputValid = parseSucceded;
+
+    }
 
     public void Draw(ICanvas canvas, RectF dirtyRect) {
-        if (DataTable != null) {
+        if (dataTable != null) {
             canvas.StrokeColor = Colors.Red;
             canvas.StrokeSize = 6;
-            canvas.DrawLine(DataTable[0,0], DataTable[1,0], DataTable[0,1], DataTable[1,1]);
+            canvas.DrawLine(dataTable[0, 0], dataTable[1, 0], dataTable[0, 1], dataTable[1, 1]);
         }
-        if (!IsInputValid) {
+        if (!isInputValid) {
             canvas.FontColor = Colors.Red;
             canvas.FontSize = 18;
             canvas.Font = Microsoft.Maui.Graphics.Font.Default;

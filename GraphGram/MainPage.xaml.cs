@@ -57,30 +57,7 @@ public partial class MainPage : ContentPage {
     }
 
     private void UpdateGraph() {
-        // Parse the text from entryTable to represent it as doubles
-        float[,] parsedDataTable = new float[4, entryTable.GetLength(1)];
-        bool parseSucceded = true;
-        for (int i = 0; i < parsedDataTable.GetLength(1); i++) {
-            for (int j = 0; j < 4; j++) {
-                // The deal with these locals is the same as above
-                int localJ = 1 * j;
-                int localI = 1 * i;
-                if (!float.TryParse(entryTable[localJ, localI].Text, out parsedDataTable[localJ, localI])) {
-                    parseSucceded = false;
-                    break;
-                }
-            }
-            if (!parseSucceded) break;
-        }
-
-        GraphingArea graphingAreaDrawable = (GraphingArea)GraphingAreaView.Drawable;
-
-        if (parseSucceded) {
-            graphingAreaDrawable.DataTable = parsedDataTable;
-        }
-
-        graphingAreaDrawable.IsInputValid = parseSucceded;
-
+        ((GraphingArea)GraphingAreaView.Drawable).PassDataTable(entryTable);
         GraphingAreaView.Invalidate();
     }
 }
