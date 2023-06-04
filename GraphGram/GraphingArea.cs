@@ -6,35 +6,32 @@ public class GraphingArea : IDrawable {
     private bool isInputValid = true;
 
     public void PassDataTable(Entry[,] entryTable) {
-        // Parse the text from entryTable to represent it as doubles
-        float[,] parsedDataTable = new float[4, entryTable.GetLength(1)];
+        // Parse the text from entryTable to represent it as floats
+        float[,] parsedDataTable = new float[entryTable.GetLength(1), 4];
         bool parseSucceded = true;
-        for (int i = 0; i < parsedDataTable.GetLength(1); i++) {
+        for (int i = 0; i < parsedDataTable.GetLength(0); i++) {
             for (int j = 0; j < 4; j++) {
-                // The deal with these locals is the same as in the MainPage's constructor
+                // The deal with these locals is the same as in MainPage's constructor
                 int localJ = 1 * j;
                 int localI = 1 * i;
-                if (!float.TryParse(entryTable[localJ, localI].Text, out parsedDataTable[localJ, localI])) {
+                if (!float.TryParse(entryTable[localJ, localI].Text, out parsedDataTable[localI, localJ])) {
                     parseSucceded = false;
                     break;
                 }
             }
             if (!parseSucceded) break;
         }
-
         if (parseSucceded) {
             dataTable = parsedDataTable;
         }
-
         isInputValid = parseSucceded;
-
     }
 
     public void Draw(ICanvas canvas, RectF dirtyRect) {
         if (dataTable != null) {
             canvas.StrokeColor = Colors.Red;
             canvas.StrokeSize = 6;
-            canvas.DrawLine(dataTable[0, 0], dataTable[1, 0], dataTable[0, 1], dataTable[1, 1]);
+            canvas.DrawLine(dataTable[0, 0], dataTable[0, 1], dataTable[1, 0], dataTable[1, 1]);
         }
         if (!isInputValid) {
             canvas.FontColor = Colors.Red;

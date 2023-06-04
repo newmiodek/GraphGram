@@ -38,9 +38,14 @@ public partial class MainPage : ContentPage {
                 int localJ = 1 * j;
                 int localI = 1 * i;
 
-                entryTable[localJ, localI] = new Entry {
-                    ReturnCommand = new Command(UpdateGraph)
-                };
+                entryTable[localJ, localI] = new Entry();
+
+                // It's best to use only one of those two. Maybe let the user choose which one?
+                // <Choose one>
+                entryTable[localJ, localI].ReturnCommand = new Command(UpdateGraph);
+                // entryTable[localJ, localI].TextChanged += (sender, e) => { UpdateGraph(); };
+                // </Choose one>
+
                 entryTable[localJ, localI].SetAppThemeColor(Entry.TextColorProperty, Colors.Black, Colors.White);
 
                 Border entryBorder = new Border {
