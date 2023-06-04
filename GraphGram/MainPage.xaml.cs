@@ -10,7 +10,7 @@ public partial class MainPage : ContentPage {
     public MainPage() {
         InitializeComponent();
         // <Creating the data table>
-        entryTable = new Entry[4, defaultRowCount];
+        entryTable = new Entry[defaultRowCount, 4];
         for (int i = 0; i < defaultRowCount; i++) {
             DataTable.AddRowDefinition(new RowDefinition(30));
 
@@ -33,25 +33,25 @@ public partial class MainPage : ContentPage {
                 /* Local equivalents of j and i are made here
                  * because when j and i were passed directly
                  * the program behaved as if they were passed
-                 * by reference, which broke its functionality
+                 * by reference which caused errors
                  */
                 int localJ = 1 * j;
                 int localI = 1 * i;
 
-                entryTable[localJ, localI] = new Entry();
+                entryTable[localI, localJ] = new Entry();
 
                 // It's best to use only one of those two. Maybe let the user choose which one?
                 // <Choose one>
-                entryTable[localJ, localI].ReturnCommand = new Command(UpdateGraph);
+                entryTable[localI, localJ].ReturnCommand = new Command(UpdateGraph);
                 // entryTable[localJ, localI].TextChanged += (sender, e) => { UpdateGraph(); };
                 // </Choose one>
 
-                entryTable[localJ, localI].SetAppThemeColor(Entry.TextColorProperty, Colors.Black, Colors.White);
+                entryTable[localI, localJ].SetAppThemeColor(Entry.TextColorProperty, Colors.Black, Colors.White);
 
                 Border entryBorder = new Border {
                     StrokeThickness = 1,
                     Padding = -6,
-                    Content = entryTable[localJ, localI]
+                    Content = entryTable[localI, localJ]
                 };
                 entryBorder.SetAppThemeColor(Border.StrokeProperty, Colors.Black, Colors.White);
 

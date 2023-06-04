@@ -7,14 +7,14 @@ public class GraphingArea : IDrawable {
 
     public void PassDataTable(Entry[,] entryTable) {
         // Parse the text from entryTable to represent it as floats
-        float[,] parsedDataTable = new float[entryTable.GetLength(1), 4];
+        float[,] parsedDataTable = new float[entryTable.GetLength(0), 4];
         bool parseSucceded = true;
         for (int i = 0; i < parsedDataTable.GetLength(0); i++) {
             for (int j = 0; j < 4; j++) {
                 // The deal with these locals is the same as in MainPage's constructor
                 int localJ = 1 * j;
                 int localI = 1 * i;
-                if (!float.TryParse(entryTable[localJ, localI].Text, out parsedDataTable[localI, localJ])) {
+                if (!float.TryParse(entryTable[localI, localJ].Text, out parsedDataTable[localI, localJ])) {
                     parseSucceded = false;
                     break;
                 }
