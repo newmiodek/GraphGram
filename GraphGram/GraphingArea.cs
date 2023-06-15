@@ -52,11 +52,30 @@ public class GraphingArea : IDrawable {
     }
 
     public void Draw(ICanvas canvas, RectF dirtyRect) {
+        DrawAxes(canvas, dirtyRect);
+
+        if (!isInputValid) {
+            canvas.FontColor = Colors.Red;
+            canvas.FontSize = 18;
+            canvas.Font = Microsoft.Maui.Graphics.Font.Default;
+            canvas.DrawString("Invalid input", 100, 100, HorizontalAlignment.Left);
+            return;
+        }
+
+        if (dataTable != null) {
+            canvas.StrokeColor = Colors.Red;
+            canvas.StrokeSize = 6;
+            canvas.DrawLine((float)dataTable[0, 0], (float)dataTable[0, 1], (float)dataTable[1, 0], (float)dataTable[1, 1]);
+        }
+
+    }
+
+    private void DrawAxes(ICanvas canvas, RectF dirtyRect) {
         float xAxisVerticalPosition;
-        if(minY >= 0) {
+        if (minY >= 0) {
             xAxisVerticalPosition = dirtyRect.Bottom * 0.9f;
         }
-        else if(minY < 0 && maxY > 0) {
+        else if (minY < 0 && maxY > 0) {
             xAxisVerticalPosition = dirtyRect.Bottom * (0.8f * (float)(maxY / (maxY - minY)) + 0.1f);
         }
         else {
@@ -64,10 +83,10 @@ public class GraphingArea : IDrawable {
         }
 
         float yAxisHorizontalPosition;
-        if(minX >= 0) {
+        if (minX >= 0) {
             yAxisHorizontalPosition = dirtyRect.Right * 0.1f;
         }
-        else if(minX < 0 && maxX > 0) {
+        else if (minX < 0 && maxX > 0) {
             yAxisHorizontalPosition = dirtyRect.Right * (0.8f * (float)(-minX / (maxX - minX)) + 0.1f);
         }
         else {
@@ -87,20 +106,5 @@ public class GraphingArea : IDrawable {
         canvas.DrawLine(yAxisHorizontalPosition, dirtyRect.Top, yAxisHorizontalPosition - 10, dirtyRect.Top + 10);    // arrow
         canvas.DrawLine(yAxisHorizontalPosition, dirtyRect.Top, yAxisHorizontalPosition + 10, dirtyRect.Top + 10);    // arrow
         // </y axis>
-
-        if (!isInputValid) {
-            canvas.FontColor = Colors.Red;
-            canvas.FontSize = 18;
-            canvas.Font = Microsoft.Maui.Graphics.Font.Default;
-            canvas.DrawString("Invalid input", 100, 100, HorizontalAlignment.Left);
-            return;
-        }
-
-        if (dataTable != null) {
-            canvas.StrokeColor = Colors.Red;
-            canvas.StrokeSize = 6;
-            canvas.DrawLine((float)dataTable[0, 0], (float)dataTable[0, 1], (float)dataTable[1, 0], (float)dataTable[1, 1]);
-        }
-
     }
 }
