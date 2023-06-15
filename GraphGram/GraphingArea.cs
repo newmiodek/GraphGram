@@ -7,9 +7,9 @@ public class GraphingArea : IDrawable {
 
     // consider changing them to floats
     private double minX = 0;
-    private double maxX = 1;
+    private double maxX = 100;
     private double minY = 0;
-    private double maxY = 1;
+    private double maxY = 100;
 
     public void PassDataTable(Entry[,] entryTable) {
         // Parse the text from entryTable to represent it as floats
@@ -32,18 +32,10 @@ public class GraphingArea : IDrawable {
             }
             if (!parseSucceded) break;
 
-            minX = parsedDataTable[i, 0] - parsedDataTable[i, 2] < minX
-                ? parsedDataTable[i, 0] - parsedDataTable[i, 2]
-                : minX;
-            maxX = parsedDataTable[i, 0] + parsedDataTable[i, 2] > maxX
-                ? parsedDataTable[i, 0] + parsedDataTable[i, 2]
-                : maxX;
-            minY = parsedDataTable[i, 1] - parsedDataTable[i, 3] < minY
-                ? parsedDataTable[i, 1] - parsedDataTable[i, 3]
-                : minY;
-            maxY = parsedDataTable[i, 1] + parsedDataTable[i, 3] > maxY
-                ? parsedDataTable[i, 1] + parsedDataTable[i, 3]
-                : maxY;
+            minX = Math.Min(parsedDataTable[i, 0] - parsedDataTable[i, 2], minX);
+            maxX = Math.Max(parsedDataTable[i, 0] + parsedDataTable[i, 2], maxX);
+            minY = Math.Min(parsedDataTable[i, 1] - parsedDataTable[i, 3], minY);
+            maxY = Math.Min(parsedDataTable[i, 1] + parsedDataTable[i, 3], maxY);
         }
         if (parseSucceded) {
             dataTable = parsedDataTable;
@@ -52,6 +44,7 @@ public class GraphingArea : IDrawable {
     }
 
     public void Draw(ICanvas canvas, RectF dirtyRect) {
+        DrawGrid(canvas, dirtyRect);
         DrawAxes(canvas, dirtyRect);
 
         if (!isInputValid) {
@@ -68,6 +61,18 @@ public class GraphingArea : IDrawable {
             canvas.DrawLine((float)dataTable[0, 0], (float)dataTable[0, 1], (float)dataTable[1, 0], (float)dataTable[1, 1]);
         }
 
+    }
+
+    private void DrawGrid(ICanvas canvas, RectF dirtyRect) {
+        float xSpacing = (float)Math.Pow(10, Math.Ceiling(Math.Log10(maxX - minX)) - 1);
+        float ySpacing = (float)Math.Pow(10, Math.Ceiling(Math.Log10(maxY - minY)) - 1);
+        int gridLinesToNegativeX;
+        if (minX < 0) {
+            gridLinesToNegativeX = (int)(-minX / xSpacing);
+        }
+        else {
+            gridLinesToNegativeX = 1;
+        }
     }
 
     private void DrawAxes(ICanvas canvas, RectF dirtyRect) {
