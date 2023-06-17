@@ -35,7 +35,7 @@ public class GraphingArea : IDrawable {
             minX = Math.Min(parsedDataTable[i, 0] - parsedDataTable[i, 2], minX);
             maxX = Math.Max(parsedDataTable[i, 0] + parsedDataTable[i, 2], maxX);
             minY = Math.Min(parsedDataTable[i, 1] - parsedDataTable[i, 3], minY);
-            maxY = Math.Min(parsedDataTable[i, 1] + parsedDataTable[i, 3], maxY);
+            maxY = Math.Max(parsedDataTable[i, 1] + parsedDataTable[i, 3], maxY);
         }
         if (parseSucceded) {
             dataTable = parsedDataTable;
