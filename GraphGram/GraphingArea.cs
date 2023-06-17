@@ -19,9 +19,9 @@ public class GraphingArea : IDrawable {
         maxX = double.MinValue;
         minY = double.MaxValue;
         maxY = double.MinValue;
-        for (int i = 0; i < parsedDataTable.GetLength(0); i++) {
-            for (int j = 0; j < 4; j++) {
-                if (!double.TryParse(entryTable[i, j].Text, out parsedDataTable[i, j])) {
+        for(int i = 0; i < parsedDataTable.GetLength(0); i++) {
+            for(int j = 0; j < 4; j++) {
+                if(!double.TryParse(entryTable[i, j].Text, out parsedDataTable[i, j])) {
                     parseSucceded = false;
                     break;
                 }
@@ -30,14 +30,14 @@ public class GraphingArea : IDrawable {
                     break;
                 }
             }
-            if (!parseSucceded) break;
+            if(!parseSucceded) break;
 
             minX = Math.Min(parsedDataTable[i, 0] - parsedDataTable[i, 2], minX);
             maxX = Math.Max(parsedDataTable[i, 0] + parsedDataTable[i, 2], maxX);
             minY = Math.Min(parsedDataTable[i, 1] - parsedDataTable[i, 3], minY);
             maxY = Math.Max(parsedDataTable[i, 1] + parsedDataTable[i, 3], maxY);
         }
-        if (parseSucceded) {
+        if(parseSucceded) {
             dataTable = parsedDataTable;
         }
         isInputValid = parseSucceded;
@@ -47,7 +47,7 @@ public class GraphingArea : IDrawable {
         DrawGrid(canvas, dirtyRect);
         DrawAxes(canvas, dirtyRect);
 
-        if (!isInputValid) {
+        if(!isInputValid) {
             canvas.FontColor = Colors.Red;
             canvas.FontSize = 18;
             canvas.Font = Microsoft.Maui.Graphics.Font.Default;
@@ -55,7 +55,7 @@ public class GraphingArea : IDrawable {
             return;
         }
 
-        if (dataTable != null) {
+        if(dataTable != null) {
             canvas.StrokeColor = Colors.Red;
             canvas.StrokeSize = 6;
             canvas.DrawLine((float)dataTable[0, 0], (float)dataTable[0, 1], (float)dataTable[1, 0], (float)dataTable[1, 1]);
@@ -64,10 +64,11 @@ public class GraphingArea : IDrawable {
     }
 
     private void DrawGrid(ICanvas canvas, RectF dirtyRect) {
-        float xSpacing = (float)Math.Pow(10, Math.Ceiling(Math.Log10(maxX - minX)) - 1);
-        float ySpacing = (float)Math.Pow(10, Math.Ceiling(Math.Log10(maxY - minY)) - 1);
+        double xSpacing = Math.Pow(10, Math.Ceiling(Math.Log10(maxX - minX)) - 1);
+        double ySpacing = Math.Pow(10, Math.Ceiling(Math.Log10(maxY - minY)) - 1);
         int gridLinesToNegativeX;
-        if (minX < 0) {
+
+        if(minX < 0) {
             gridLinesToNegativeX = (int)(-minX / xSpacing);
         }
         else {
@@ -77,10 +78,10 @@ public class GraphingArea : IDrawable {
 
     private void DrawAxes(ICanvas canvas, RectF dirtyRect) {
         float xAxisVerticalPosition;
-        if (minY >= 0) {
+        if(minY >= 0) {
             xAxisVerticalPosition = dirtyRect.Bottom * 0.9f;
         }
-        else if (minY < 0 && maxY > 0) {
+        else if(minY < 0 && maxY > 0) {
             xAxisVerticalPosition = dirtyRect.Bottom * (0.8f * (float)(maxY / (maxY - minY)) + 0.1f);
         }
         else {
@@ -88,10 +89,10 @@ public class GraphingArea : IDrawable {
         }
 
         float yAxisHorizontalPosition;
-        if (minX >= 0) {
+        if(minX >= 0) {
             yAxisHorizontalPosition = dirtyRect.Right * 0.1f;
         }
-        else if (minX < 0 && maxX > 0) {
+        else if(minX < 0 && maxX > 0) {
             yAxisHorizontalPosition = dirtyRect.Right * (0.8f * (float)(-minX / (maxX - minX)) + 0.1f);
         }
         else {

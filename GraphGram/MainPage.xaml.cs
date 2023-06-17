@@ -11,7 +11,7 @@ public partial class MainPage : ContentPage {
         InitializeComponent();
         // <Creating the data table>
         entryTable = new Entry[defaultRowCount, 4];
-        for (int i = 0; i < defaultRowCount; i++) {
+        for(int i = 0; i < defaultRowCount; i++) {
             DataTable.AddRowDefinition(new RowDefinition(30));
 
             Label rowNumberLabel = new Label {
@@ -29,7 +29,7 @@ public partial class MainPage : ContentPage {
 
             DataTable.Add(rowNumberLabelBorder, 0, i);
 
-            for (int j = 0; j < 4; j++) {
+            for(int j = 0; j < 4; j++) {
                 /* Local equivalents of j and i are made here
                  * because when j and i were passed directly
                  * the program behaved as if they were passed
