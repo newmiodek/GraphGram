@@ -111,37 +111,34 @@ public class GraphingArea : IDrawable {
     }
 
     private void DrawGrid(ICanvas canvas, RectF dirtyRect, float xAxisVerticalPosition, float yAxisHorizontalPosition) {
-        double xSpacingValue = Math.Pow(10, Math.Ceiling(Math.Log10(maxX - minX)) - 1);
-        double ySpacingValue = Math.Pow(10, Math.Ceiling(Math.Log10(maxY - minY)) - 1);
-        int gridLinesToNegativeX, gridLinesToPositiveX, gridLinesToNegativeY, gridLinesToPositiveY;
+        // float xSpacingValue = (float)Math.Ceiling((maxX - minX) / 10.0);
+        // float ySpacingValue = (float)Math.Ceiling((maxY - minY) / 10.0);
 
-        if(minX < 0) gridLinesToNegativeX = (int)(-minX / xSpacingValue);
-        else gridLinesToNegativeX = 1; 
-
-        if(maxX > 0) gridLinesToPositiveX = (int)(maxX / xSpacingValue);
-        else gridLinesToPositiveX = 1;
-
-        if(minY < 0) gridLinesToNegativeY = (int)(-minY / ySpacingValue);
-        else gridLinesToNegativeY = 1;
-
-        if(maxY > 0) gridLinesToPositiveY = (int)(maxY / ySpacingValue);
-        else gridLinesToPositiveY = 1;
-
-        canvas.StrokeColor = Color.FromRgb(0x20, 0x20, 0x20);
-        canvas.StrokeSize = 1;
-
-        float xSpacingPixels = dirtyRect.Width / 10;
-        float ySpacingPixels = dirtyRect.Height / 10;
-
-        for(float i = 1; i <= gridLinesToNegativeX; i++) {
-            canvas.DrawLine(
-                yAxisHorizontalPosition - i * xSpacingPixels,
-                dirtyRect.Top,
-                yAxisHorizontalPosition - i * xSpacingPixels,
-                dirtyRect.Bottom
-            );
-        }
+        float xSpacingPixels = dirtyRect.Width * 0.08f;     // (width * 0.8) / 10
+        float ySpacingPixels = dirtyRect.Height * 0.08f;    // (height * 0.8) / 10
         
+        canvas.StrokeColor = Color.FromRgb(0x30, 0x30, 0x30);
+        canvas.StrokeSize = 1;
+        
+        // Vertical lines to the left of the origin
+        for(float x = yAxisHorizontalPosition - xSpacingPixels; x >= dirtyRect.Left; x -= xSpacingPixels) {
+            canvas.DrawLine(x, dirtyRect.Top, x, dirtyRect.Bottom);
+        }
+
+        // Vertical lines to the right of the origin
+        for(float x = yAxisHorizontalPosition + xSpacingPixels; x <= dirtyRect.Right; x += xSpacingPixels) {
+            canvas.DrawLine(x, dirtyRect.Top, x, dirtyRect.Bottom);
+        }
+
+        // Horizontal lines above the origin
+        for(float y = xAxisVerticalPosition - ySpacingPixels; y >= dirtyRect.Top; y -= ySpacingPixels) {
+            canvas.DrawLine(dirtyRect.Left, y, dirtyRect.Right, y);
+        }
+
+        // Horizontal lines below the origin
+        for(float y = xAxisVerticalPosition + ySpacingPixels; y <= dirtyRect.Bottom; y += ySpacingPixels) {
+            canvas.DrawLine(dirtyRect.Left, y, dirtyRect.Right, y);
+        }
     }
 
 }
