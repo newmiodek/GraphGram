@@ -44,8 +44,11 @@ public class GraphingArea : IDrawable {
     }
 
     public void Draw(ICanvas canvas, RectF dirtyRect) {
-        DrawGrid(canvas, dirtyRect);
-        DrawAxes(canvas, dirtyRect);
+        float xAxisVerticalPosition = CalculateXAxisPosition(dirtyRect);
+        float yAxisHorizontalPosition = CalculateYAxisPosition(dirtyRect);
+        DrawGrid(canvas, dirtyRect, xAxisVerticalPosition, yAxisHorizontalPosition);
+        DrawXAxis(canvas, dirtyRect, xAxisVerticalPosition);
+        DrawYAxis(canvas, dirtyRect, yAxisHorizontalPosition);
 
         if(!isInputValid) {
             canvas.FontColor = Colors.Red;
@@ -63,20 +66,7 @@ public class GraphingArea : IDrawable {
 
     }
 
-    private void DrawGrid(ICanvas canvas, RectF dirtyRect) {
-        double xSpacing = Math.Pow(10, Math.Ceiling(Math.Log10(maxX - minX)) - 1);
-        double ySpacing = Math.Pow(10, Math.Ceiling(Math.Log10(maxY - minY)) - 1);
-        int gridLinesToNegativeX;
-
-        if(minX < 0) {
-            gridLinesToNegativeX = (int)(-minX / xSpacing);
-        }
-        else {
-            gridLinesToNegativeX = 1;
-        }
-    }
-
-    private void DrawAxes(ICanvas canvas, RectF dirtyRect) {
+    private float CalculateXAxisPosition(RectF dirtyRect) {
         float xAxisVerticalPosition;
         if(minY >= 0) {
             xAxisVerticalPosition = dirtyRect.Bottom * 0.9f;
@@ -87,7 +77,10 @@ public class GraphingArea : IDrawable {
         else {
             xAxisVerticalPosition = dirtyRect.Bottom * 0.1f;
         }
+        return xAxisVerticalPosition;
+    }
 
+    private float CalculateYAxisPosition(RectF dirtyRect) {
         float yAxisHorizontalPosition;
         if(minX >= 0) {
             yAxisHorizontalPosition = dirtyRect.Right * 0.1f;
@@ -98,19 +91,57 @@ public class GraphingArea : IDrawable {
         else {
             yAxisHorizontalPosition = dirtyRect.Right * 0.9f;
         }
+        return yAxisHorizontalPosition;
+    }
 
+    private void DrawXAxis(ICanvas canvas, RectF dirtyRect, float xAxisVerticalPosition) {
         canvas.StrokeColor = Colors.White;
         canvas.StrokeSize = 1;
-        // <x axis>
         canvas.DrawLine(dirtyRect.Left, xAxisVerticalPosition, dirtyRect.Right, xAxisVerticalPosition);             // main line
         canvas.DrawLine(dirtyRect.Right, xAxisVerticalPosition, dirtyRect.Right - 10, xAxisVerticalPosition - 10);  // arrow
         canvas.DrawLine(dirtyRect.Right, xAxisVerticalPosition, dirtyRect.Right - 10, xAxisVerticalPosition + 10);  // arrow
-        // </x axis>
+    }
 
-        // <y axis>
+    private void DrawYAxis(ICanvas canvas, RectF dirtyRect, float yAxisHorizontalPosition) {
+        canvas.StrokeColor = Colors.White;
+        canvas.StrokeSize = 1;
         canvas.DrawLine(yAxisHorizontalPosition, dirtyRect.Bottom, yAxisHorizontalPosition, dirtyRect.Top);           // main line
         canvas.DrawLine(yAxisHorizontalPosition, dirtyRect.Top, yAxisHorizontalPosition - 10, dirtyRect.Top + 10);    // arrow
         canvas.DrawLine(yAxisHorizontalPosition, dirtyRect.Top, yAxisHorizontalPosition + 10, dirtyRect.Top + 10);    // arrow
-        // </y axis>
     }
+
+    private void DrawGrid(ICanvas canvas, RectF dirtyRect, float xAxisVerticalPosition, float yAxisHorizontalPosition) {
+        double xSpacingValue = Math.Pow(10, Math.Ceiling(Math.Log10(maxX - minX)) - 1);
+        double ySpacingValue = Math.Pow(10, Math.Ceiling(Math.Log10(maxY - minY)) - 1);
+        int gridLinesToNegativeX, gridLinesToPositiveX, gridLinesToNegativeY, gridLinesToPositiveY;
+
+        if(minX < 0) gridLinesToNegativeX = (int)(-minX / xSpacingValue);
+        else gridLinesToNegativeX = 1; 
+
+        if(maxX > 0) gridLinesToPositiveX = (int)(maxX / xSpacingValue);
+        else gridLinesToPositiveX = 1;
+
+        if(minY < 0) gridLinesToNegativeY = (int)(-minY / ySpacingValue);
+        else gridLinesToNegativeY = 1;
+
+        if(maxY > 0) gridLinesToPositiveY = (int)(maxY / ySpacingValue);
+        else gridLinesToPositiveY = 1;
+
+        canvas.StrokeColor = Color.FromRgb(0x20, 0x20, 0x20);
+        canvas.StrokeSize = 1;
+
+        float xSpacingPixels = dirtyRect.Width / 10;
+        float ySpacingPixels = dirtyRect.Height / 10;
+
+        for(float i = 1; i <= gridLinesToNegativeX; i++) {
+            canvas.DrawLine(
+                yAxisHorizontalPosition - i * xSpacingPixels,
+                dirtyRect.Top,
+                yAxisHorizontalPosition - i * xSpacingPixels,
+                dirtyRect.Bottom
+            );
+        }
+        
+    }
+
 }
