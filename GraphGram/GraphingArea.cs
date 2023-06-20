@@ -155,31 +155,32 @@ public class GraphingArea : IDrawable {
         float markValue = -xSpacingValue;
         // Marks on the X AXIS to the LEFT of the origin
         for(float x = OriginX - xSpacingPixels; x >= dirtyRect.Left; x -= xSpacingPixels) {
-            canvas.DrawString(string.Format("{0}", markValue), x - 250, OriginY + FONTSIZE, 500, 100, HorizontalAlignment.Center, VerticalAlignment.Top);
+            canvas.DrawString(string.Format("{0}", markValue), x - 250f, OriginY + FONTSIZE, 500f, 100f, HorizontalAlignment.Center, VerticalAlignment.Top);
             markValue -= xSpacingValue;
         }
 
         markValue = xSpacingValue;
         // Marks on the X AXIS to the RIGHT of the origin
         for(float x = OriginX + xSpacingPixels; x <= dirtyRect.Right; x += xSpacingPixels) {
-            canvas.DrawString(string.Format("{0}", markValue), x - 250, OriginY + FONTSIZE, 500, 100, HorizontalAlignment.Center, VerticalAlignment.Top);
+            canvas.DrawString(string.Format("{0}", markValue), x - 250f, OriginY + FONTSIZE, 500f, 100f, HorizontalAlignment.Center, VerticalAlignment.Top);
             markValue += xSpacingValue;
         }
 
         markValue = -ySpacingValue;
         // Marks on the Y AXIS BELOW the origin
         for(float y = OriginY + ySpacingPixels; y <= dirtyRect.Bottom; y += ySpacingPixels) {
-            canvas.DrawString(string.Format("{0}", markValue), OriginX - 500, y - FONTSIZE * 0.75f, 500 - FONTSIZE, 100, HorizontalAlignment.Right, VerticalAlignment.Top);
+            canvas.DrawString(string.Format("{0}", markValue), OriginX - 500f, y - FONTSIZE * 0.75f, 500f - FONTSIZE, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);
             markValue -= ySpacingValue;
         }
 
         markValue = ySpacingValue;
         // Marks on the Y AXIS ABOVE the origin
         for(float y = OriginY - ySpacingPixels; y >= dirtyRect.Top; y -= ySpacingPixels) {
-            canvas.DrawString(string.Format("{0}", markValue), OriginX - 500, y - FONTSIZE * 0.75f, 500 - FONTSIZE, 100, HorizontalAlignment.Right, VerticalAlignment.Top);
+            canvas.DrawString(string.Format("{0}", markValue), OriginX - 500f, y - FONTSIZE * 0.75f, 500f - FONTSIZE, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);
             markValue += ySpacingValue;
         }
 
-        // @TODO: Add zeros at the origin
+        canvas.DrawString("0", OriginX + FONTSIZE * 0.5f, OriginY + FONTSIZE, 100f, 100f, HorizontalAlignment.Left, VerticalAlignment.Top);   // x axis zero
+        canvas.DrawString("0", OriginX - 500f, OriginY - FONTSIZE * 1.5f, 500f - FONTSIZE, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);   // y axis zero
     }
 }
