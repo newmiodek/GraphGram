@@ -11,6 +11,8 @@ public class GraphingArea : IDrawable {
     private double minY = 0;
     private double maxY = 100;
 
+    private static readonly float FONTSIZE = 18;
+
     public void PassDataTable(Entry[,] entryTable) {
         // Parse the text from entryTable to represent it as floats
         double[,] parsedDataTable = new double[entryTable.GetLength(0), 4];
@@ -44,11 +46,21 @@ public class GraphingArea : IDrawable {
     }
 
     public void Draw(ICanvas canvas, RectF dirtyRect) {
+        // <Calculations>
         float OriginX = CalculateOriginX(dirtyRect);
         float OriginY = CalculateOriginY(dirtyRect);
-        DrawGrid(canvas, dirtyRect, OriginX, OriginY);
+
+        float xSpacingValue = (float)Math.Ceiling((maxX - minX) / 10.0);    // Device-independent
+        float ySpacingValue = (float)Math.Ceiling((maxY - minY) / 10.0);    // Device-independent
+
+        float xSpacingPixels = dirtyRect.Width * 0.08f;     // (width * 0.8) / 10
+        float ySpacingPixels = dirtyRect.Height * 0.08f;    // (height * 0.8) / 10
+        // </Calculations>
+
+        DrawGrid(canvas, dirtyRect, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
         DrawXAxis(canvas, dirtyRect, OriginY);
         DrawYAxis(canvas, dirtyRect, OriginX);
+        DrawAxisMarks(canvas, dirtyRect, OriginX, OriginY, xSpacingPixels, ySpacingPixels, xSpacingValue, ySpacingValue);
 
         if(!isInputValid) {
             canvas.FontColor = Colors.Red;
@@ -110,35 +122,64 @@ public class GraphingArea : IDrawable {
         canvas.DrawLine(OriginX, dirtyRect.Top, OriginX + 10, dirtyRect.Top + 10);    // arrow
     }
 
-    private void DrawGrid(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY) {
-        // float xSpacingValue = (float)Math.Ceiling((maxX - minX) / 10.0);
-        // float ySpacingValue = (float)Math.Ceiling((maxY - minY) / 10.0);
-
-        float xSpacingPixels = dirtyRect.Width * 0.08f;     // (width * 0.8) / 10
-        float ySpacingPixels = dirtyRect.Height * 0.08f;    // (height * 0.8) / 10
-        
+    private void DrawGrid(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels) {
         canvas.StrokeColor = Color.FromRgb(0x30, 0x30, 0x30);
         canvas.StrokeSize = 1;
         
-        // Vertical lines to the left of the origin
+        // Vertical lines to the LEFT of the origin
         for(float x = OriginX - xSpacingPixels; x >= dirtyRect.Left; x -= xSpacingPixels) {
             canvas.DrawLine(x, dirtyRect.Top, x, dirtyRect.Bottom);
         }
 
-        // Vertical lines to the right of the origin
+        // Vertical lines to the RIGHT of the origin
         for(float x = OriginX + xSpacingPixels; x <= dirtyRect.Right; x += xSpacingPixels) {
             canvas.DrawLine(x, dirtyRect.Top, x, dirtyRect.Bottom);
         }
 
-        // Horizontal lines above the origin
+        // Horizontal lines ABOVE the origin
         for(float y = OriginY - ySpacingPixels; y >= dirtyRect.Top; y -= ySpacingPixels) {
             canvas.DrawLine(dirtyRect.Left, y, dirtyRect.Right, y);
         }
 
-        // Horizontal lines below the origin
+        // Horizontal lines BELOW the origin
         for(float y = OriginY + ySpacingPixels; y <= dirtyRect.Bottom; y += ySpacingPixels) {
             canvas.DrawLine(dirtyRect.Left, y, dirtyRect.Right, y);
         }
     }
 
+    private void DrawAxisMarks(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels, float xSpacingValue, float ySpacingValue) {
+        canvas.Font = Microsoft.Maui.Graphics.Font.Default;
+        canvas.FontColor = Colors.White;
+        canvas.FontSize = 18;
+
+        float markValue = -xSpacingValue;
+        // Marks on the X AXIS to the LEFT of the origin
+        for(float x = OriginX - xSpacingPixels; x >= dirtyRect.Left; x -= xSpacingPixels) {
+            canvas.DrawString(string.Format("{0}", markValue), x - 250, OriginY + FONTSIZE, 500, 100, HorizontalAlignment.Center, VerticalAlignment.Top);
+            markValue -= xSpacingValue;
+        }
+
+        markValue = xSpacingValue;
+        // Marks on the X AXIS to the RIGHT of the origin
+        for(float x = OriginX + xSpacingPixels; x <= dirtyRect.Right; x += xSpacingPixels) {
+            canvas.DrawString(string.Format("{0}", markValue), x - 250, OriginY + FONTSIZE, 500, 100, HorizontalAlignment.Center, VerticalAlignment.Top);
+            markValue += xSpacingValue;
+        }
+
+        markValue = -ySpacingValue;
+        // Marks on the Y AXIS BELOW the origin
+        for(float y = OriginY + ySpacingPixels; y <= dirtyRect.Bottom; y += ySpacingPixels) {
+            canvas.DrawString(string.Format("{0}", markValue), OriginX - 500, y - FONTSIZE * 0.75f, 500 - FONTSIZE, 100, HorizontalAlignment.Right, VerticalAlignment.Top);
+            markValue -= ySpacingValue;
+        }
+
+        markValue = ySpacingValue;
+        // Marks on the Y AXIS ABOVE the origin
+        for(float y = OriginY - ySpacingPixels; y >= dirtyRect.Top; y -= ySpacingPixels) {
+            canvas.DrawString(string.Format("{0}", markValue), OriginX - 500, y - FONTSIZE * 0.75f, 500 - FONTSIZE, 100, HorizontalAlignment.Right, VerticalAlignment.Top);
+            markValue += ySpacingValue;
+        }
+
+        // @TODO: Add zeros at the origin
+    }
 }
