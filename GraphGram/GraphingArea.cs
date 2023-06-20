@@ -16,7 +16,7 @@ public class GraphingArea : IDrawable {
 
     private bool changedInput = true;
 
-    private static readonly float PADDING = 0.075f;
+    private static readonly float PADDING = 0.075f; // Expressed as a fraction of the graphing area's dimensions
     private static readonly float FONTSIZE = 18;
 
     public void PassDataTable(Entry[,] entryTable) {
@@ -77,6 +77,7 @@ public class GraphingArea : IDrawable {
         DrawXAxis(canvas, dirtyRect, OriginY);
         DrawYAxis(canvas, dirtyRect, OriginX);
         DrawAxisMarks(canvas, dirtyRect, OriginX, OriginY, xSpacingPixels, ySpacingPixels, xSpacingValue, ySpacingValue);
+        DrawAxisTitles(canvas, dirtyRect, OriginX, OriginY);
 
         if(!isInputValid) {
             canvas.FontColor = Colors.Red;
@@ -109,6 +110,7 @@ public class GraphingArea : IDrawable {
     private void DrawXAxis(ICanvas canvas, RectF dirtyRect, float OriginY) {
         canvas.StrokeColor = Colors.White;
         canvas.StrokeSize = 1;
+
         canvas.DrawLine(dirtyRect.Left, OriginY, dirtyRect.Right, OriginY);             // main line
         canvas.DrawLine(dirtyRect.Right, OriginY, dirtyRect.Right - 10, OriginY - 10);  // arrow
         canvas.DrawLine(dirtyRect.Right, OriginY, dirtyRect.Right - 10, OriginY + 10);  // arrow
@@ -117,6 +119,7 @@ public class GraphingArea : IDrawable {
     private void DrawYAxis(ICanvas canvas, RectF dirtyRect, float OriginX) {
         canvas.StrokeColor = Colors.White;
         canvas.StrokeSize = 1;
+
         canvas.DrawLine(OriginX, dirtyRect.Bottom, OriginX, dirtyRect.Top);           // main line
         canvas.DrawLine(OriginX, dirtyRect.Top, OriginX - 10, dirtyRect.Top + 10);    // arrow
         canvas.DrawLine(OriginX, dirtyRect.Top, OriginX + 10, dirtyRect.Top + 10);    // arrow
@@ -182,5 +185,14 @@ public class GraphingArea : IDrawable {
 
         canvas.DrawString("0", OriginX + FONTSIZE * 0.5f, OriginY + FONTSIZE, 100f, 100f, HorizontalAlignment.Left, VerticalAlignment.Top);         // x axis zero
         canvas.DrawString("0", OriginX - 500f, OriginY - FONTSIZE * 1.5f, 500f - FONTSIZE, 100f, HorizontalAlignment.Right, VerticalAlignment.Top); // y axis zero
+    }
+
+    private void DrawAxisTitles(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY) {
+        canvas.Font = Microsoft.Maui.Graphics.Font.Default;
+        canvas.FontColor = Colors.White;
+        canvas.FontSize = FONTSIZE;
+
+        canvas.DrawString("x", dirtyRect.Right - 500f - FONTSIZE, OriginY - FONTSIZE * 2f, 500f, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);
+        canvas.DrawString("y", OriginX + FONTSIZE, dirtyRect.Top, 500f, 100f, HorizontalAlignment.Left, VerticalAlignment.Top);
     }
 }
