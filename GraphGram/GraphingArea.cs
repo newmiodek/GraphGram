@@ -45,9 +45,8 @@ public class GraphingArea : IDrawable {
             minY = Math.Min(parsedDataTable[i, 1] - parsedDataTable[i, 3], minY);
             maxY = Math.Max(parsedDataTable[i, 1] + parsedDataTable[i, 3], maxY);
         }
-        if(parseSucceded) {
-            dataTable = parsedDataTable;
-        }
+        if(parseSucceded) dataTable = parsedDataTable;
+
         isInputValid = parseSucceded;
 
         changedInput = true;
@@ -70,7 +69,7 @@ public class GraphingArea : IDrawable {
         float OriginX = CalculateOriginX(dirtyRect);
         float OriginY = CalculateOriginY(dirtyRect);
 
-        float xSpacingPixels = dirtyRect.Width * (1f - 2f * PADDING) / 10f;
+        float xSpacingPixels = dirtyRect.Width *  (1f - 2f * PADDING) / 10f;
         float ySpacingPixels = dirtyRect.Height * (1f - 2f * PADDING) / 10f;
         // </Calculations>
 
@@ -91,29 +90,19 @@ public class GraphingArea : IDrawable {
 
     private float CalculateOriginX(RectF dirtyRect) {
         float OriginX;
-        if(minX >= 0) {
-            OriginX = dirtyRect.Right * PADDING;
-        }
-        else if(minX < 0 && maxX > 0) {
-            OriginX = dirtyRect.Right * ((1f - 2f * PADDING) * (float)(-minX / (maxX - minX)) + PADDING);
-        }
-        else {
-            OriginX = dirtyRect.Right * (1f - PADDING);
-        }
+        if(minX >= 0)                   OriginX = dirtyRect.Right * PADDING;
+        else if(minX < 0 && maxX > 0)   OriginX = dirtyRect.Right * 
+                                            ((1f - 2f * PADDING) * (float)(-minX / (maxX - minX)) + PADDING);
+        else                            OriginX = dirtyRect.Right * (1f - PADDING);
         return OriginX;
     }
 
     private float CalculateOriginY(RectF dirtyRect) {
         float OriginY;
-        if(minY >= 0) {
-            OriginY = dirtyRect.Bottom * (1f - PADDING);
-        }
-        else if(minY < 0 && maxY > 0) {
-            OriginY = dirtyRect.Bottom * ((1f - 2f * PADDING) * (float)(maxY / (maxY - minY)) + PADDING);
-        }
-        else {
-            OriginY = dirtyRect.Bottom * PADDING;
-        }
+        if(minY >= 0)                   OriginY = dirtyRect.Bottom * (1f - PADDING);
+        else if(minY < 0 && maxY > 0)   OriginY = dirtyRect.Bottom *
+                                            ((1f - 2f * PADDING) * (float)(maxY / (maxY - minY)) + PADDING);
+        else                            OriginY = dirtyRect.Bottom * PADDING;
         return OriginY;
     }
 
@@ -191,7 +180,7 @@ public class GraphingArea : IDrawable {
             markValue += ySpacingValue;
         }
 
-        canvas.DrawString("0", OriginX + FONTSIZE * 0.5f, OriginY + FONTSIZE, 100f, 100f, HorizontalAlignment.Left, VerticalAlignment.Top);   // x axis zero
-        canvas.DrawString("0", OriginX - 500f, OriginY - FONTSIZE * 1.5f, 500f - FONTSIZE, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);   // y axis zero
+        canvas.DrawString("0", OriginX + FONTSIZE * 0.5f, OriginY + FONTSIZE, 100f, 100f, HorizontalAlignment.Left, VerticalAlignment.Top);         // x axis zero
+        canvas.DrawString("0", OriginX - 500f, OriginY - FONTSIZE * 1.5f, 500f - FONTSIZE, 100f, HorizontalAlignment.Right, VerticalAlignment.Top); // y axis zero
     }
 }
