@@ -70,12 +70,6 @@ public class GraphingArea : IDrawable {
             return;
         }
 
-        if(dataTable != null) {
-            canvas.StrokeColor = Colors.Red;
-            canvas.StrokeSize = 6;
-            canvas.DrawLine((float)dataTable[0, 0], (float)dataTable[0, 1], (float)dataTable[1, 0], (float)dataTable[1, 1]);
-        }
-
     }
 
     private float CalculateOriginX(RectF dirtyRect) {
