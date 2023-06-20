@@ -11,6 +11,7 @@ public class GraphingArea : IDrawable {
     private double minY = 0;
     private double maxY = 100;
 
+    private static readonly float PADDING = 0.075f;
     private static readonly float FONTSIZE = 18;
 
     public void PassDataTable(Entry[,] entryTable) {
@@ -53,8 +54,8 @@ public class GraphingArea : IDrawable {
         float xSpacingValue = (float)Math.Ceiling((maxX - minX) / 10.0);    // Device-independent
         float ySpacingValue = (float)Math.Ceiling((maxY - minY) / 10.0);    // Device-independent
 
-        float xSpacingPixels = dirtyRect.Width * 0.08f;     // (width * 0.8) / 10
-        float ySpacingPixels = dirtyRect.Height * 0.08f;    // (height * 0.8) / 10
+        float xSpacingPixels = dirtyRect.Width * (1f - 2f * PADDING) / 10f;
+        float ySpacingPixels = dirtyRect.Height * (1f - 2f * PADDING) / 10f;
         // </Calculations>
 
         DrawGrid(canvas, dirtyRect, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
@@ -75,13 +76,13 @@ public class GraphingArea : IDrawable {
     private float CalculateOriginX(RectF dirtyRect) {
         float OriginX;
         if(minX >= 0) {
-            OriginX = dirtyRect.Right * 0.1f;
+            OriginX = dirtyRect.Right * PADDING;
         }
         else if(minX < 0 && maxX > 0) {
-            OriginX = dirtyRect.Right * (0.8f * (float)(-minX / (maxX - minX)) + 0.1f);
+            OriginX = dirtyRect.Right * ((1f - 2f * PADDING) * (float)(-minX / (maxX - minX)) + PADDING);
         }
         else {
-            OriginX = dirtyRect.Right * 0.9f;
+            OriginX = dirtyRect.Right * (1f - PADDING);
         }
         return OriginX;
     }
@@ -89,13 +90,13 @@ public class GraphingArea : IDrawable {
     private float CalculateOriginY(RectF dirtyRect) {
         float OriginY;
         if(minY >= 0) {
-            OriginY = dirtyRect.Bottom * 0.9f;
+            OriginY = dirtyRect.Bottom * (1f - PADDING);
         }
         else if(minY < 0 && maxY > 0) {
-            OriginY = dirtyRect.Bottom * (0.8f * (float)(maxY / (maxY - minY)) + 0.1f);
+            OriginY = dirtyRect.Bottom * ((1f - 2f * PADDING) * (float)(maxY / (maxY - minY)) + PADDING);
         }
         else {
-            OriginY = dirtyRect.Bottom * 0.1f;
+            OriginY = dirtyRect.Bottom * PADDING;
         }
         return OriginY;
     }
