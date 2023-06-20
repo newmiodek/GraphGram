@@ -11,6 +11,11 @@ public class GraphingArea : IDrawable {
     private double minY = 0;
     private double maxY = 100;
 
+    private float xSpacingValue = 10f;
+    private float ySpacingValue = 10f;
+
+    private bool changedInput = true;
+
     private static readonly float PADDING = 0.075f;
     private static readonly float FONTSIZE = 18;
 
@@ -44,15 +49,26 @@ public class GraphingArea : IDrawable {
             dataTable = parsedDataTable;
         }
         isInputValid = parseSucceded;
+
+        changedInput = true;
     }
 
     public void Draw(ICanvas canvas, RectF dirtyRect) {
         // <Calculations>
+        if(changedInput) {
+            if(minX > 0)        xSpacingValue = (float)Math.Ceiling(maxX / 10.0);
+            else if(maxX < 0)   xSpacingValue = (float)Math.Ceiling(-minX / 10.0);
+            else                xSpacingValue = (float)Math.Ceiling((maxX - minX) / 10.0);
+
+            if(minY > 0)        ySpacingValue = (float)Math.Ceiling(maxY / 10.0);
+            else if(maxY < 0)   ySpacingValue = (float)Math.Ceiling(-minY / 10.0);
+            else                ySpacingValue = (float)Math.Ceiling((maxY - minY) / 10.0);
+            
+            changedInput = false;
+        }
+
         float OriginX = CalculateOriginX(dirtyRect);
         float OriginY = CalculateOriginY(dirtyRect);
-
-        float xSpacingValue = (float)Math.Ceiling((maxX - minX) / 10.0);    // Device-independent
-        float ySpacingValue = (float)Math.Ceiling((maxY - minY) / 10.0);    // Device-independent
 
         float xSpacingPixels = dirtyRect.Width * (1f - 2f * PADDING) / 10f;
         float ySpacingPixels = dirtyRect.Height * (1f - 2f * PADDING) / 10f;
