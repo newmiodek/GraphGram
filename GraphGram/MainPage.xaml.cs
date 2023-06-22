@@ -7,6 +7,12 @@ public partial class MainPage : ContentPage {
     private readonly static int defaultRowCount = 2;
     private Entry[,] entryTable;
 
+    private GraphicsView xHeaderGraphicsView;
+    private GraphicsView yHeaderGraphicsView;
+
+    private Entry xHeaderEntry;
+    private Entry yHeaderEntry;
+
     public MainPage() {
         InitializeComponent();
         // <Creating the data table>
@@ -59,10 +65,43 @@ public partial class MainPage : ContentPage {
             }
         }
         // </Creating the data table>
+
+        // <Implementing custom headers>
+        xHeaderGraphicsView = new GraphicsView { Drawable = new TableHeaderGraphicSide { Text = "x" } };
+        xHeaderGraphicsView.StartInteraction += (sender, e) => { xHeaderGraphicsViewClicked(sender, e); };
+        xBorder.Content = xHeaderGraphicsView;
+        xHeaderEntry = new Entry { Text = ((TableHeaderGraphicSide)xHeaderGraphicsView.Drawable).Text };
+        xHeaderEntry.ReturnCommand = new Command(xHeaderEntryClicked);
+
+        yHeaderGraphicsView = new GraphicsView { Drawable = new TableHeaderGraphicSide { Text = "y" } };
+        yHeaderGraphicsView.StartInteraction += (sender, e) => { yHeaderGraphicsViewClicked(sender, e); };
+        yBorder.Content = yHeaderGraphicsView;
+        yHeaderEntry = new Entry { Text = ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).Text };
+        yHeaderEntry.ReturnCommand = new Command(yHeaderEntryClicked);
+        // </Implementing custom headers>
     }
 
     private void UpdateGraph() {
         ((GraphingArea)GraphingAreaView.Drawable).PassDataTable(entryTable);
+        GraphingAreaView.Invalidate();
+    }
+
+    private void xHeaderGraphicsViewClicked(object sender, EventArgs e) {
+        xBorder.Content = xHeaderEntry;
+    }
+    private void yHeaderGraphicsViewClicked(object sender, EventArgs e) {
+        yBorder.Content = yHeaderEntry;
+    }
+    private void xHeaderEntryClicked() {
+        ((TableHeaderGraphicSide)xHeaderGraphicsView.Drawable).Text = xHeaderEntry.Text;
+        xBorder.Content = xHeaderGraphicsView;
+        ((GraphingArea)GraphingAreaView.Drawable).SetXAxisTitle(xHeaderEntry.Text);
+        GraphingAreaView.Invalidate();
+    }
+    private void yHeaderEntryClicked() {
+        ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).Text = yHeaderEntry.Text;
+        yBorder.Content = yHeaderGraphicsView;
+        ((GraphingArea)GraphingAreaView.Drawable).SetYAxisTitle(yHeaderEntry.Text);
         GraphingAreaView.Invalidate();
     }
 }

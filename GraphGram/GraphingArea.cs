@@ -14,6 +14,9 @@ public class GraphingArea : IDrawable {
     private float xSpacingValue = 10f;
     private float ySpacingValue = 10f;
 
+    private string xTitle = "x";
+    private string yTitle = "y";
+
     private bool changedInput = true;
 
     private static readonly float PADDING = 0.075f; // Expressed as a fraction of the graphing area's dimensions
@@ -50,6 +53,13 @@ public class GraphingArea : IDrawable {
         isInputValid = parseSucceded;
 
         changedInput = true;
+    }
+
+    public void SetXAxisTitle(string xTitle) {
+        this.xTitle = xTitle;
+    }
+    public void SetYAxisTitle(string yTitle) {
+        this.yTitle = yTitle;
     }
 
     public void Draw(ICanvas canvas, RectF dirtyRect) {
@@ -192,7 +202,7 @@ public class GraphingArea : IDrawable {
         canvas.FontColor = Colors.White;
         canvas.FontSize = FONTSIZE;
 
-        canvas.DrawString("x", dirtyRect.Right - 500f - FONTSIZE, OriginY - FONTSIZE * 2f, 500f, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);
-        canvas.DrawString("y", OriginX + FONTSIZE, dirtyRect.Top, 500f, 100f, HorizontalAlignment.Left, VerticalAlignment.Top);
+        canvas.DrawString(xTitle, dirtyRect.Right - 500f - FONTSIZE, OriginY - FONTSIZE * 2f, 500f, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);
+        canvas.DrawString(yTitle, OriginX + FONTSIZE, dirtyRect.Top, 500f, 100f, HorizontalAlignment.Left, VerticalAlignment.Top);
     }
 }
