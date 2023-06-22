@@ -4,7 +4,7 @@ namespace GraphGram;
 
 public partial class MainPage : ContentPage {
 
-    private readonly static int defaultRowCount = 2;
+    private readonly static int defaultRowCount = 40;
     private Entry[,] entryTable;
 
     private GraphicsView xHeaderGraphicsView;
@@ -14,26 +14,29 @@ public partial class MainPage : ContentPage {
     private Entry yHeaderEntry;
 
     public MainPage() {
+
+        // TODO: Give proper names to things and add theming
+
         InitializeComponent();
         // <Creating the data table>
         entryTable = new Entry[defaultRowCount, 4];
         for(int i = 0; i < defaultRowCount; i++) {
-            DataTable.AddRowDefinition(new RowDefinition(30));
+            DataTable.AddRowDefinition(new RowDefinition((double)this.Resources["CellHeight"]));
 
             Label rowNumberLabel = new Label {
                 Text = (i + 1).ToString(),
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center
+                TextColor = Colors.White,
+                BackgroundColor = Colors.Black,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
             };
-            rowNumberLabel.SetAppThemeColor(Label.TextColorProperty, Colors.Black, Colors.White);
 
-            Border rowNumberLabelBorder = new Border {
-                StrokeThickness = 1,
-                Content = rowNumberLabel
+            BoxView rowNumberLabelBorder = new BoxView {
+                Color = Colors.Black
             };
-            rowNumberLabelBorder.SetAppThemeColor(Border.StrokeProperty, Colors.Black, Colors.White);
 
             DataTable.Add(rowNumberLabelBorder, 0, i);
+            DataTable.Add(rowNumberLabel, 0, i);
 
             for(int j = 0; j < 4; j++) {
                 /* Local equivalents of j and i are made here
@@ -44,7 +47,9 @@ public partial class MainPage : ContentPage {
                 int localJ = 1 * j;
                 int localI = 1 * i;
 
-                entryTable[localI, localJ] = new Entry();
+                entryTable[localI, localJ] = new Entry {
+                    BackgroundColor = Colors.Black
+                };
 
                 // It's best to use only one of those two. Maybe let the user choose which one?
                 // <Choose one>
@@ -52,14 +57,10 @@ public partial class MainPage : ContentPage {
                 // entryTable[localJ, localI].TextChanged += (sender, e) => { UpdateGraph(); };
                 // </Choose one>
 
-                entryTable[localI, localJ].SetAppThemeColor(Entry.TextColorProperty, Colors.Black, Colors.White);
-
-                Border entryBorder = new Border {
-                    StrokeThickness = 1,
-                    Padding = -6,
+                ContentView entryBorder = new ContentView {
+                    BackgroundColor = Colors.Black,
                     Content = entryTable[localI, localJ]
                 };
-                entryBorder.SetAppThemeColor(Border.StrokeProperty, Colors.Black, Colors.White);
 
                 DataTable.Add(entryBorder, localJ + 1, localI);
             }

@@ -6,7 +6,7 @@ class TableHeaderGraphicSide : IDrawable {
     public void Draw(ICanvas canvas, RectF dirtyRect) {
         canvas.FontColor = Colors.White;
         canvas.FontSize = 15;
-        canvas.DrawString(Text, 35, 18, HorizontalAlignment.Center);
+        canvas.DrawString(Text, 35, 30, HorizontalAlignment.Center);
     }
 
 }

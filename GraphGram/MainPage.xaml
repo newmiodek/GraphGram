@@ -15,6 +15,7 @@
                 <Setter Property="StrokeThickness" Value="1" />
                 <Setter Property="Grid.Row" Value="0" />
             </Style>
+            <x:Double x:Key="CellHeight">50</x:Double>
         </ResourceDictionary>
         <local:GraphingArea x:Key="graphingArea" />
         <local:TableHeaderGraphicSide x:Key="tableHeaderGraphicSideX" />
@@ -44,59 +45,62 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="302" />
+            <ColumnDefinition Width="Auto" />
+            <!-- TODO: Change "Auto" to something more specific -->
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid ColumnSpacing="-2"
-              RowSpacing="-2"
+        <Grid BackgroundColor="White"
+              RowSpacing="1"
+              ColumnSpacing="1"
+              Padding="1"
               Grid.Row="0"
               Grid.Column="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="70" />
                 <ColumnDefinition Width="70" />
                 <ColumnDefinition Width="70" />
                 <ColumnDefinition Width="70" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
+                <RowDefinition Height="{StaticResource CellHeight}" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Border Style="{StaticResource TableBorder}"
-                    Grid.Column="0"/>
+            <BoxView Color="Black"
+                     Grid.Column="0" />
 
-            <Border x:Name="xBorder"
-                    Style="{StaticResource TableBorder}"
-                    Grid.Column="1" />
+            <ContentView x:Name="xBorder"
+                         BackgroundColor="Black"
+                         Grid.Column="1" />
             <!-- Content added in the code-behind -->
 
-            <Border x:Name="yBorder"
-                    Style="{StaticResource TableBorder}"
-                    Grid.Column="2" />
+            <ContentView x:Name="yBorder"
+                         BackgroundColor="Black"
+                         Grid.Column="2" />
             <!-- Content added in the code-behind -->
 
-            <Border Style="{StaticResource TableBorder}"
-                    Grid.Column="3">
+            <ContentView BackgroundColor="Black"
+                         Grid.Column="3">
                 <Label Text="&#x0394;x"
                        Style="{StaticResource TableHeader}" />
-            </Border>
+            </ContentView>
 
-            <Border Style="{StaticResource TableBorder}"
-                    Grid.Column="4">
+            <ContentView BackgroundColor="Black"
+                         Grid.Column="4">
                 <Label Text="&#x0394;y"
                        Style="{StaticResource TableHeader}" />
-            </Border>
+            </ContentView>
 
             <ScrollView VerticalScrollBarVisibility="Never"
                         Grid.Row="1"
                         Grid.ColumnSpan="5">
                 <Grid x:Name="DataTable"
-                      ColumnSpacing="-2"
-                      RowSpacing="-2">
+                      RowSpacing="1"
+                      ColumnSpacing="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="50" />
                         <ColumnDefinition Width="70" />
                         <ColumnDefinition Width="70" />
                         <ColumnDefinition Width="70" />
