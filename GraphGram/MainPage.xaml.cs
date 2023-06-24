@@ -15,8 +15,6 @@ public partial class MainPage : ContentPage {
 
     public MainPage() {
 
-        // TODO: Add theming
-
         InitializeComponent();
         // <Creating the data table>
         entryTable = new Entry[defaultRowCount, 4];
