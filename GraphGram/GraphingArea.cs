@@ -82,8 +82,6 @@ public class GraphingArea : IDrawable {
 
         lineData = new LineData(dataPoints);
 
-        Debug.WriteLine(lineData.ToString());
-
         if(minX > 0)        xSpacingValue = (float)Math.Ceiling(maxX / 10.0);
         else if(maxX < 0)   xSpacingValue = (float)Math.Ceiling(-minX / 10.0);
         else                xSpacingValue = (float)Math.Ceiling((maxX - minX) / 10.0);
