@@ -17,8 +17,6 @@ public class GraphingArea : IDrawable {
     private string xTitle = "x";
     private string yTitle = "y";
 
-    private bool changedInput = true;
-
     private static readonly float PADDING = 0.075f; // Expressed as a fraction of the graphing area's dimensions
     private static readonly float FONTSIZE = 18f;
 
@@ -72,7 +70,13 @@ public class GraphingArea : IDrawable {
 
         isInputValid = validRows >= 2;
 
-        changedInput = true;
+        if(minX > 0)        xSpacingValue = (float)Math.Ceiling(maxX / 10.0);
+        else if(maxX < 0)   xSpacingValue = (float)Math.Ceiling(-minX / 10.0);
+        else                xSpacingValue = (float)Math.Ceiling((maxX - minX) / 10.0);
+
+        if(minY > 0)        ySpacingValue = (float)Math.Ceiling(maxY / 10.0);
+        else if(maxY < 0)   ySpacingValue = (float)Math.Ceiling(-minY / 10.0);
+        else                ySpacingValue = (float)Math.Ceiling((maxY - minY) / 10.0);
     }
 
     public void SetXAxisTitle(string xTitle) {
@@ -84,18 +88,6 @@ public class GraphingArea : IDrawable {
 
     public void Draw(ICanvas canvas, RectF dirtyRect) {
         // <Calculations>
-        if(changedInput) {
-            if(minX > 0)        xSpacingValue = (float)Math.Ceiling(maxX / 10.0);
-            else if(maxX < 0)   xSpacingValue = (float)Math.Ceiling(-minX / 10.0);
-            else                xSpacingValue = (float)Math.Ceiling((maxX - minX) / 10.0);
-
-            if(minY > 0)        ySpacingValue = (float)Math.Ceiling(maxY / 10.0);
-            else if(maxY < 0)   ySpacingValue = (float)Math.Ceiling(-minY / 10.0);
-            else                ySpacingValue = (float)Math.Ceiling((maxY - minY) / 10.0);
-            
-            changedInput = false;
-        }
-
         float OriginX = CalculateOriginX(dirtyRect);
         float OriginY = CalculateOriginY(dirtyRect);
 
