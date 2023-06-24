@@ -71,12 +71,12 @@
             <BoxView Color="Black"
                      Grid.Column="0" />
 
-            <ContentView x:Name="xBorder"
+            <ContentView x:Name="xHeaderContentView"
                          BackgroundColor="Black"
                          Grid.Column="1" />
             <!-- Content added in the code-behind -->
 
-            <ContentView x:Name="yBorder"
+            <ContentView x:Name="yHeaderContentView"
                          BackgroundColor="Black"
                          Grid.Column="2" />
             <!-- Content added in the code-behind -->

@@ -15,13 +15,14 @@ public partial class MainPage : ContentPage {
 
     public MainPage() {
 
-        // TODO: Give proper names to things and add theming
+        // TODO: Add theming
 
         InitializeComponent();
         // <Creating the data table>
         entryTable = new Entry[defaultRowCount, 4];
+
         for(int i = 0; i < defaultRowCount; i++) {
-            DataTable.AddRowDefinition(new RowDefinition((double)this.Resources["CellHeight"]));
+            DataTable.AddRowDefinition(new RowDefinition((double)Resources["CellHeight"]));
 
             Label rowNumberLabel = new Label {
                 Text = (i + 1).ToString(),
@@ -31,11 +32,11 @@ public partial class MainPage : ContentPage {
                 HorizontalOptions = LayoutOptions.Center
             };
 
-            BoxView rowNumberLabelBorder = new BoxView {
+            BoxView rowNumberLabelBackground = new BoxView {
                 Color = Colors.Black
             };
 
-            DataTable.Add(rowNumberLabelBorder, 0, i);
+            DataTable.Add(rowNumberLabelBackground, 0, i);
             DataTable.Add(rowNumberLabel, 0, i);
 
             for(int j = 0; j < 4; j++) {
@@ -52,33 +53,37 @@ public partial class MainPage : ContentPage {
                 };
 
                 // It's best to use only one of those two. Maybe let the user choose which one?
+
                 // <Choose one>
+
                 entryTable[localI, localJ].ReturnCommand = new Command(UpdateGraph);
+
                 // entryTable[localJ, localI].TextChanged += (sender, e) => { UpdateGraph(); };
+
                 // </Choose one>
 
-                ContentView entryBorder = new ContentView {
+                ContentView entryContentView = new ContentView {
                     BackgroundColor = Colors.Black,
                     Content = entryTable[localI, localJ]
                 };
 
-                DataTable.Add(entryBorder, localJ + 1, localI);
+                DataTable.Add(entryContentView, localJ + 1, localI);
             }
         }
         // </Creating the data table>
 
         // <Implementing custom headers>
         xHeaderGraphicsView = new GraphicsView { Drawable = new TableHeaderGraphicSide { Text = "x" } };
-        xHeaderGraphicsView.StartInteraction += (sender, e) => { xHeaderGraphicsViewClicked(sender, e); };
-        xBorder.Content = xHeaderGraphicsView;
+        xHeaderGraphicsView.StartInteraction += (sender, e) => { SwitchXHeaderToEntry(sender, e); };
+        xHeaderContentView.Content = xHeaderGraphicsView;
         xHeaderEntry = new Entry { Text = ((TableHeaderGraphicSide)xHeaderGraphicsView.Drawable).Text };
-        xHeaderEntry.ReturnCommand = new Command(xHeaderEntryClicked);
+        xHeaderEntry.ReturnCommand = new Command(SwitchXHeaderToGraphicsView);
 
         yHeaderGraphicsView = new GraphicsView { Drawable = new TableHeaderGraphicSide { Text = "y" } };
-        yHeaderGraphicsView.StartInteraction += (sender, e) => { yHeaderGraphicsViewClicked(sender, e); };
-        yBorder.Content = yHeaderGraphicsView;
+        yHeaderGraphicsView.StartInteraction += (sender, e) => { SwitchYHeaderToEntry(sender, e); };
+        yHeaderContentView.Content = yHeaderGraphicsView;
         yHeaderEntry = new Entry { Text = ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).Text };
-        yHeaderEntry.ReturnCommand = new Command(yHeaderEntryClicked);
+        yHeaderEntry.ReturnCommand = new Command(SwitchYHeaderToGraphicsView);
         // </Implementing custom headers>
     }
 
@@ -87,21 +92,21 @@ public partial class MainPage : ContentPage {
         GraphingAreaView.Invalidate();
     }
 
-    private void xHeaderGraphicsViewClicked(object sender, EventArgs e) {
-        xBorder.Content = xHeaderEntry;
+    private void SwitchXHeaderToEntry(object sender, EventArgs e) {
+        xHeaderContentView.Content = xHeaderEntry;
     }
-    private void yHeaderGraphicsViewClicked(object sender, EventArgs e) {
-        yBorder.Content = yHeaderEntry;
+    private void SwitchYHeaderToEntry(object sender, EventArgs e) {
+        yHeaderContentView.Content = yHeaderEntry;
     }
-    private void xHeaderEntryClicked() {
+    private void SwitchXHeaderToGraphicsView() {
         ((TableHeaderGraphicSide)xHeaderGraphicsView.Drawable).Text = xHeaderEntry.Text;
-        xBorder.Content = xHeaderGraphicsView;
+        xHeaderContentView.Content = xHeaderGraphicsView;
         ((GraphingArea)GraphingAreaView.Drawable).SetXAxisTitle(xHeaderEntry.Text);
         GraphingAreaView.Invalidate();
     }
-    private void yHeaderEntryClicked() {
+    private void SwitchYHeaderToGraphicsView() {
         ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).Text = yHeaderEntry.Text;
-        yBorder.Content = yHeaderGraphicsView;
+        yHeaderContentView.Content = yHeaderGraphicsView;
         ((GraphingArea)GraphingAreaView.Drawable).SetYAxisTitle(yHeaderEntry.Text);
         GraphingAreaView.Invalidate();
     }
