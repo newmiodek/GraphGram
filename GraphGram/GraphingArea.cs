@@ -3,6 +3,9 @@
 public class GraphingArea : IDrawable {
 
     private double[,] dataTable;
+    private LineData lineData;
+
+    private bool isInitiated = false;
     private bool isInputValid = true;
 
     // consider changing them to floats
@@ -51,8 +54,12 @@ public class GraphingArea : IDrawable {
             maxY = Math.Max(parsedDataTable[i, 1] + parsedDataTable[i, 3], maxY);
         }
 
-        if(parseSucceded) dataTable = parsedDataTable;
+        isInputValid = validRows >= 2;
+        if(!isInputValid) { return; }
 
+        isInitiated = true;
+
+        if(parseSucceded) dataTable = parsedDataTable;
         else {
             dataTable = new double[validRows, 4];
 
@@ -68,7 +75,14 @@ public class GraphingArea : IDrawable {
             }
         }
 
-        isInputValid = validRows >= 2;
+        DataPoint[] dataPoints = new DataPoint[dataTable.GetLength(0)];
+        for(int i = 0; i < dataTable.GetLength(0); i++) {
+            dataPoints[i] = new DataPoint(dataTable[i, 0], dataTable[i, 1], dataTable[i, 2], dataTable[i, 3]);
+        }
+
+        lineData = new LineData(dataPoints);
+
+        Debug.WriteLine(lineData.ToString());
 
         if(minX > 0)        xSpacingValue = (float)Math.Ceiling(maxX / 10.0);
         else if(maxX < 0)   xSpacingValue = (float)Math.Ceiling(-minX / 10.0);
@@ -77,6 +91,7 @@ public class GraphingArea : IDrawable {
         if(minY > 0)        ySpacingValue = (float)Math.Ceiling(maxY / 10.0);
         else if(maxY < 0)   ySpacingValue = (float)Math.Ceiling(-minY / 10.0);
         else                ySpacingValue = (float)Math.Ceiling((maxY - minY) / 10.0);
+
     }
 
     public void SetXAxisTitle(string xTitle) {
@@ -98,12 +113,19 @@ public class GraphingArea : IDrawable {
         DrawGrid(canvas, dirtyRect, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
         DrawXAxis(canvas, dirtyRect, OriginY);
         DrawYAxis(canvas, dirtyRect, OriginX);
+
+        if(isInputValid && isInitiated) {
+            DrawLine(canvas, dirtyRect, lineData.GetLeastSteepLine(), Colors.Red, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
+            DrawLine(canvas, dirtyRect, lineData.GetSteepestLine(), Colors.Green, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
+            DrawLine(canvas, dirtyRect, lineData.GetLineOfBestFit(), Application.Current.RequestedTheme == AppTheme.Light ? Colors.Black : Colors.White, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
+        }
+
         DrawAxisMarks(canvas, dirtyRect, OriginX, OriginY, xSpacingPixels, ySpacingPixels, xSpacingValue, ySpacingValue);
         DrawAxisTitles(canvas, dirtyRect, OriginX, OriginY);
 
         if(!isInputValid) {
             canvas.FontColor = Colors.Red;
-            canvas.FontSize = 18;
+            canvas.FontSize = 18f;
             canvas.Font = Microsoft.Maui.Graphics.Font.Default;
             canvas.DrawString("Invalid input", 100f, 100f, HorizontalAlignment.Left);
             return;
@@ -216,5 +238,17 @@ public class GraphingArea : IDrawable {
 
         canvas.DrawString(xTitle, dirtyRect.Right - 500f - FONTSIZE, OriginY - FONTSIZE * 2f, 500f, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);
         canvas.DrawString(yTitle, OriginX + FONTSIZE, dirtyRect.Top, 500f, 100f, HorizontalAlignment.Left, VerticalAlignment.Top);
+    }
+
+    private void DrawLine(ICanvas canvas, RectF dirtyRect, Line line, Color color, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels) {
+        float spacingRatio = xSpacingValue * ySpacingPixels / (xSpacingPixels * ySpacingValue);
+
+        // These values are defined in terms of pixels
+        float gradient = (float)line.GetGradient() * spacingRatio;
+        float yIntercept = (float)line.GetYIntercept() * ySpacingPixels / ySpacingValue;
+
+        canvas.StrokeColor = color;
+        canvas.StrokeSize = 3;
+        canvas.DrawLine(dirtyRect.Left, OriginY - ((dirtyRect.Left - OriginX) * gradient + yIntercept), dirtyRect.Right, OriginY - ((dirtyRect.Right - OriginX) * gradient + yIntercept));
     }
 }

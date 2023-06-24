@@ -15,4 +15,8 @@ public class Line {
     public double GetYIntercept() {
         return yIntercept;
     }
+
+    public override string ToString() {
+        return "Line { gradient = " + gradient.ToString() + ", yIntercept = " + yIntercept.ToString() + " }";
+    }
 }

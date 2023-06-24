@@ -30,16 +30,14 @@ public class LineData {
             }
         }
 
-        List<List<LinePermutation>> outlierCategories = new List<List<LinePermutation>>(dataPoints.Length - 1);
-        for(int i = 0; i < outlierCategories.Count; i++) {
-            outlierCategories[i] = new List<LinePermutation>(0);
+        List<List<LinePermutation>> outlierCategories = new List<List<LinePermutation>>();
+        for(int i = 0; i < dataPoints.Length - 1; i++) {
+            outlierCategories.Add(new List<LinePermutation>());
         }
-
-        for(int i = 0; i < lines.Length; i++) {
+        for(int i = 0; i < lines.GetLength(0); i++) {
             int tempOutlierCount = lines[i].GetOutlierCount();
             outlierCategories[tempOutlierCount].Add(lines[i]);
         }
-
         // extract the steep and the least steep lines with the least outliers
         double steepGradient = 0,
                steepYIntercept = 0,
@@ -160,5 +158,19 @@ public class LineData {
     }
     public double GetYInterceptUncertainty() {
         return yInterceptUncertainty;
+    }
+
+    public override string ToString() {
+        string toStringed = "LineData {\n"
+                          + "Least Steep Line: " + leastSteepLine.ToString() + "\n"
+                          + "Steepest Line: " + steepestLine.ToString() + "\n"
+                          + "Line of Best Fit: " + lineOfBestFit.ToString() + "\n"
+                          + "Gradient Uncertainty: " + gradientUncertainty.ToString() + "\n"
+                          + "Y-Intercept Uncertainty: " + yInterceptUncertainty.ToString() + "\n"
+                          + "Outlier Count: " + outlierCount.ToString() + "\n"
+                          + "}";
+
+
+        return toStringed;
     }
 }
