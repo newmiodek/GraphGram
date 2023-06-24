@@ -10,12 +10,9 @@
                 <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="VerticalOptions" Value="Center" />
             </Style>
-            <Style x:Key="TableBorder" TargetType="Border">
-                <Setter Property="Stroke" Value="{AppThemeBinding Light='#000000', Dark='#FFFFFF'}" />
-                <Setter Property="StrokeThickness" Value="1" />
-                <Setter Property="Grid.Row" Value="0" />
-            </Style>
-            <x:Double x:Key="CellHeight">50</x:Double>
+            <x:Double x:Key="cellHeight">40</x:Double>
+            <x:Double x:Key="rowNumberCellWidth">40</x:Double>
+            <x:Double x:Key="entryCellWidth">70</x:Double>
         </ResourceDictionary>
         <local:GraphingArea x:Key="graphingArea" />
         <local:TableHeaderGraphicSide x:Key="tableHeaderGraphicSideX" />
@@ -50,44 +47,44 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid BackgroundColor="White"
+        <Grid BackgroundColor="{AppThemeBinding Light=Black, Dark=White}"
               RowSpacing="1"
               ColumnSpacing="1"
               Padding="1"
               Grid.Row="0"
               Grid.Column="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50" />
-                <ColumnDefinition Width="70" />
-                <ColumnDefinition Width="70" />
-                <ColumnDefinition Width="70" />
-                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="{StaticResource rowNumberCellWidth}" />
+                <ColumnDefinition Width="{StaticResource entryCellWidth}" />
+                <ColumnDefinition Width="{StaticResource entryCellWidth}" />
+                <ColumnDefinition Width="{StaticResource entryCellWidth}" />
+                <ColumnDefinition Width="{StaticResource entryCellWidth}" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="{StaticResource CellHeight}" />
+                <RowDefinition Height="{StaticResource cellHeight}" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <BoxView Color="Black"
+            <BoxView Color="{AppThemeBinding Light=White, Dark=Black}"
                      Grid.Column="0" />
 
             <ContentView x:Name="xHeaderContentView"
-                         BackgroundColor="Black"
+                         BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
                          Grid.Column="1" />
             <!-- Content added in the code-behind -->
 
             <ContentView x:Name="yHeaderContentView"
-                         BackgroundColor="Black"
+                         BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
                          Grid.Column="2" />
             <!-- Content added in the code-behind -->
 
-            <ContentView BackgroundColor="Black"
+            <ContentView BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
                          Grid.Column="3">
                 <Label Text="&#x0394;x"
                        Style="{StaticResource TableHeader}" />
             </ContentView>
 
-            <ContentView BackgroundColor="Black"
+            <ContentView BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
                          Grid.Column="4">
                 <Label Text="&#x0394;y"
                        Style="{StaticResource TableHeader}" />
@@ -100,11 +97,11 @@
                       RowSpacing="1"
                       ColumnSpacing="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="70" />
-                        <ColumnDefinition Width="70" />
-                        <ColumnDefinition Width="70" />
-                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="{StaticResource rowNumberCellWidth}" />
+                        <ColumnDefinition Width="{StaticResource entryCellWidth}" />
+                        <ColumnDefinition Width="{StaticResource entryCellWidth}" />
+                        <ColumnDefinition Width="{StaticResource entryCellWidth}" />
+                        <ColumnDefinition Width="{StaticResource entryCellWidth}" />
                     </Grid.ColumnDefinitions>
                     <!-- The contents of this grid are added from the code-behind -->
                 </Grid>

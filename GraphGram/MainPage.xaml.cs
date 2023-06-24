@@ -22,19 +22,18 @@ public partial class MainPage : ContentPage {
         entryTable = new Entry[defaultRowCount, 4];
 
         for(int i = 0; i < defaultRowCount; i++) {
-            DataTable.AddRowDefinition(new RowDefinition((double)Resources["CellHeight"]));
+            DataTable.AddRowDefinition(new RowDefinition((double)Resources["cellHeight"]));
 
             Label rowNumberLabel = new Label {
                 Text = (i + 1).ToString(),
-                TextColor = Colors.White,
-                BackgroundColor = Colors.Black,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center
             };
+            rowNumberLabel.SetAppThemeColor(Label.TextColorProperty, Colors.Black, Colors.White);
+            rowNumberLabel.SetAppThemeColor(Label.BackgroundColorProperty, Colors.White, Colors.Black);
 
-            BoxView rowNumberLabelBackground = new BoxView {
-                Color = Colors.Black
-            };
+            BoxView rowNumberLabelBackground = new BoxView();
+            rowNumberLabelBackground.SetAppThemeColor(BoxView.ColorProperty, Colors.White, Colors.Black);
 
             DataTable.Add(rowNumberLabelBackground, 0, i);
             DataTable.Add(rowNumberLabel, 0, i);
@@ -48,9 +47,9 @@ public partial class MainPage : ContentPage {
                 int localJ = 1 * j;
                 int localI = 1 * i;
 
-                entryTable[localI, localJ] = new Entry {
-                    BackgroundColor = Colors.Black
-                };
+                entryTable[localI, localJ] = new Entry();
+                entryTable[localI, localJ].SetAppThemeColor(Entry.BackgroundColorProperty, Colors.White, Colors.Black);
+                entryTable[localI, localJ].SetAppThemeColor(Entry.TextColorProperty, Colors.Black, Colors.White);
 
                 // It's best to use only one of those two. Maybe let the user choose which one?
 
@@ -63,9 +62,9 @@ public partial class MainPage : ContentPage {
                 // </Choose one>
 
                 ContentView entryContentView = new ContentView {
-                    BackgroundColor = Colors.Black,
                     Content = entryTable[localI, localJ]
                 };
+                entryContentView.SetAppThemeColor(ContentView.BackgroundColorProperty, Colors.White, Colors.Black);
 
                 DataTable.Add(entryContentView, localJ + 1, localI);
             }
@@ -85,6 +84,11 @@ public partial class MainPage : ContentPage {
         yHeaderEntry = new Entry { Text = ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).Text };
         yHeaderEntry.ReturnCommand = new Command(SwitchYHeaderToGraphicsView);
         // </Implementing custom headers>
+
+        Application.Current.RequestedThemeChanged += (sender, eventArgs) => {
+            xHeaderGraphicsView.Invalidate();
+            yHeaderGraphicsView.Invalidate();
+        };
     }
 
     private void UpdateGraph() {
