@@ -6,10 +6,10 @@ public class GraphingArea : IDrawable {
     private bool isInputValid = true;
 
     // consider changing them to floats
-    private double minX = 0;
-    private double maxX = 100;
-    private double minY = 0;
-    private double maxY = 100;
+    private double minX = 0.0;
+    private double maxX = 100.0;
+    private double minY = 0.0;
+    private double maxY = 100.0;
 
     private float xSpacingValue = 10f;
     private float ySpacingValue = 10f;
@@ -20,11 +20,12 @@ public class GraphingArea : IDrawable {
     private bool changedInput = true;
 
     private static readonly float PADDING = 0.075f; // Expressed as a fraction of the graphing area's dimensions
-    private static readonly float FONTSIZE = 18;
+    private static readonly float FONTSIZE = 18f;
 
     public void PassDataTable(Entry[,] entryTable) {
         // Parse the text from entryTable to represent it as floats
         double[,] parsedDataTable = new double[entryTable.GetLength(0), 4];
+        int validRows = 0;
         bool parseSucceded = true;
         minX = double.MaxValue;
         maxX = double.MinValue;
@@ -41,16 +42,35 @@ public class GraphingArea : IDrawable {
                     break;
                 }
             }
-            if(!parseSucceded) break;
+            if(!parseSucceded) {
+                validRows = i;
+                break;
+            }
 
             minX = Math.Min(parsedDataTable[i, 0] - parsedDataTable[i, 2], minX);
             maxX = Math.Max(parsedDataTable[i, 0] + parsedDataTable[i, 2], maxX);
             minY = Math.Min(parsedDataTable[i, 1] - parsedDataTable[i, 3], minY);
             maxY = Math.Max(parsedDataTable[i, 1] + parsedDataTable[i, 3], maxY);
         }
+
         if(parseSucceded) dataTable = parsedDataTable;
 
-        isInputValid = parseSucceded;
+        else {
+            dataTable = new double[validRows, 4];
+
+            for(int i = 0; i < validRows; i++) {
+                for(int j = 0; j < 4; j++) {
+                    /* The deal with these locals is the same
+                     * as in the constructor of MainPage
+                     */
+                    int localI = 1 * i;
+                    int localJ = 1 * j;
+                    dataTable[localI, localJ] = parsedDataTable[localI, localJ];
+                }
+            }
+        }
+
+        isInputValid = validRows >= 2;
 
         changedInput = true;
     }
@@ -93,7 +113,7 @@ public class GraphingArea : IDrawable {
             canvas.FontColor = Colors.Red;
             canvas.FontSize = 18;
             canvas.Font = Microsoft.Maui.Graphics.Font.Default;
-            canvas.DrawString("Invalid input", 100, 100, HorizontalAlignment.Left);
+            canvas.DrawString("Invalid input", 100f, 100f, HorizontalAlignment.Left);
             return;
         }
 
@@ -122,22 +142,22 @@ public class GraphingArea : IDrawable {
         canvas.StrokeSize = 1;
 
         canvas.DrawLine(dirtyRect.Left, OriginY, dirtyRect.Right, OriginY);             // main line
-        canvas.DrawLine(dirtyRect.Right, OriginY, dirtyRect.Right - 10, OriginY - 10);  // arrow
-        canvas.DrawLine(dirtyRect.Right, OriginY, dirtyRect.Right - 10, OriginY + 10);  // arrow
+        canvas.DrawLine(dirtyRect.Right, OriginY, dirtyRect.Right - 10f, OriginY - 10f);  // arrow
+        canvas.DrawLine(dirtyRect.Right, OriginY, dirtyRect.Right - 10f, OriginY + 10f);  // arrow
     }
 
     private void DrawYAxis(ICanvas canvas, RectF dirtyRect, float OriginX) {
         canvas.StrokeColor = Colors.White;
-        canvas.StrokeSize = 1;
+        canvas.StrokeSize = 1f;
 
         canvas.DrawLine(OriginX, dirtyRect.Bottom, OriginX, dirtyRect.Top);           // main line
-        canvas.DrawLine(OriginX, dirtyRect.Top, OriginX - 10, dirtyRect.Top + 10);    // arrow
-        canvas.DrawLine(OriginX, dirtyRect.Top, OriginX + 10, dirtyRect.Top + 10);    // arrow
+        canvas.DrawLine(OriginX, dirtyRect.Top, OriginX - 10f, dirtyRect.Top + 10f);    // arrow
+        canvas.DrawLine(OriginX, dirtyRect.Top, OriginX + 10f, dirtyRect.Top + 10f);    // arrow
     }
 
     private void DrawGrid(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels) {
         canvas.StrokeColor = Color.FromRgb(0x30, 0x30, 0x30);
-        canvas.StrokeSize = 1;
+        canvas.StrokeSize = 1f;
         
         // Vertical lines to the LEFT of the origin
         for(float x = OriginX - xSpacingPixels; x >= dirtyRect.Left; x -= xSpacingPixels) {
@@ -163,7 +183,7 @@ public class GraphingArea : IDrawable {
     private void DrawAxisMarks(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels, float xSpacingValue, float ySpacingValue) {
         canvas.Font = Microsoft.Maui.Graphics.Font.Default;
         canvas.FontColor = Colors.White;
-        canvas.FontSize = 18;
+        canvas.FontSize = FONTSIZE;
 
         float markValue = -xSpacingValue;
         // Marks on the X AXIS to the LEFT of the origin

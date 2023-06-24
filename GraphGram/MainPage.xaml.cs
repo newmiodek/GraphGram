@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace GraphGram;
+﻿namespace GraphGram;
 
 public partial class MainPage : ContentPage {
 
@@ -71,13 +69,13 @@ public partial class MainPage : ContentPage {
 
         // <Implementing custom headers>
         xHeaderGraphicsView = new GraphicsView { Drawable = new TableHeaderGraphicSide { Text = "x" } };
-        xHeaderGraphicsView.StartInteraction += (sender, e) => { SwitchXHeaderToEntry(sender, e); };
+        xHeaderGraphicsView.StartInteraction += SwitchXHeaderToEntry;
         xHeaderContentView.Content = xHeaderGraphicsView;
         xHeaderEntry = new Entry { Text = ((TableHeaderGraphicSide)xHeaderGraphicsView.Drawable).Text };
         xHeaderEntry.ReturnCommand = new Command(SwitchXHeaderToGraphicsView);
 
         yHeaderGraphicsView = new GraphicsView { Drawable = new TableHeaderGraphicSide { Text = "y" } };
-        yHeaderGraphicsView.StartInteraction += (sender, e) => { SwitchYHeaderToEntry(sender, e); };
+        yHeaderGraphicsView.StartInteraction += SwitchYHeaderToEntry;
         yHeaderContentView.Content = yHeaderGraphicsView;
         yHeaderEntry = new Entry { Text = ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).Text };
         yHeaderEntry.ReturnCommand = new Command(SwitchYHeaderToGraphicsView);

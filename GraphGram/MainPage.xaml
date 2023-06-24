@@ -105,7 +105,7 @@
                         <ColumnDefinition Width="{StaticResource entryCellWidth}" />
                         <ColumnDefinition Width="{StaticResource entryCellWidth}" />
                     </Grid.ColumnDefinitions>
-                    <!-- The contents of this grid are added from the code-behind -->
+                    <!-- Content added in the code-behind -->
                 </Grid>
             </ScrollView>
         </Grid>
