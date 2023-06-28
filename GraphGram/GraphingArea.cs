@@ -3,6 +3,7 @@
 public class GraphingArea : IDrawable {
 
     private double[,] dataTable;
+    private DataPoint[] dataPoints;
     private LineData lineData;
 
     private bool isInitiated = false;
@@ -75,7 +76,7 @@ public class GraphingArea : IDrawable {
             }
         }
 
-        DataPoint[] dataPoints = new DataPoint[dataTable.GetLength(0)];
+        dataPoints = new DataPoint[dataTable.GetLength(0)];
         for(int i = 0; i < dataTable.GetLength(0); i++) {
             dataPoints[i] = new DataPoint(dataTable[i, 0], dataTable[i, 1], dataTable[i, 2], dataTable[i, 3]);
         }
@@ -113,6 +114,7 @@ public class GraphingArea : IDrawable {
         DrawYAxis(canvas, dirtyRect, OriginX);
 
         if(isInputValid && isInitiated) {
+            DrawDataPoints(canvas, dirtyRect, dataPoints, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
             DrawLine(canvas, dirtyRect, lineData.GetLeastSteepLine(), Colors.Red, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
             DrawLine(canvas, dirtyRect, lineData.GetSteepestLine(), Colors.Green, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
             DrawLine(canvas, dirtyRect, lineData.GetLineOfBestFit(), Application.Current.RequestedTheme == AppTheme.Light ? Colors.Black : Colors.White, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
@@ -170,7 +172,7 @@ public class GraphingArea : IDrawable {
     private void DrawGrid(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels) {
         canvas.StrokeColor = Color.FromRgb(0x30, 0x30, 0x30);
         canvas.StrokeSize = 1f;
-        
+
         // Vertical lines to the LEFT of the origin
         for(float x = OriginX - xSpacingPixels; x >= dirtyRect.Left; x -= xSpacingPixels) {
             canvas.DrawLine(x, dirtyRect.Top, x, dirtyRect.Bottom);
@@ -248,5 +250,28 @@ public class GraphingArea : IDrawable {
         canvas.StrokeColor = color;
         canvas.StrokeSize = 3;
         canvas.DrawLine(dirtyRect.Left, OriginY - ((dirtyRect.Left - OriginX) * gradient + yIntercept), dirtyRect.Right, OriginY - ((dirtyRect.Right - OriginX) * gradient + yIntercept));
+    }
+
+    private void DrawDataPoints(ICanvas canvas, RectF dirtyRect, DataPoint[] dataPoints, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels) {
+        float xScale = xSpacingPixels / xSpacingValue;
+        float yScale = ySpacingPixels / ySpacingValue;
+        canvas.StrokeColor = Colors.White;
+        canvas.StrokeSize = 1;
+        for(int i = 0; i < dataPoints.Length; i++) {
+            float xPixels = OriginX + (float)dataPoints[i].GetX() * xScale;
+            float yPixels = OriginY - (float)dataPoints[i].GetY() * yScale;
+            float uncXPixels = (float)dataPoints[i].GetUncertaintyX() * xScale;
+            float uncYPixels = (float)dataPoints[i].GetUncertaintyY() * yScale;
+
+            canvas.DrawCircle(xPixels, yPixels, 2);
+
+            canvas.DrawLine(xPixels - uncXPixels, yPixels, xPixels + uncXPixels, yPixels);
+            canvas.DrawLine(xPixels, yPixels - uncYPixels, xPixels, yPixels + uncYPixels);
+
+            canvas.DrawLine(xPixels - uncXPixels, yPixels - 3f, xPixels - uncXPixels, yPixels + 3f);
+            canvas.DrawLine(xPixels + uncXPixels, yPixels - 3f, xPixels + uncXPixels, yPixels + 3f);
+            canvas.DrawLine(xPixels - 3f, yPixels - uncYPixels, xPixels + 3f, yPixels - uncYPixels);
+            canvas.DrawLine(xPixels - 3f, yPixels + uncYPixels, xPixels + 3f, yPixels + uncYPixels);
+        }
     }
 }
