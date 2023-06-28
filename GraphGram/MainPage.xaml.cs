@@ -68,23 +68,30 @@ public partial class MainPage : ContentPage {
         // </Creating the data table>
 
         // <Implementing custom headers>
-        xHeaderGraphicsView = new GraphicsView { Drawable = new TableHeaderGraphicSide { Text = "x" } };
+        xHeaderGraphicsView = new GraphicsView { Drawable = new TableHeaderGraphicSide() };
+        ((TableHeaderGraphicSide)xHeaderGraphicsView.Drawable).SetText("x");
         xHeaderGraphicsView.StartInteraction += SwitchXHeaderToEntry;
         xHeaderContentView.Content = xHeaderGraphicsView;
-        xHeaderEntry = new Entry { Text = ((TableHeaderGraphicSide)xHeaderGraphicsView.Drawable).Text };
+        xHeaderEntry = new Entry { Text = ((TableHeaderGraphicSide)xHeaderGraphicsView.Drawable).GetText() };
         xHeaderEntry.ReturnCommand = new Command(SwitchXHeaderToGraphicsView);
 
-        yHeaderGraphicsView = new GraphicsView { Drawable = new TableHeaderGraphicSide { Text = "y" } };
+        yHeaderGraphicsView = new GraphicsView { Drawable = new TableHeaderGraphicSide() };
+        ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).SetText("y");
         yHeaderGraphicsView.StartInteraction += SwitchYHeaderToEntry;
         yHeaderContentView.Content = yHeaderGraphicsView;
-        yHeaderEntry = new Entry { Text = ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).Text };
+        yHeaderEntry = new Entry { Text = ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).GetText() };
         yHeaderEntry.ReturnCommand = new Command(SwitchYHeaderToGraphicsView);
+
+        ((TableHeaderGraphicSide)xUncertaintyHeaderGraphicsView.Drawable).SetText("\u0394x");
+        ((TableHeaderGraphicSide)yUncertaintyHeaderGraphicsView.Drawable).SetText("\u0394y");
         // </Implementing custom headers>
 
         Application.Current.RequestedThemeChanged += (sender, eventArgs) => {
             GraphingAreaView.Invalidate();
             xHeaderGraphicsView.Invalidate();
             yHeaderGraphicsView.Invalidate();
+            xUncertaintyHeaderGraphicsView.Invalidate();
+            yUncertaintyHeaderGraphicsView.Invalidate();
         };
     }
 
@@ -104,15 +111,21 @@ public partial class MainPage : ContentPage {
         yHeaderContentView.Content = yHeaderEntry;
     }
     private void SwitchXHeaderToGraphicsView() {
-        ((TableHeaderGraphicSide)xHeaderGraphicsView.Drawable).Text = xHeaderEntry.Text;
+        ((TableHeaderGraphicSide)xHeaderGraphicsView.Drawable).SetText(xHeaderEntry.Text);
         xHeaderContentView.Content = xHeaderGraphicsView;
         ((GraphingArea)GraphingAreaView.Drawable).SetXAxisTitle(xHeaderEntry.Text);
         GraphingAreaView.Invalidate();
+
+        ((TableHeaderGraphicSide)xUncertaintyHeaderGraphicsView.Drawable).SetText("\u0394" + xHeaderEntry.Text);
+        xUncertaintyHeaderGraphicsView.Invalidate();
     }
     private void SwitchYHeaderToGraphicsView() {
-        ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).Text = yHeaderEntry.Text;
+        ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).SetText(yHeaderEntry.Text);
         yHeaderContentView.Content = yHeaderGraphicsView;
         ((GraphingArea)GraphingAreaView.Drawable).SetYAxisTitle(yHeaderEntry.Text);
         GraphingAreaView.Invalidate();
+
+        ((TableHeaderGraphicSide)yUncertaintyHeaderGraphicsView.Drawable).SetText("\u0394" + yHeaderEntry.Text);
+        yUncertaintyHeaderGraphicsView.Invalidate();
     }
 }

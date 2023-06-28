@@ -18,8 +18,8 @@
                  4 * entryCellWidth, and the border lines (1px each) -->
         </ResourceDictionary>
         <local:GraphingArea x:Key="graphingArea" />
-        <local:TableHeaderGraphicSide x:Key="tableHeaderGraphicSideX" />
-        <local:TableHeaderGraphicSide x:Key="tableHeaderGraphicSideY" />
+        <local:TableHeaderGraphicSide x:Key="xUncertaintyHeader" />
+        <local:TableHeaderGraphicSide x:Key="yUncertaintyHeader" />
     </ContentPage.Resources>
 
     <ContentPage.MenuBarItems>
@@ -83,14 +83,14 @@
 
             <ContentView BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
                          Grid.Column="3">
-                <Label Text="&#x0394;x"
-                       Style="{StaticResource TableHeader}" />
+                <GraphicsView x:Name="xUncertaintyHeaderGraphicsView"
+                              Drawable="{StaticResource xUncertaintyHeader}" />
             </ContentView>
 
             <ContentView BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
                          Grid.Column="4">
-                <Label Text="&#x0394;y"
-                       Style="{StaticResource TableHeader}" />
+                <GraphicsView x:Name="yUncertaintyHeaderGraphicsView"
+                              Drawable="{StaticResource yUncertaintyHeader}" />
             </ContentView>
 
             <ScrollView VerticalScrollBarVisibility="Never"
