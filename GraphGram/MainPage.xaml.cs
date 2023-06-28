@@ -82,6 +82,7 @@ public partial class MainPage : ContentPage {
         // </Implementing custom headers>
 
         Application.Current.RequestedThemeChanged += (sender, eventArgs) => {
+            GraphingAreaView.Invalidate();
             xHeaderGraphicsView.Invalidate();
             yHeaderGraphicsView.Invalidate();
         };

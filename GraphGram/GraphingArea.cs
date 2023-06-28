@@ -170,7 +170,10 @@ public class GraphingArea : IDrawable {
     }
 
     private void DrawXAxis(ICanvas canvas, RectF dirtyRect, float OriginY) {
-        canvas.StrokeColor = Colors.White;
+        canvas.StrokeColor = 
+            Application.Current.RequestedTheme == AppTheme.Light
+            ? Colors.Black
+            : Colors.White;
         canvas.StrokeSize = 1;
 
         canvas.DrawLine(dirtyRect.Left, OriginY, dirtyRect.Right, OriginY);             // main line
@@ -179,7 +182,10 @@ public class GraphingArea : IDrawable {
     }
 
     private void DrawYAxis(ICanvas canvas, RectF dirtyRect, float OriginX) {
-        canvas.StrokeColor = Colors.White;
+        canvas.StrokeColor = 
+            Application.Current.RequestedTheme == AppTheme.Light
+            ? Colors.Black
+            : Colors.White;
         canvas.StrokeSize = 1f;
 
         canvas.DrawLine(OriginX, dirtyRect.Bottom, OriginX, dirtyRect.Top);           // main line
@@ -188,7 +194,13 @@ public class GraphingArea : IDrawable {
     }
 
     private void DrawGrid(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels) {
-        canvas.StrokeColor = Color.FromRgb(0x30, 0x30, 0x30);
+        canvas.StrokeColor =
+            Application.Current.RequestedTheme == AppTheme.Light
+            ? Color.FromRgb(0xB0, 0xB0, 0xB0)
+            : Color.FromRgb(0x30, 0x30, 0x30);
+
+
+            //Color.FromRgb(0x30, 0x30, 0x30);
         canvas.StrokeSize = 1f;
 
         // Vertical lines to the LEFT of the origin
@@ -214,7 +226,10 @@ public class GraphingArea : IDrawable {
 
     private void DrawAxisMarks(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels, float xSpacingValue, float ySpacingValue) {
         canvas.Font = Microsoft.Maui.Graphics.Font.Default;
-        canvas.FontColor = Colors.White;
+        canvas.FontColor =
+            Application.Current.RequestedTheme == AppTheme.Light
+            ? Colors.Black
+            : Colors.White;
         canvas.FontSize = FONTSIZE;
 
         float markValue = -xSpacingValue;
@@ -251,7 +266,10 @@ public class GraphingArea : IDrawable {
 
     private void DrawAxisTitles(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY) {
         canvas.Font = Microsoft.Maui.Graphics.Font.Default;
-        canvas.FontColor = Colors.White;
+        canvas.FontColor =
+            Application.Current.RequestedTheme == AppTheme.Light
+            ? Colors.Black
+            : Colors.White;
         canvas.FontSize = FONTSIZE;
 
         canvas.DrawString(xTitle, dirtyRect.Right - 500f - FONTSIZE, OriginY - FONTSIZE * 2f, 500f, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);
@@ -265,15 +283,18 @@ public class GraphingArea : IDrawable {
         float gradient = (float)line.GetGradient() * spacingRatio;
         float yIntercept = (float)line.GetYIntercept() * ySpacingPixels / ySpacingValue;
 
-        canvas.StrokeColor = color;
         canvas.StrokeSize = 3;
+        canvas.StrokeColor = color;
         canvas.DrawLine(dirtyRect.Left, OriginY - ((dirtyRect.Left - OriginX) * gradient + yIntercept), dirtyRect.Right, OriginY - ((dirtyRect.Right - OriginX) * gradient + yIntercept));
     }
 
     private void DrawDataPoints(ICanvas canvas, RectF dirtyRect, DataPoint[] dataPoints, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels) {
         float xScale = xSpacingPixels / xSpacingValue;
         float yScale = ySpacingPixels / ySpacingValue;
-        canvas.StrokeColor = Colors.White;
+        canvas.StrokeColor =
+            Application.Current.RequestedTheme == AppTheme.Light
+            ? Colors.Black
+            : Colors.White;
         canvas.StrokeSize = 1;
         for(int i = 0; i < dataPoints.Length; i++) {
             float xPixels = OriginX + (float)dataPoints[i].GetX() * xScale;
