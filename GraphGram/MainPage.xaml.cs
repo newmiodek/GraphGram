@@ -88,8 +88,12 @@ public partial class MainPage : ContentPage {
     }
 
     private void UpdateGraph() {
-        ((GraphingArea)GraphingAreaView.Drawable).PassDataTable(entryTable);
+        GraphingArea graphingArea = (GraphingArea)GraphingAreaView.Drawable;
+        graphingArea.PassDataTable(entryTable);
         GraphingAreaView.Invalidate();
+
+        gradientOutput.Text = graphingArea.GetGradient();
+        yInterceptOutput.Text = graphingArea.GetYIntercept();
     }
 
     private void SwitchXHeaderToEntry(object sender, EventArgs e) {

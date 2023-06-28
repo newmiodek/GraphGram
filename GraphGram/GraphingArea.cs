@@ -133,6 +133,24 @@ public class GraphingArea : IDrawable {
 
     }
 
+    public string GetGradient() {
+        if(isInputValid && isInitiated) {
+            return lineData.GetLineOfBestFit().GetGradient().ToString()
+                 + " \u00B1 "
+                 + lineData.GetGradientUncertainty().ToString();
+        }
+        return "-- \u00B1 --";
+    }
+
+    public string GetYIntercept() {
+        if(isInputValid && isInitiated) {
+            return lineData.GetLineOfBestFit().GetYIntercept().ToString()
+                 + " \u00B1 "
+                 + lineData.GetYInterceptUncertainty().ToString();
+        }
+        return "-- \u00B1 --";
+    }
+
     private float CalculateOriginX(RectF dirtyRect) {
         float OriginX;
         if(minX >= 0)                   OriginX = dirtyRect.Right * PADDING;

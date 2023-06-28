@@ -65,6 +65,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="{StaticResource cellHeight}" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="84" />
             </Grid.RowDefinitions>
 
             <BoxView Color="{AppThemeBinding Light=White, Dark=Black}"
@@ -108,6 +109,57 @@
                     <!-- Content added in the code-behind -->
                 </Grid>
             </ScrollView>
+
+            <Grid BackgroundColor="{AppThemeBinding Light='#B0B0B0', Dark='#404040'}"
+                  RowSpacing="1"
+                  ColumnSpacing="1"
+                  Grid.Row="2"
+                  Grid.ColumnSpan="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+
+                <ContentView BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+                             Grid.Row="0"
+                             Grid.Column="0">
+                    <Label Text="Gradient: "
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Center"
+                           Padding="6" />
+                </ContentView>
+                <ContentView BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+                             Grid.Row="0"
+                             Grid.Column="1">
+                    <Entry x:Name="gradientOutput"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+                       IsReadOnly="True"
+                       Text="-- &#x00B1; --" />
+                </ContentView>
+
+                <ContentView BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+                             Grid.Row="1"
+                             Grid.Column="0" >
+                    <Label Text="Y-Intercept: "
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"
+                       Padding="6"/>
+                </ContentView>
+                <ContentView BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+                             Grid.Row="1"
+                             Grid.Column="1">
+                    <Entry x:Name="yInterceptOutput"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+                       IsReadOnly="True"
+                       Text="-- &#x00B1; --" />
+                </ContentView>
+            </Grid>
         </Grid>
         <GraphicsView x:Name="GraphingAreaView"
                       Drawable="{StaticResource graphingArea}"
