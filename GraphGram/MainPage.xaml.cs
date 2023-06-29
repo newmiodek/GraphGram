@@ -2,7 +2,6 @@
 
 public partial class MainPage : ContentPage {
 
-    private readonly static int defaultRowCount = 40;
     private Entry[,] entryTable;
 
     private GraphicsView xHeaderGraphicsView;
@@ -15,9 +14,9 @@ public partial class MainPage : ContentPage {
 
         InitializeComponent();
         // <Creating the data table>
-        entryTable = new Entry[defaultRowCount, 4];
+        entryTable = new Entry[Constants.DEFAULT_ROW_COUNT, 4];
 
-        for(int i = 0; i < defaultRowCount; i++) {
+        for(int i = 0; i < Constants.DEFAULT_ROW_COUNT; i++) {
             DataTable.AddRowDefinition(new RowDefinition((double)Resources["cellHeight"]));
 
             Label rowNumberLabel = new Label {

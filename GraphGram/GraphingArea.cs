@@ -21,9 +21,6 @@ public class GraphingArea : IDrawable {
     private string xTitle = "x";
     private string yTitle = "y";
 
-    private static readonly float PADDING = 0.075f; // Expressed as a fraction of the graphing area's dimensions
-    private static readonly float FONTSIZE = 18f;
-
     public void PassDataTable(Entry[,] entryTable) {
         // Parse the text from entryTable to represent it as floats
         double[,] parsedDataTable = new double[entryTable.GetLength(0), 4];
@@ -105,8 +102,8 @@ public class GraphingArea : IDrawable {
         float OriginX = CalculateOriginX(dirtyRect);
         float OriginY = CalculateOriginY(dirtyRect);
 
-        float xSpacingPixels = dirtyRect.Width *  (1f - 2f * PADDING) / 10f;
-        float ySpacingPixels = dirtyRect.Height * (1f - 2f * PADDING) / 10f;
+        float xSpacingPixels = dirtyRect.Width *  (1f - 2f * Constants.PADDING) / 10f;
+        float ySpacingPixels = dirtyRect.Height * (1f - 2f * Constants.PADDING) / 10f;
         // </Calculations>
 
         DrawGrid(canvas, dirtyRect, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
@@ -125,8 +122,8 @@ public class GraphingArea : IDrawable {
 
         if(!isInputValid) {
             canvas.FontColor = Colors.Red;
-            canvas.FontSize = FONTSIZE;
-            canvas.Font = Microsoft.Maui.Graphics.Font.Default;
+            canvas.FontSize = Constants.GRAPHING_AREA_FONT_SIZE;
+            canvas.Font = Constants.FONT;
             canvas.DrawString("Invalid input", 100f, 100f, HorizontalAlignment.Left);
             return;
         }
@@ -153,19 +150,19 @@ public class GraphingArea : IDrawable {
 
     private float CalculateOriginX(RectF dirtyRect) {
         float OriginX;
-        if(minX >= 0)                   OriginX = dirtyRect.Right * PADDING;
+        if(minX >= 0)                   OriginX = dirtyRect.Right * Constants.PADDING;
         else if(minX < 0 && maxX > 0)   OriginX = dirtyRect.Right * 
-                                            ((1f - 2f * PADDING) * (float)(-minX / (maxX - minX)) + PADDING);
-        else                            OriginX = dirtyRect.Right * (1f - PADDING);
+                                            ((1f - 2f * Constants.PADDING) * (float)(-minX / (maxX - minX)) + Constants.PADDING);
+        else                            OriginX = dirtyRect.Right * (1f - Constants.PADDING);
         return OriginX;
     }
 
     private float CalculateOriginY(RectF dirtyRect) {
         float OriginY;
-        if(minY >= 0)                   OriginY = dirtyRect.Bottom * (1f - PADDING);
+        if(minY >= 0)                   OriginY = dirtyRect.Bottom * (1f - Constants.PADDING);
         else if(minY < 0 && maxY > 0)   OriginY = dirtyRect.Bottom *
-                                            ((1f - 2f * PADDING) * (float)(maxY / (maxY - minY)) + PADDING);
-        else                            OriginY = dirtyRect.Bottom * PADDING;
+                                            ((1f - 2f * Constants.PADDING) * (float)(maxY / (maxY - minY)) + Constants.PADDING);
+        else                            OriginY = dirtyRect.Bottom * Constants.PADDING;
         return OriginY;
     }
 
@@ -225,14 +222,14 @@ public class GraphingArea : IDrawable {
     }
 
     private void DrawAxisMarks(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels, float xSpacingValue, float ySpacingValue) {
-        canvas.Font = Microsoft.Maui.Graphics.Font.Default;
+        canvas.Font = Constants.FONT;
         canvas.FontColor =
             Application.Current.RequestedTheme == AppTheme.Light
             ? Colors.Black
             : Colors.White;
-        canvas.FontSize = FONTSIZE;
+        canvas.FontSize = Constants.GRAPHING_AREA_FONT_SIZE;
 
-        SizeF fontDimensions = canvas.GetStringSize("0", Microsoft.Maui.Graphics.Font.Default, FONTSIZE);
+        SizeF fontDimensions = canvas.GetStringSize("0", Constants.FONT, Constants.GRAPHING_AREA_FONT_SIZE);
 
         float markValue = -xSpacingValue;
         // Marks on the X AXIS to the LEFT of the origin
@@ -267,15 +264,15 @@ public class GraphingArea : IDrawable {
     }
 
     private void DrawAxisTitles(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY) {
-        canvas.Font = Microsoft.Maui.Graphics.Font.Default;
+        canvas.Font = Constants.FONT;
         canvas.FontColor =
             Application.Current.RequestedTheme == AppTheme.Light
             ? Colors.Black
             : Colors.White;
-        canvas.FontSize = FONTSIZE;
+        canvas.FontSize = Constants.GRAPHING_AREA_FONT_SIZE;
 
-        canvas.DrawString(xTitle, dirtyRect.Right - 500f - FONTSIZE, OriginY - FONTSIZE * 2f, 500f, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);
-        canvas.DrawString(yTitle, OriginX + FONTSIZE, dirtyRect.Top, 500f, 100f, HorizontalAlignment.Left, VerticalAlignment.Top);
+        canvas.DrawString(xTitle, dirtyRect.Right - 500f - Constants.GRAPHING_AREA_FONT_SIZE, OriginY - Constants.GRAPHING_AREA_FONT_SIZE * 2f, 500f, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);
+        canvas.DrawString(yTitle, OriginX + Constants.GRAPHING_AREA_FONT_SIZE, dirtyRect.Top, 500f, 100f, HorizontalAlignment.Left, VerticalAlignment.Top);
     }
 
     private void DrawLine(ICanvas canvas, RectF dirtyRect, Line line, Color color, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels) {

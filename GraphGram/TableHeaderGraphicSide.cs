@@ -3,9 +3,6 @@
 namespace GraphGram;
 public class TableHeaderGraphicSide : IDrawable {
 
-    private static readonly Font FONT = Font.Default;
-    private static readonly float FONTSIZE = 15f;
-
     private string text;
     private Pair<string, bool>[] supString;
 
@@ -55,30 +52,30 @@ public class TableHeaderGraphicSide : IDrawable {
 
     private static void DrawSuperscriptedString(ICanvas canvas, RectF dirtyRect, Pair<string, bool>[] supString) {
         canvas.FontColor = Application.Current.RequestedTheme == AppTheme.Light ? Colors.Black : Colors.White;
-        canvas.Font = FONT;
+        canvas.Font = Constants.FONT;
 
         if(supString == null) {
 
             return;
         }
 
-        SuperscriptedStringSize size = new SuperscriptedStringSize(canvas, supString, FONTSIZE);
+        SuperscriptedStringSize size = new SuperscriptedStringSize(canvas, supString, Constants.TABLE_FONT_SIZE);
 
         float horizontalPosition = dirtyRect.Width / 2f - size.TotalWidth / 2f;
 
         for(int i = 0; i < supString.Length; i++) {
             if(supString[i].second) {  // If in superscript
-                canvas.FontSize = FONTSIZE / 2f;
-                SizeF smallFontSize = canvas.GetStringSize(supString[i].first, FONT, FONTSIZE / 2f);
+                canvas.FontSize = Constants.TABLE_FONT_SIZE / 2f;
+                SizeF smallFontSize = canvas.GetStringSize(supString[i].first, Constants.FONT, Constants.TABLE_FONT_SIZE / 2f);
                 canvas.DrawString(supString[i].first, horizontalPosition, dirtyRect.Height / 2f + size.Height / 2f - smallFontSize.Height, HorizontalAlignment.Left);
                 horizontalPosition += smallFontSize.Width;
             }
             else {  // If not in superscript
-                canvas.FontSize = FONTSIZE;
+                canvas.FontSize = Constants.TABLE_FONT_SIZE;
                 canvas.DrawString(supString[i].first, horizontalPosition, dirtyRect.Height / 2f + size.Height / 2f, HorizontalAlignment.Left);
-                horizontalPosition += canvas.GetStringSize(supString[i].first, FONT, FONTSIZE).Width;
+                horizontalPosition += canvas.GetStringSize(supString[i].first, Constants.FONT, Constants.TABLE_FONT_SIZE).Width;
             }
-            horizontalPosition += 3f;
+            horizontalPosition += Constants.SUPERSCRIPT_SEPARATION;
         }
     }
 }
