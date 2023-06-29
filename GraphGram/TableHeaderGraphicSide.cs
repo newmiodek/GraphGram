@@ -65,8 +65,8 @@ public class TableHeaderGraphicSide : IDrawable {
 
         for(int i = 0; i < supString.Length; i++) {
             if(supString[i].second) {  // If in superscript
-                canvas.FontSize = Constants.TABLE_FONT_SIZE / 2f;
-                SizeF smallFontSize = canvas.GetStringSize(supString[i].first, Constants.FONT, Constants.TABLE_FONT_SIZE / 2f);
+                canvas.FontSize = Constants.TABLE_FONT_SIZE * Constants.SUPERSCRIPT_RATIO;
+                SizeF smallFontSize = canvas.GetStringSize(supString[i].first, Constants.FONT, Constants.TABLE_FONT_SIZE * Constants.SUPERSCRIPT_RATIO);
                 canvas.DrawString(supString[i].first, horizontalPosition, dirtyRect.Height / 2f + size.Height / 2f - smallFontSize.Height, HorizontalAlignment.Left);
                 horizontalPosition += smallFontSize.Width;
             }
