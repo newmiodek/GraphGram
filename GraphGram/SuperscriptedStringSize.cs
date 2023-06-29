@@ -1,6 +1,4 @@
-﻿using Font = Microsoft.Maui.Graphics.Font;
-
-namespace GraphGram;
+﻿namespace GraphGram;
 public class SuperscriptedStringSize {
     public float[] Widths { get; private set; }
     public float Height { get; private set; }
@@ -19,10 +17,10 @@ public class SuperscriptedStringSize {
 
         for(int i = 0; i < supString.Length; i++) {
             if(supString[i].second) {  // If in superscript
-                Widths[i] = canvas.GetStringSize(supString[i].first, Font.Default, fontSize * Constants.SUPERSCRIPT_RATIO).Width;
+                Widths[i] = canvas.GetStringSize(supString[i].first, Constants.SUPERSCRIPT_FONT, fontSize * Constants.SUPERSCRIPT_RATIO).Width;
             }
             else {  // If not in superscript
-                SizeF tempSizeF = canvas.GetStringSize(supString[i].first, Font.Default, fontSize);
+                SizeF tempSizeF = canvas.GetStringSize(supString[i].first, Constants.FONT, fontSize);
                 Widths[i] = tempSizeF.Width;
                 Height = Math.Max(Height, tempSizeF.Height);
             }

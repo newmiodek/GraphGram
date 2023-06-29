@@ -1,6 +1,4 @@
-﻿using Font = Microsoft.Maui.Graphics.Font;
-
-namespace GraphGram;
+﻿namespace GraphGram;
 public class TableHeaderGraphicSide : IDrawable {
 
     private string text;
@@ -52,7 +50,6 @@ public class TableHeaderGraphicSide : IDrawable {
 
     private static void DrawSuperscriptedString(ICanvas canvas, RectF dirtyRect, Pair<string, bool>[] supString) {
         canvas.FontColor = Application.Current.RequestedTheme == AppTheme.Light ? Colors.Black : Colors.White;
-        canvas.Font = Constants.FONT;
 
         if(supString == null) {
 
@@ -65,12 +62,14 @@ public class TableHeaderGraphicSide : IDrawable {
 
         for(int i = 0; i < supString.Length; i++) {
             if(supString[i].second) {  // If in superscript
+                canvas.Font = Constants.SUPERSCRIPT_FONT;
                 canvas.FontSize = Constants.TABLE_FONT_SIZE * Constants.SUPERSCRIPT_RATIO;
-                SizeF smallFontSize = canvas.GetStringSize(supString[i].first, Constants.FONT, Constants.TABLE_FONT_SIZE * Constants.SUPERSCRIPT_RATIO);
+                SizeF smallFontSize = canvas.GetStringSize(supString[i].first, Constants.SUPERSCRIPT_FONT, Constants.TABLE_FONT_SIZE * Constants.SUPERSCRIPT_RATIO);
                 canvas.DrawString(supString[i].first, horizontalPosition, dirtyRect.Height / 2f + size.Height / 2f - smallFontSize.Height, HorizontalAlignment.Left);
                 horizontalPosition += smallFontSize.Width;
             }
             else {  // If not in superscript
+                canvas.Font = Constants.FONT;
                 canvas.FontSize = Constants.TABLE_FONT_SIZE;
                 canvas.DrawString(supString[i].first, horizontalPosition, dirtyRect.Height / 2f + size.Height / 2f, HorizontalAlignment.Left);
                 horizontalPosition += canvas.GetStringSize(supString[i].first, Constants.FONT, Constants.TABLE_FONT_SIZE).Width;
