@@ -27,7 +27,7 @@ public class SuperscriptedStringSize {
                 Height = Math.Max(Height, tempSizeF.Height);
             }
 
-            if(i != 0) TotalWidth += 1f;
+            if(i != 0) TotalWidth += 3f;
             TotalWidth += Widths[i];
         }
     }

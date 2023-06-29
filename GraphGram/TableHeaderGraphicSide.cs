@@ -34,6 +34,7 @@ public class TableHeaderGraphicSide : IDrawable {
             if(supString[^1].second) {  // If in superscript
                 if(supString[^1].first.Length == 0) {
                     if(str[i] != '(') return null;
+                    supString[^1].first += '\u200B';  // Zero-width space
                     continue;
                 }
                 if(str[i] == ')') {
@@ -77,7 +78,7 @@ public class TableHeaderGraphicSide : IDrawable {
                 canvas.DrawString(supString[i].first, horizontalPosition, dirtyRect.Height / 2f + size.Height / 2f, HorizontalAlignment.Left);
                 horizontalPosition += canvas.GetStringSize(supString[i].first, FONT, FONTSIZE).Width;
             }
-            horizontalPosition += 1f;
+            horizontalPosition += 3f;
         }
     }
 }
