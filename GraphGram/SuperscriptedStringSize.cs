@@ -18,8 +18,7 @@ public class SuperscriptedStringSize {
                 Widths[i] = canvas.GetStringSize(supString[i].first, Constants.SUPERSCRIPT_FONT, fontSize * Constants.SUPERSCRIPT_RATIO).Width;
             }
             else {  // If not in superscript
-                SizeF tempSizeF = canvas.GetStringSize(supString[i].first, Constants.FONT, fontSize);
-                Widths[i] = tempSizeF.Width;
+                Widths[i] = canvas.GetStringSize(supString[i].first, Constants.FONT, fontSize).Width;
             }
 
             if(i != 0) TotalWidth += Constants.SUPERSCRIPT_SEPARATION;

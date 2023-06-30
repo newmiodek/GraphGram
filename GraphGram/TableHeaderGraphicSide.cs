@@ -17,7 +17,11 @@ public class TableHeaderGraphicSide : IDrawable {
     }
 
     private static Pair<string, bool>[] GenerateSuperscripts(string str) {
-        if(str.Length < 1 || str.StartsWith('^')) return null;
+        if(str.Length < 1 || str.StartsWith('^')) {
+            Pair<string, bool>[] simpleString = new Pair<string, bool>[1];
+            simpleString[0] = new Pair<string, bool>(str, false);
+            return simpleString;
+        }
         /* A Pair's string is a part of the input string and the bool
          * determines whether it in a superscript (bool = true)
          * or not (bool = false)
@@ -28,7 +32,11 @@ public class TableHeaderGraphicSide : IDrawable {
         for(int i = 1; i < str.Length; i++) {
             if(supString[^1].second) {  // If in superscript
                 if(supString[^1].first.Length == 0) {
-                    if(str[i] != '(') return null;
+                    if(str[i] != '(') {
+                        Pair<string, bool>[] simpleString = new Pair<string, bool>[1];
+                        simpleString[0] = new Pair<string, bool>(str, false);
+                        return simpleString;
+                    }
                     supString[^1].first += '\u200B';  // Zero-width space
                     continue;
                 }
