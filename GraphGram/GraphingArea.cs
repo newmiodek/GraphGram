@@ -18,6 +18,9 @@ public class GraphingArea : IDrawable {
     private float xSpacingValue = 10f;
     private float ySpacingValue = 10f;
 
+    private double xRange = 100.0;
+    private double yRange = 100.0;
+
     private string xTitleString = "x";
     private string yTitleString = "y";
     private SuperscriptedString xTitleSupString;
@@ -84,14 +87,75 @@ public class GraphingArea : IDrawable {
 
         lineData = new LineData(dataPoints);
 
-        if(minX > 0)        xSpacingValue = (float)Math.Ceiling(maxX / 10.0);
-        else if(maxX < 0)   xSpacingValue = (float)Math.Ceiling(-minX / 10.0);
-        else                xSpacingValue = (float)Math.Ceiling((maxX - minX) / 10.0);
+        xRange = Math.Max(0, maxX) - Math.Min(0, minX);
+        double xMagnitude = Math.Log10(xRange);
+        double xDecimalPart = xMagnitude - Math.Truncate(xMagnitude);
+        if(xMagnitude > 0) {
+            if(xDecimalPart < Constants.SPACING_THRESHOLD[1]) {
+                xSpacingValue = (float)Math.Pow(10, Math.Floor(xMagnitude) - 1);
+            }
+            else if(Constants.SPACING_THRESHOLD[1] <= xDecimalPart && xDecimalPart < Constants.SPACING_THRESHOLD[2]) {
+                xSpacingValue = (float)(2.0 * Math.Pow(10, Math.Floor(xMagnitude) - 1));
+            }
+            else if(Constants.SPACING_THRESHOLD[2] <= xDecimalPart && xDecimalPart < Constants.SPACING_THRESHOLD[5]) {
+                xSpacingValue = (float)(5.0 * Math.Pow(10, Math.Floor(xMagnitude) - 1));
+            }
+            else {
+                xSpacingValue = (float)Math.Pow(10, Math.Floor(xMagnitude));
+            }
+        }
+        else {
+            if(xDecimalPart == 0) {
+                xSpacingValue = (float)Math.Pow(10, xMagnitude - 1.0);
+            }
+            else if(xDecimalPart > Constants.SPACING_THRESHOLD[-10]) {
+                xSpacingValue = (float)Math.Pow(10, Math.Floor(xMagnitude));
+            }
+            else if(Constants.SPACING_THRESHOLD[-10] >= xDecimalPart && xDecimalPart > Constants.SPACING_THRESHOLD[-5]) {
+                xSpacingValue = (float)(5.0 * Math.Pow(10, Math.Floor(xMagnitude) - 1.0));
+            }
+            else if(Constants.SPACING_THRESHOLD[-5] >= xDecimalPart && xDecimalPart > Constants.SPACING_THRESHOLD[-2]) {
+                xSpacingValue = (float)(2.0 * Math.Pow(10, Math.Floor(xMagnitude) - 1.0));
+            }
+            else {
+                xSpacingValue = (float)Math.Pow(10, Math.Floor(xMagnitude) - 1.0);
+            }
+        }
 
-        if(minY > 0)        ySpacingValue = (float)Math.Ceiling(maxY / 10.0);
-        else if(maxY < 0)   ySpacingValue = (float)Math.Ceiling(-minY / 10.0);
-        else                ySpacingValue = (float)Math.Ceiling((maxY - minY) / 10.0);
-
+        yRange = Math.Max(0, maxY) - Math.Min(0, minY);
+        double yMagnitude = Math.Log10(yRange);
+        double yDecimalPart = yMagnitude - Math.Truncate(yMagnitude);
+        if(yMagnitude > 0) {
+            if(yDecimalPart < Constants.SPACING_THRESHOLD[1]) {
+                ySpacingValue = (float)Math.Pow(10, Math.Floor(yMagnitude) - 1.0);
+            }
+            else if(Constants.SPACING_THRESHOLD[1] <= yDecimalPart && yDecimalPart < Constants.SPACING_THRESHOLD[2]) {
+                ySpacingValue = (float)(2.0 * Math.Pow(10, Math.Floor(yMagnitude) - 1.0));
+            }
+            else if(Constants.SPACING_THRESHOLD[2] <= yDecimalPart && yDecimalPart < Constants.SPACING_THRESHOLD[5]) {
+                ySpacingValue = (float)(5.0 * Math.Pow(10, Math.Floor(yMagnitude) - 1.0));
+            }
+            else {
+                ySpacingValue = (float)Math.Pow(10, Math.Floor(yMagnitude));
+            }
+        }
+        else {
+            if(yDecimalPart == 0) {
+                ySpacingValue = (float)Math.Pow(10, yMagnitude - 1.0);
+            }
+            else if(yDecimalPart > Constants.SPACING_THRESHOLD[-10]) {
+                ySpacingValue = (float)Math.Pow(10, Math.Floor(yMagnitude));
+            }
+            else if(Constants.SPACING_THRESHOLD[-10] >= yDecimalPart && yDecimalPart > Constants.SPACING_THRESHOLD[-5]) {
+                ySpacingValue = (float)(5.0 * Math.Pow(10, Math.Floor(yMagnitude) - 1.0));
+            }
+            else if(Constants.SPACING_THRESHOLD[-5] >= yDecimalPart && yDecimalPart > Constants.SPACING_THRESHOLD[-2]) {
+                ySpacingValue = (float)(2.0 * Math.Pow(10, Math.Floor(yMagnitude) - 1.0));
+            }
+            else {
+                ySpacingValue = (float)Math.Pow(10, Math.Floor(yMagnitude) - 1.0);
+            }
+        }
     }
 
     public void SetXAxisTitle(string xTitle) {
@@ -108,8 +172,8 @@ public class GraphingArea : IDrawable {
         float OriginX = CalculateOriginX(dirtyRect);
         float OriginY = CalculateOriginY(dirtyRect);
 
-        float xSpacingPixels = dirtyRect.Width *  (1f - 2f * Constants.PADDING) / 10f;
-        float ySpacingPixels = dirtyRect.Height * (1f - 2f * Constants.PADDING) / 10f;
+        float xSpacingPixels = dirtyRect.Width  * (1f - 2f * Constants.PADDING) / (float)Math.Ceiling(xRange / xSpacingValue);
+        float ySpacingPixels = dirtyRect.Height * (1f - 2f * Constants.PADDING) / (float)Math.Ceiling(yRange / ySpacingValue);
         // </Calculations>
 
         DrawGrid(canvas, dirtyRect, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
