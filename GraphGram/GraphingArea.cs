@@ -301,31 +301,34 @@ public class GraphingArea : IDrawable {
 
         SizeF fontDimensions = canvas.GetStringSize("0", Constants.FONT, Constants.GRAPHING_AREA_FONT_SIZE);
 
-        float markValue = -xSpacingValue;
+        int xDecimalPoints = Math.Max(-(int)Math.Floor(Math.Log10(xSpacingValue)), 0);
+        int yDecimalPoints = Math.Max(-(int)Math.Floor(Math.Log10(ySpacingValue)), 0);
+
         // Marks on the X AXIS to the LEFT of the origin
+        float markValue = -xSpacingValue;
         for(float x = OriginX - xSpacingPixels; x >= dirtyRect.Left; x -= xSpacingPixels) {
-            canvas.DrawString(markValue.ToString(), x - 250f, OriginY + fontDimensions.Height, 500f, 100f, HorizontalAlignment.Center, VerticalAlignment.Top);
+            canvas.DrawString(markValue.ToString("F" + xDecimalPoints.ToString()), x - 250f, OriginY + fontDimensions.Height, 500f, 100f, HorizontalAlignment.Center, VerticalAlignment.Top);
             markValue -= xSpacingValue;
         }
 
-        markValue = xSpacingValue;
         // Marks on the X AXIS to the RIGHT of the origin
+        markValue = xSpacingValue;
         for(float x = OriginX + xSpacingPixels; x <= dirtyRect.Right; x += xSpacingPixels) {
-            canvas.DrawString(markValue.ToString(), x - 250f, OriginY + fontDimensions.Height, 500f, 100f, HorizontalAlignment.Center, VerticalAlignment.Top);
+            canvas.DrawString(markValue.ToString("F" + xDecimalPoints.ToString()), x - 250f, OriginY + fontDimensions.Height, 500f, 100f, HorizontalAlignment.Center, VerticalAlignment.Top);
             markValue += xSpacingValue;
         }
 
-        markValue = -ySpacingValue;
         // Marks on the Y AXIS BELOW the origin
+        markValue = -ySpacingValue;
         for(float y = OriginY + ySpacingPixels; y <= dirtyRect.Bottom; y += ySpacingPixels) {
-            canvas.DrawString(markValue.ToString(), OriginX - 500f, y - fontDimensions.Height, 500f - fontDimensions.Width, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);
+            canvas.DrawString(markValue.ToString("F" + yDecimalPoints.ToString()), OriginX - 500f, y - fontDimensions.Height, 500f - fontDimensions.Width, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);
             markValue -= ySpacingValue;
         }
 
-        markValue = ySpacingValue;
         // Marks on the Y AXIS ABOVE the origin
+        markValue = ySpacingValue;
         for(float y = OriginY - ySpacingPixels; y >= dirtyRect.Top; y -= ySpacingPixels) {
-            canvas.DrawString(markValue.ToString(), OriginX - 500f, y - fontDimensions.Height, 500f - fontDimensions.Width, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);
+            canvas.DrawString(markValue.ToString("F" + yDecimalPoints.ToString()), OriginX - 500f, y - fontDimensions.Height, 500f - fontDimensions.Width, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);
             markValue += ySpacingValue;
         }
 
