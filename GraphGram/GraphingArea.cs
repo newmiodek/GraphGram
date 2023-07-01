@@ -18,8 +18,12 @@ public class GraphingArea : IDrawable {
     private float xSpacingValue = 10f;
     private float ySpacingValue = 10f;
 
-    private string xTitle = "x";
-    private string yTitle = "y";
+    private string xTitleString = "x";
+    private string yTitleString = "y";
+    private SuperscriptedString xTitleSupString;
+    private SuperscriptedString yTitleSupString;
+    private bool isXTitleSupStringUpToDate = false;
+    private bool isYTitleSupStringUpToDate = false;
 
     public void PassDataTable(Entry[,] entryTable) {
         // Parse the text from entryTable to represent it as floats
@@ -91,10 +95,12 @@ public class GraphingArea : IDrawable {
     }
 
     public void SetXAxisTitle(string xTitle) {
-        this.xTitle = xTitle;
+        this.xTitleString = xTitle;
+        isXTitleSupStringUpToDate = false;
     }
     public void SetYAxisTitle(string yTitle) {
-        this.yTitle = yTitle;
+        this.yTitleString = yTitle;
+        isYTitleSupStringUpToDate = false;
     }
 
     public void Draw(ICanvas canvas, RectF dirtyRect) {
@@ -264,15 +270,38 @@ public class GraphingArea : IDrawable {
     }
 
     private void DrawAxisTitles(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY) {
-        canvas.Font = Constants.FONT;
         canvas.FontColor =
             Application.Current.RequestedTheme == AppTheme.Light
             ? Colors.Black
             : Colors.White;
-        canvas.FontSize = Constants.GRAPHING_AREA_FONT_SIZE;
 
-        canvas.DrawString(xTitle, dirtyRect.Right - 500f - Constants.GRAPHING_AREA_FONT_SIZE, OriginY - Constants.GRAPHING_AREA_FONT_SIZE * 2f, 500f, 100f, HorizontalAlignment.Right, VerticalAlignment.Top);
-        canvas.DrawString(yTitle, OriginX + Constants.GRAPHING_AREA_FONT_SIZE, dirtyRect.Top, 500f, 100f, HorizontalAlignment.Left, VerticalAlignment.Top);
+        if(!isXTitleSupStringUpToDate) {
+            xTitleSupString = new SuperscriptedString(xTitleString, canvas, Constants.GRAPHING_AREA_FONT_SIZE);
+        }
+        if(!isYTitleSupStringUpToDate) {
+            yTitleSupString = new SuperscriptedString(yTitleString, canvas, Constants.GRAPHING_AREA_FONT_SIZE);
+        }
+
+        SuperscriptedStringSize xTitleSupStringSize = xTitleSupString.GetSize(canvas, Constants.GRAPHING_AREA_FONT_SIZE);
+        SuperscriptedStringSize yTitleSupStringSize = yTitleSupString.GetSize(canvas, Constants.GRAPHING_AREA_FONT_SIZE);
+
+        RectF xTitleDirtyRect = new RectF(
+            dirtyRect.Right - Constants.GRAPHING_AREA_FONT_SIZE - xTitleSupStringSize.TotalWidth,
+            OriginY - Constants.GRAPHING_AREA_FONT_SIZE * 3f,
+            xTitleSupStringSize.TotalWidth,
+            Constants.GRAPHING_AREA_FONT_SIZE * 3f);
+
+        RectF yTitleDirtyRect = new RectF(
+            OriginX + Constants.GRAPHING_AREA_FONT_SIZE,
+            dirtyRect.Top,
+            yTitleSupStringSize.TotalWidth,
+            Constants.GRAPHING_AREA_FONT_SIZE * 3f);
+
+        xTitleSupString.Draw(canvas, xTitleDirtyRect, Constants.GRAPHING_AREA_FONT_SIZE);
+        yTitleSupString.Draw(canvas, yTitleDirtyRect, Constants.GRAPHING_AREA_FONT_SIZE);
+
+        // canvas.DrawString(xTitleString, dirtyRect.Right - Constants.GRAPHING_AREA_FONT_SIZE, OriginY - Constants.GRAPHING_AREA_FONT_SIZE, HorizontalAlignment.Right);
+        // canvas.DrawString(yTitleString, OriginX + Constants.GRAPHING_AREA_FONT_SIZE, dirtyRect.Top + Constants.GRAPHING_AREA_FONT_SIZE, HorizontalAlignment.Left);
     }
 
     private void DrawLine(ICanvas canvas, RectF dirtyRect, Line line, Color color, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels) {
