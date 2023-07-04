@@ -4,43 +4,43 @@ public class SuperscriptedString {
      * determines whether it in a superscript (bool = true)
      * or not (bool = false)
      */
-    private readonly Pair<string, bool>[] supString;  // Never assign to this!
+    private readonly SuperscriptedSegment[] supString;  // Never assign to this!
 
     public SuperscriptedString(string str, ICanvas canvas, float fontsize) {
         if(str.Length < 1 || str.StartsWith('^')) {
-            Pair<string, bool>[] simpleString = new Pair<string, bool>[1];
-            simpleString[0] = new Pair<string, bool>(str, false);
+            SuperscriptedSegment[] simpleString = new SuperscriptedSegment[1];
+            simpleString[0] = new SuperscriptedSegment(str, false);
             this.supString = simpleString;
             return;
         }
 
-        List<Pair<string, bool>> supString = new List<Pair<string, bool>>();
-        supString.Add(new Pair<string, bool>(str[0].ToString(), false));
+        List<SuperscriptedSegment> supString = new List<SuperscriptedSegment>();
+        supString.Add(new SuperscriptedSegment(str[0].ToString(), false));
 
         for(int i = 1; i < str.Length; i++) {
-            if(supString[^1].second) {  // If in superscript
-                if(supString[^1].first.Length == 0) {
+            if(supString[^1].IsSuperscript()) {
+                if(supString[^1].GetText().Length == 0) {
                     if(str[i] != '(') {
-                        Pair<string, bool>[] simpleString = new Pair<string, bool>[1];
-                        simpleString[0] = new Pair<string, bool>(str, false);
+                        SuperscriptedSegment[] simpleString = new SuperscriptedSegment[1];
+                        simpleString[0] = new SuperscriptedSegment(str, false);
                         this.supString = simpleString;
                         return;
                     }
-                    supString[^1].first += '\u200B';  // Zero-width space
+                    supString[^1].Append("\u200B"); // Zero-width space
                     continue;
                 }
                 if(str[i] == ')') {
-                    supString.Add(new Pair<string, bool>("", false));
+                    supString.Add(new SuperscriptedSegment("", false));
                     continue;
                 }
             }
             else {  // If not in superscript
                 if(str[i] == '^') {
-                    supString.Add(new Pair<string, bool>("", true));
+                    supString.Add(new SuperscriptedSegment("", true));
                     continue;
                 }
             }
-            supString[^1].first += str[i];
+            supString[^1].Append(str[i].ToString());
         }
         this.supString = supString.ToArray();
     }
@@ -53,22 +53,22 @@ public class SuperscriptedString {
         float horizontalPosition = dirtyRect.Left + dirtyRect.Width / 2f - size.TotalWidth / 2f;
 
         for(int i = 0; i < this.supString.Length; i++) {
-            if(this.supString[i].second) {  // If in superscript
+            if(this.supString[i].IsSuperscript()) {
                 canvas.Font = Constants.SUPERSCRIPT_FONT;
                 canvas.FontSize = fontsize * Constants.SUPERSCRIPT_RATIO;
-                canvas.DrawString(this.supString[i].first, horizontalPosition, dirtyRect.Top + dirtyRect.Height / 2f + fontsize / 2f - fontsize * Constants.SUPERSCRIPT_RATIO, HorizontalAlignment.Left);
+                canvas.DrawString(this.supString[i].GetText(), horizontalPosition, dirtyRect.Top + dirtyRect.Height / 2f + fontsize / 2f - fontsize * Constants.SUPERSCRIPT_RATIO, HorizontalAlignment.Left);
             }
-            else {  // If not in superscript
+            else {
                 canvas.Font = Constants.FONT;
                 canvas.FontSize = fontsize;
-                canvas.DrawString(this.supString[i].first, horizontalPosition, dirtyRect.Top + dirtyRect.Height / 2f + fontsize / 2f, HorizontalAlignment.Left);
+                canvas.DrawString(this.supString[i].GetText(), horizontalPosition, dirtyRect.Top + dirtyRect.Height / 2f + fontsize / 2f, HorizontalAlignment.Left);
             }
             horizontalPosition += size.Widths[i] + Constants.SUPERSCRIPT_SEPARATION;
         }
     }
 
-    public Pair<string, bool> GetAtIndex(int index) {
-        return new Pair<string, bool>(this.supString[index].first + "", !!this.supString[index].second);
+    public SuperscriptedSegment GetAtIndex(int index) {
+        return this.supString[index].Clone();
     }
 
     public SuperscriptedStringSize GetSize(ICanvas canvas, float fontsize) {
