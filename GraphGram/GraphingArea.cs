@@ -173,12 +173,6 @@ public class GraphingArea : IDrawable {
     }
 
     private ExponentNotationNumber CalculateSpacingValue(double range) {
-        /* The pair that is calculated here consists of 2 numbers
-         * that together represent a floating-point value
-         * using scientific notation.
-         * The first number is the significand.
-         * The second number is the exponent.
-         */
         ExponentNotationNumber spacingValue;
         double magnitude = Math.Log10(range);
         double decimalPart = magnitude - Math.Truncate(magnitude);

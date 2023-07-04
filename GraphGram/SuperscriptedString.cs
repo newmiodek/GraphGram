@@ -1,9 +1,5 @@
 ﻿namespace GraphGram;
 public class SuperscriptedString {
-    /* A Pair's string is a part of the input string and the bool
-     * determines whether it in a superscript (bool = true)
-     * or not (bool = false)
-     */
     private readonly SuperscriptedSegment[] supString;  // Never assign to this!
 
     public SuperscriptedString(string str, ICanvas canvas, float fontsize) {
