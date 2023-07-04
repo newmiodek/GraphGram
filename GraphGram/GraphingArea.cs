@@ -367,7 +367,7 @@ public class GraphingArea : IDrawable {
 
     private void DrawDataPoints(ICanvas canvas, RectF dirtyRect, DataPoint[] dataPoints, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels) {
         float xScale = xSpacingPixels / xSpacingValue.GetFloatValue();
-        float yScale = ySpacingPixels / xSpacingValue.GetFloatValue();
+        float yScale = ySpacingPixels / ySpacingValue.GetFloatValue();
         canvas.StrokeColor =
             Application.Current.RequestedTheme == AppTheme.Light
             ? Colors.Black
