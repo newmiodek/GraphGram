@@ -108,8 +108,8 @@ public class GraphingArea : IDrawable {
         float OriginX = CalculateOriginX(dirtyRect);
         float OriginY = CalculateOriginY(dirtyRect);
 
-        float xSpacingPixels = dirtyRect.Width  * (1f - 2f * Constants.PADDING) / (float)Math.Ceiling(xRange / xSpacingValue.GetDoubleValue());
-        float ySpacingPixels = dirtyRect.Height * (1f - 2f * Constants.PADDING) / (float)Math.Ceiling(yRange / ySpacingValue.GetDoubleValue());
+        float xSpacingPixels = dirtyRect.Width  * (1f - 2f * Constants.PADDING) / MathF.Ceiling((float)xRange / xSpacingValue.GetFloatValue());
+        float ySpacingPixels = dirtyRect.Height * (1f - 2f * Constants.PADDING) / MathF.Ceiling((float)yRange / ySpacingValue.GetFloatValue());
         // </Calculations>
 
         DrawGrid(canvas, dirtyRect, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
@@ -389,9 +389,5 @@ public class GraphingArea : IDrawable {
             canvas.DrawLine(xPixels - 3f, yPixels - uncYPixels, xPixels + 3f, yPixels - uncYPixels);
             canvas.DrawLine(xPixels - 3f, yPixels + uncYPixels, xPixels + 3f, yPixels + uncYPixels);
         }
-    }
-
-    private static float Exponentiate(Pair<int, int> pair) {
-        return (float)(Math.Pow(10.0, pair.second) * pair.first);
     }
 }
