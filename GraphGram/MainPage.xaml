@@ -24,19 +24,21 @@
 
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="File">
-            <MenuFlyoutItem Text="foo"/>
+            <MenuFlyoutItem Text="foo" />
         </MenuBarItem>
         <MenuBarItem Text="Edit">
-            <MenuFlyoutItem Text="foo"/>
+            <MenuFlyoutItem Text="foo" />
         </MenuBarItem>
         <MenuBarItem Text="View">
-            <MenuFlyoutItem Text="foo"/>
+            <MenuFlyoutItem Text="foo" />
         </MenuBarItem>
         <MenuBarItem Text="Settings">
-            <MenuFlyoutItem Text="foo"/>
+            <MenuFlyoutItem x:Name="errorBarsBoxesToggle"
+                            Text="Make lines fit in error boxes"
+                            Clicked="ErrorBarsFlyoutClicked" />
         </MenuBarItem>
         <MenuBarItem Text="Help">
-            <MenuFlyoutItem Text="foo"/>
+            <MenuFlyoutItem Text="foo" />
         </MenuBarItem>
     </ContentPage.MenuBarItems>
 

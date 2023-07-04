@@ -10,9 +10,13 @@ public partial class MainPage : ContentPage {
     private Entry xHeaderEntry;
     private Entry yHeaderEntry;
 
+    private bool goWithErrorBoxes;
+
     public MainPage() {
 
         InitializeComponent();
+        goWithErrorBoxes = false;
+
         // <Creating the data table>
         entryTable = new Entry[Constants.DEFAULT_ROW_COUNT, 4];
 
@@ -96,7 +100,7 @@ public partial class MainPage : ContentPage {
 
     private void UpdateGraph() {
         GraphingArea graphingArea = (GraphingArea)GraphingAreaView.Drawable;
-        graphingArea.PassDataTable(entryTable);
+        graphingArea.PassDataTable(entryTable, goWithErrorBoxes);
         GraphingAreaView.Invalidate();
 
         gradientOutput.Text = graphingArea.GetGradient();
@@ -126,5 +130,17 @@ public partial class MainPage : ContentPage {
 
         ((TableHeaderGraphicSide)yUncertaintyHeaderGraphicsView.Drawable).SetText("\u0394" + yHeaderEntry.Text);
         yUncertaintyHeaderGraphicsView.Invalidate();
+    }
+
+    private void ErrorBarsFlyoutClicked(object sender, EventArgs eventArgs) {
+        if(goWithErrorBoxes) {
+            goWithErrorBoxes = false;
+            errorBarsBoxesToggle.Text = "Make lines fit in error boxes";
+        }
+        else {
+            goWithErrorBoxes = true;
+            errorBarsBoxesToggle.Text = "Make lines fit in error bars";
+        }
+        UpdateGraph();
     }
 }

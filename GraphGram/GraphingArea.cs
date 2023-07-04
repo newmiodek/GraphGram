@@ -9,6 +9,8 @@ public class GraphingArea : IDrawable {
     private bool isInitiated = false;
     private bool isInputValid = true;
 
+    private bool goWithErrorBoxes = false;
+
     // consider changing them to floats
     private double minX = 0.0;
     private double maxX = 100.0;
@@ -28,7 +30,9 @@ public class GraphingArea : IDrawable {
     private bool isXTitleSupStringUpToDate = false;
     private bool isYTitleSupStringUpToDate = false;
 
-    public void PassDataTable(Entry[,] entryTable) {
+    public void PassDataTable(Entry[,] entryTable, bool aGoWithErrorBoxes) {
+        goWithErrorBoxes = aGoWithErrorBoxes;
+
         // Parse the text from entryTable to represent it as floats
         double[,] parsedDataTable = new double[entryTable.GetLength(0), 4];
         int validRows = 0;
@@ -85,7 +89,7 @@ public class GraphingArea : IDrawable {
             dataPoints[i] = new DataPoint(dataTable[i, 0], dataTable[i, 1], dataTable[i, 2], dataTable[i, 3]);
         }
 
-        lineData = new LineData(dataPoints);
+        lineData = new LineData(dataPoints, goWithErrorBoxes);
 
         xRange = Math.Max(0, maxX) - Math.Min(0, minX);
         xSpacingValue = CalculateSpacingValue(xRange);

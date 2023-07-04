@@ -7,27 +7,13 @@ public class LineData {
     private double yInterceptUncertainty;
     private int outlierCount;
 
-    public LineData(DataPoint[] dataPoints) {
-        LinePermutation[] lines = new LinePermutation[dataPoints.Length * (dataPoints.Length - 1)];
-
-        for(int i = 0; i < dataPoints.Length - 1; i++) {
-            for(int j = i + 1; j < dataPoints.Length; j++) {
-                lines[Order(dataPoints.Length, i, j) * 2] = CalculateLine(
-                    dataPoints,
-                    dataPoints[i].GetX() + dataPoints[i].GetUncertaintyX(),
-                    dataPoints[i].GetY() - dataPoints[i].GetUncertaintyY(),
-                    dataPoints[j].GetX() - dataPoints[j].GetUncertaintyX(),
-                    dataPoints[j].GetY() + dataPoints[j].GetUncertaintyY(),
-                    i, j);
-
-                lines[Order(dataPoints.Length, i, j) * 2 + 1] = CalculateLine(
-                    dataPoints,
-                    dataPoints[i].GetX() - dataPoints[i].GetUncertaintyX(),
-                    dataPoints[i].GetY() + dataPoints[i].GetUncertaintyY(),
-                    dataPoints[j].GetX() + dataPoints[j].GetUncertaintyX(),
-                    dataPoints[j].GetY() - dataPoints[j].GetUncertaintyY(),
-                    i, j);
-            }
+    public LineData(DataPoint[] dataPoints, bool goWithErrorBoxes) {
+        LinePermutation[] lines;
+        if(goWithErrorBoxes) {
+            lines = CalculateAllLinesBoxes(dataPoints);
+        }
+        else {
+            lines = CalculateAllLinesBars(dataPoints);
         }
 
         List<List<LinePermutation>> outlierCategories = new List<List<LinePermutation>>();
@@ -73,19 +59,122 @@ public class LineData {
         yInterceptUncertainty = Math.Abs((steepYIntercept - leastSteepYIntercept) / 2.0);
     }
 
-    private static int Order(int n, int x, int y) {
-        return (n * (n - 1) - (n - x) * (n - x - 1)) / 2 + y - x - 1;
+    private LinePermutation[] CalculateAllLinesBoxes(DataPoint[] dataPoints) {
+        LinePermutation[] lines = new LinePermutation[dataPoints.Length * (dataPoints.Length - 1)];
+
+        for(int i = 0; i < dataPoints.Length - 1; i++) {
+            for(int j = i + 1; j < dataPoints.Length; j++) {
+                lines[Order(dataPoints.Length, i, j) * 2] = CalculateLine(
+                    dataPoints,
+                    dataPoints[i].GetX() + dataPoints[i].GetUncertaintyX(),
+                    dataPoints[i].GetY() - dataPoints[i].GetUncertaintyY(),
+                    dataPoints[j].GetX() - dataPoints[j].GetUncertaintyX(),
+                    dataPoints[j].GetY() + dataPoints[j].GetUncertaintyY(),
+                    i, j, true);
+
+                lines[Order(dataPoints.Length, i, j) * 2 + 1] = CalculateLine(
+                    dataPoints,
+                    dataPoints[i].GetX() - dataPoints[i].GetUncertaintyX(),
+                    dataPoints[i].GetY() + dataPoints[i].GetUncertaintyY(),
+                    dataPoints[j].GetX() + dataPoints[j].GetUncertaintyX(),
+                    dataPoints[j].GetY() - dataPoints[j].GetUncertaintyY(),
+                    i, j, true);
+            }
+        }
+        return lines;
     }
 
-    private double CalculateGradient(double firstX, double firstY, double secondX, double secondY) {
-        return (secondY - firstY) / (secondX - firstX);
+    private LinePermutation[] CalculateAllLinesBars(DataPoint[] dataPoints) {
+        LinePermutation[] lines = new LinePermutation[dataPoints.Length * (dataPoints.Length - 1) * 4];
+        for(int i = 0; i < dataPoints.Length - 1; i++) {
+            for(int j = i + 1; j < dataPoints.Length; j++) {
+                lines[Order(dataPoints.Length, i, j) * 8 + 0] = CalculateLine(
+                    dataPoints,
+                    dataPoints[i].GetX(),
+                    dataPoints[i].GetY() - dataPoints[i].GetUncertaintyY(),
+                    dataPoints[j].GetX(),
+                    dataPoints[j].GetY() + dataPoints[j].GetUncertaintyY(),
+                    i, j, false);
+                lines[Order(dataPoints.Length, i, j) * 8 + 1] = CalculateLine(
+                    dataPoints,
+                    dataPoints[i].GetX() + dataPoints[i].GetUncertaintyX(),
+                    dataPoints[i].GetY(),
+                    dataPoints[j].GetX(),
+                    dataPoints[j].GetY() + dataPoints[j].GetUncertaintyY(),
+                    i, j, false);
+                lines[Order(dataPoints.Length, i, j) * 8 + 2] = CalculateLine(
+                    dataPoints,
+                    dataPoints[i].GetX(),
+                    dataPoints[i].GetY() - dataPoints[i].GetUncertaintyY(),
+                    dataPoints[j].GetX() - dataPoints[j].GetUncertaintyX(),
+                    dataPoints[j].GetY(),
+                    i, j, false);
+                lines[Order(dataPoints.Length, i, j) * 8 + 3] = CalculateLine(
+                    dataPoints,
+                    dataPoints[i].GetX() + dataPoints[i].GetUncertaintyX(),
+                    dataPoints[i].GetY(),
+                    dataPoints[j].GetX() - dataPoints[j].GetUncertaintyX(),
+                    dataPoints[j].GetY(),
+                    i, j, false);
+                lines[Order(dataPoints.Length, i, j) * 8 + 4] = CalculateLine(
+                    dataPoints,
+                    dataPoints[i].GetX(),
+                    dataPoints[i].GetY() + dataPoints[i].GetUncertaintyY(),
+                    dataPoints[j].GetX(),
+                    dataPoints[j].GetY() - dataPoints[j].GetUncertaintyY(),
+                    i, j, false);
+                lines[Order(dataPoints.Length, i, j) * 8 + 5] = CalculateLine(
+                    dataPoints,
+                    dataPoints[i].GetX(),
+                    dataPoints[i].GetY() + dataPoints[i].GetUncertaintyY(),
+                    dataPoints[j].GetX() + dataPoints[j].GetUncertaintyX(),
+                    dataPoints[j].GetY(),
+                    i, j, false);
+                lines[Order(dataPoints.Length, i, j) * 8 + 6] = CalculateLine(
+                    dataPoints,
+                    dataPoints[i].GetX() - dataPoints[i].GetUncertaintyX(),
+                    dataPoints[i].GetY(),
+                    dataPoints[j].GetX(),
+                    dataPoints[j].GetY() - dataPoints[j].GetUncertaintyY(),
+                    i, j, false);
+                lines[Order(dataPoints.Length, i, j) * 8 + 7] = CalculateLine(
+                    dataPoints,
+                    dataPoints[i].GetX() - dataPoints[i].GetUncertaintyX(),
+                    dataPoints[i].GetY(),
+                    dataPoints[j].GetX() + dataPoints[j].GetUncertaintyX(),
+                    dataPoints[j].GetY(),
+                    i, j, false);
+            }
+        }
+        return lines;
     }
 
-    private double CalculateIntercept(double gradient, double x, double y) {
-        return y - gradient * x;
+    private LinePermutation CalculateLine(DataPoint[] dataPoints, double firstX, double firstY, double secondX, double secondY, int iFirst, int iSecond, bool goWithErrorBoxes) {
+        double grad = CalculateGradient(firstX, firstY, secondX, secondY);
+        double yint = CalculateIntercept(grad, firstX, firstY);
+
+        bool[] intersects;
+        if(goWithErrorBoxes) {
+            intersects = IntersectionTestBoxes(dataPoints, grad, yint);
+        }
+        else {
+            intersects = IntersectionTestBars(dataPoints, grad, yint);
+        }
+
+        LinePermutation line = new LinePermutation(grad, yint, 0, intersects);
+
+        line.SetSingleIntersection(iFirst, true);
+        line.SetSingleIntersection(iSecond, true);
+
+        for(int i = line.GetIntersections().Length - 1; i > -1; i--) {
+            if(!line.GetSingleIntersection(i)) {
+                line.IncrementOutlierCount();
+            }
+        }
+        return line;
     }
 
-    private bool[] IntersectionTest(DataPoint[] dataPoints, double gradient, double intercept) {
+    private bool[] IntersectionTestBoxes(DataPoint[] dataPoints, double gradient, double intercept) {
         bool[] intersections = new bool[dataPoints.Length];
         for(int i = 0; i < intersections.Length; i++) intersections[i] = true;
 
@@ -126,22 +215,40 @@ public class LineData {
         return intersections;
     }
 
-    private LinePermutation CalculateLine(DataPoint[] dataPoints, double firstX, double firstY, double secondX, double secondY, int iFirst, int iSecond) {
-        double grad = CalculateGradient(firstX, firstY, secondX, secondY);
-        double yint = CalculateIntercept(grad, firstX, firstY);
-        bool[] intersects = IntersectionTest(dataPoints, grad, yint);
+    private bool[] IntersectionTestBars(DataPoint[] dataPoints, double gradient, double intercept) {
+        bool[] intersections = new bool[dataPoints.Length];
+        for(int i = 0; i < intersections.Length; i++) intersections[i] = true;
 
-        LinePermutation line = new LinePermutation(grad, yint, 0, intersects);
+        for(int i = 0; i < intersections.Length; i++) {
+            double dp_intercept;
 
-        line.SetSingleIntersection(iFirst, true);
-        line.SetSingleIntersection(iSecond, true);
-
-        for(int i = line.GetIntersections().Length - 1; i > -1; i--) {
-            if(!line.GetSingleIntersection(i)) {
-                line.IncrementOutlierCount();
+            dp_intercept = (dataPoints[i].GetY() - intercept) / gradient;
+            if(dp_intercept >= dataPoints[i].GetX() - dataPoints[i].GetUncertaintyX()
+                && dp_intercept <= dataPoints[i].GetX() + dataPoints[i].GetUncertaintyX()) {
+                continue;
             }
+
+            dp_intercept = gradient * dataPoints[i].GetX() + intercept;
+            if(dp_intercept >= dataPoints[i].GetY() - dataPoints[i].GetUncertaintyY()
+                && dp_intercept <= dataPoints[i].GetY() + dataPoints[i].GetUncertaintyY()) {
+                continue;
+            }
+
+            intersections[i] = false;
         }
-        return line;
+        return intersections;
+    }
+
+    private static int Order(int n, int x, int y) {
+        return (n * (n - 1) - (n - x) * (n - x - 1)) / 2 + y - x - 1;
+    }
+
+    private double CalculateGradient(double firstX, double firstY, double secondX, double secondY) {
+        return (secondY - firstY) / (secondX - firstX);
+    }
+
+    private double CalculateIntercept(double gradient, double x, double y) {
+        return y - gradient * x;
     }
 
     public Line GetLeastSteepLine() {
