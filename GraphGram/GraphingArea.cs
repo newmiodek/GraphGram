@@ -15,8 +15,8 @@ public class GraphingArea : IDrawable {
     private double minY = 0.0;
     private double maxY = 100.0;
 
-    private float xSpacingValue = 10f;
-    private float ySpacingValue = 10f;
+    private Pair<int, int> xSpacingValue = new Pair<int, int>(1, 1);    // 1 * 10^1 = 10
+    private Pair<int, int> ySpacingValue = new Pair<int, int>(1, 1);    // 1 * 10^1 = 10
 
     private double xRange = 100.0;
     private double yRange = 100.0;
@@ -88,74 +88,10 @@ public class GraphingArea : IDrawable {
         lineData = new LineData(dataPoints);
 
         xRange = Math.Max(0, maxX) - Math.Min(0, minX);
-        double xMagnitude = Math.Log10(xRange);
-        double xDecimalPart = xMagnitude - Math.Truncate(xMagnitude);
-        if(xMagnitude > 0) {
-            if(xDecimalPart < Constants.SPACING_THRESHOLD[1]) {
-                xSpacingValue = (float)Math.Pow(10, Math.Floor(xMagnitude) - 1);
-            }
-            else if(Constants.SPACING_THRESHOLD[1] <= xDecimalPart && xDecimalPart < Constants.SPACING_THRESHOLD[2]) {
-                xSpacingValue = (float)(2.0 * Math.Pow(10, Math.Floor(xMagnitude) - 1));
-            }
-            else if(Constants.SPACING_THRESHOLD[2] <= xDecimalPart && xDecimalPart < Constants.SPACING_THRESHOLD[5]) {
-                xSpacingValue = (float)(5.0 * Math.Pow(10, Math.Floor(xMagnitude) - 1));
-            }
-            else {
-                xSpacingValue = (float)Math.Pow(10, Math.Floor(xMagnitude));
-            }
-        }
-        else {
-            if(xDecimalPart == 0) {
-                xSpacingValue = (float)Math.Pow(10, xMagnitude - 1.0);
-            }
-            else if(xDecimalPart > Constants.SPACING_THRESHOLD[-10]) {
-                xSpacingValue = (float)Math.Pow(10, Math.Floor(xMagnitude));
-            }
-            else if(Constants.SPACING_THRESHOLD[-10] >= xDecimalPart && xDecimalPart > Constants.SPACING_THRESHOLD[-5]) {
-                xSpacingValue = (float)(5.0 * Math.Pow(10, Math.Floor(xMagnitude) - 1.0));
-            }
-            else if(Constants.SPACING_THRESHOLD[-5] >= xDecimalPart && xDecimalPart > Constants.SPACING_THRESHOLD[-2]) {
-                xSpacingValue = (float)(2.0 * Math.Pow(10, Math.Floor(xMagnitude) - 1.0));
-            }
-            else {
-                xSpacingValue = (float)Math.Pow(10, Math.Floor(xMagnitude) - 1.0);
-            }
-        }
+        xSpacingValue = CalculateSpacingValue(xRange);
 
         yRange = Math.Max(0, maxY) - Math.Min(0, minY);
-        double yMagnitude = Math.Log10(yRange);
-        double yDecimalPart = yMagnitude - Math.Truncate(yMagnitude);
-        if(yMagnitude > 0) {
-            if(yDecimalPart < Constants.SPACING_THRESHOLD[1]) {
-                ySpacingValue = (float)Math.Pow(10, Math.Floor(yMagnitude) - 1.0);
-            }
-            else if(Constants.SPACING_THRESHOLD[1] <= yDecimalPart && yDecimalPart < Constants.SPACING_THRESHOLD[2]) {
-                ySpacingValue = (float)(2.0 * Math.Pow(10, Math.Floor(yMagnitude) - 1.0));
-            }
-            else if(Constants.SPACING_THRESHOLD[2] <= yDecimalPart && yDecimalPart < Constants.SPACING_THRESHOLD[5]) {
-                ySpacingValue = (float)(5.0 * Math.Pow(10, Math.Floor(yMagnitude) - 1.0));
-            }
-            else {
-                ySpacingValue = (float)Math.Pow(10, Math.Floor(yMagnitude));
-            }
-        }
-        else {
-            if(yDecimalPart == 0) {
-                ySpacingValue = (float)Math.Pow(10, yMagnitude - 1.0);
-            }
-            else if(yDecimalPart > Constants.SPACING_THRESHOLD[-10]) {
-                ySpacingValue = (float)Math.Pow(10, Math.Floor(yMagnitude));
-            }
-            else if(Constants.SPACING_THRESHOLD[-10] >= yDecimalPart && yDecimalPart > Constants.SPACING_THRESHOLD[-5]) {
-                ySpacingValue = (float)(5.0 * Math.Pow(10, Math.Floor(yMagnitude) - 1.0));
-            }
-            else if(Constants.SPACING_THRESHOLD[-5] >= yDecimalPart && yDecimalPart > Constants.SPACING_THRESHOLD[-2]) {
-                ySpacingValue = (float)(2.0 * Math.Pow(10, Math.Floor(yMagnitude) - 1.0));
-            }
-            else {
-                ySpacingValue = (float)Math.Pow(10, Math.Floor(yMagnitude) - 1.0);
-            }
-        }
+        ySpacingValue = CalculateSpacingValue(yRange);
     }
 
     public void SetXAxisTitle(string xTitle) {
@@ -172,8 +108,8 @@ public class GraphingArea : IDrawable {
         float OriginX = CalculateOriginX(dirtyRect);
         float OriginY = CalculateOriginY(dirtyRect);
 
-        float xSpacingPixels = dirtyRect.Width  * (1f - 2f * Constants.PADDING) / (float)Math.Ceiling(xRange / xSpacingValue);
-        float ySpacingPixels = dirtyRect.Height * (1f - 2f * Constants.PADDING) / (float)Math.Ceiling(yRange / ySpacingValue);
+        float xSpacingPixels = dirtyRect.Width  * (1f - 2f * Constants.PADDING) / (float)Math.Ceiling(xRange / Exponentiate(xSpacingValue));
+        float ySpacingPixels = dirtyRect.Height * (1f - 2f * Constants.PADDING) / (float)Math.Ceiling(yRange / Exponentiate(ySpacingValue));
         // </Calculations>
 
         DrawGrid(canvas, dirtyRect, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
@@ -236,6 +172,50 @@ public class GraphingArea : IDrawable {
         return OriginY;
     }
 
+    private Pair<int, int> CalculateSpacingValue(double range) {
+        /* The pair that is calculated here consists of 2 numbers
+         * that together represent a floating-point value
+         * using scientific notation.
+         * The first number is the significand.
+         * The second number is the exponent.
+         */
+        Pair<int , int> spacingValue;
+        double magnitude = Math.Log10(range);
+        double decimalPart = magnitude - Math.Truncate(magnitude);
+        if(magnitude > 0) {
+            if(decimalPart < Constants.SPACING_THRESHOLD[1]) {
+                spacingValue = new Pair<int, int>(1, (int)Math.Round(Math.Floor(magnitude)) - 1);
+            }
+            else if(Constants.SPACING_THRESHOLD[1] <= decimalPart && decimalPart < Constants.SPACING_THRESHOLD[2]) {
+                spacingValue = new Pair<int, int>(2, (int)Math.Round(Math.Floor(magnitude)) - 1);
+            }
+            else if(Constants.SPACING_THRESHOLD[2] <= decimalPart && decimalPart < Constants.SPACING_THRESHOLD[5]) {
+                spacingValue = new Pair<int, int>(5, (int)Math.Round(Math.Floor(magnitude)) - 1);
+            }
+            else {
+                spacingValue = new Pair<int, int>(1, (int)Math.Round(Math.Floor(magnitude)));
+            }
+        }
+        else {
+            if(decimalPart == 0) {
+                spacingValue = new Pair<int, int>(1, (int)Math.Round(magnitude) - 1);
+            }
+            else if(decimalPart > Constants.SPACING_THRESHOLD[-10]) {
+                spacingValue = new Pair<int, int>(1, (int)Math.Round(Math.Floor(magnitude)));
+            }
+            else if(Constants.SPACING_THRESHOLD[-10] >= decimalPart && decimalPart > Constants.SPACING_THRESHOLD[-5]) {
+                spacingValue = new Pair<int, int>(5, (int)Math.Round(Math.Floor(magnitude)) - 1);
+            }
+            else if(Constants.SPACING_THRESHOLD[-5] >= decimalPart && decimalPart > Constants.SPACING_THRESHOLD[-2]) {
+                spacingValue = new Pair<int, int>(2, (int)Math.Round(Math.Floor(magnitude)) - 1);
+            }
+            else {
+                spacingValue = new Pair<int, int>(1, (int)Math.Round(Math.Floor(magnitude)) - 1);
+            }
+        }
+        return spacingValue;
+    }
+
     private void DrawXAxis(ICanvas canvas, RectF dirtyRect, float OriginY) {
         canvas.StrokeColor = 
             Application.Current.RequestedTheme == AppTheme.Light
@@ -291,7 +271,7 @@ public class GraphingArea : IDrawable {
         }
     }
 
-    private void DrawAxisMarks(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels, float xSpacingValue, float ySpacingValue) {
+    private void DrawAxisMarks(ICanvas canvas, RectF dirtyRect, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels, Pair<int, int> xSpacingValue, Pair<int, int> ySpacingValue) {
         canvas.Font = Constants.FONT;
         canvas.FontColor =
             Application.Current.RequestedTheme == AppTheme.Light
@@ -299,35 +279,35 @@ public class GraphingArea : IDrawable {
             : Colors.White;
         canvas.FontSize = Constants.GRAPHING_AREA_FONT_SIZE;
 
-        int xDecimalPoints = Math.Max(-(int)Math.Floor(Math.Log10(xSpacingValue)), 0);
-        int yDecimalPoints = Math.Max(-(int)Math.Floor(Math.Log10(ySpacingValue)), 0);
+        int xDecimalPoints = Math.Max(-xSpacingValue.second, 0);
+        int yDecimalPoints = Math.Max(-ySpacingValue.second, 0);
 
         // Marks on the X AXIS to the LEFT of the origin
-        float markValue = -xSpacingValue;
+        float markValue = -Exponentiate(xSpacingValue);
         for(float x = OriginX - xSpacingPixels; x >= dirtyRect.Left; x -= xSpacingPixels) {
             canvas.DrawString(markValue.ToString("F" + xDecimalPoints.ToString()), x, OriginY + Constants.GRAPHING_AREA_FONT_SIZE, HorizontalAlignment.Center);
-            markValue -= xSpacingValue;
+            markValue -= Exponentiate(xSpacingValue);
         }
 
         // Marks on the X AXIS to the RIGHT of the origin
-        markValue = xSpacingValue;
+        markValue = Exponentiate(xSpacingValue);
         for(float x = OriginX + xSpacingPixels; x <= dirtyRect.Right; x += xSpacingPixels) {
             canvas.DrawString(markValue.ToString("F" + xDecimalPoints.ToString()), x, OriginY + Constants.GRAPHING_AREA_FONT_SIZE, HorizontalAlignment.Center);
-            markValue += xSpacingValue;
+            markValue += Exponentiate(xSpacingValue);
         }
 
         // Marks on the Y AXIS BELOW the origin
-        markValue = -ySpacingValue;
+        markValue = -Exponentiate(ySpacingValue);
         for(float y = OriginY + ySpacingPixels; y <= dirtyRect.Bottom; y += ySpacingPixels) {
             canvas.DrawString(markValue.ToString("F" + yDecimalPoints.ToString()), OriginX - Constants.GRAPHING_AREA_FONT_SIZE * 0.5f, y + Constants.GRAPHING_AREA_FONT_SIZE * 0.25f, HorizontalAlignment.Right);
-            markValue -= ySpacingValue;
+            markValue -= Exponentiate(ySpacingValue);
         }
 
         // Marks on the Y AXIS ABOVE the origin
-        markValue = ySpacingValue;
+        markValue = Exponentiate(ySpacingValue);
         for(float y = OriginY - ySpacingPixels; y >= dirtyRect.Top; y -= ySpacingPixels) {
             canvas.DrawString(markValue.ToString("F" + yDecimalPoints.ToString()), OriginX - Constants.GRAPHING_AREA_FONT_SIZE * 0.5f, y + Constants.GRAPHING_AREA_FONT_SIZE * 0.25f, HorizontalAlignment.Right);
-            markValue += ySpacingValue;
+            markValue += Exponentiate(ySpacingValue);
         }
 
         canvas.DrawString("0", OriginX + Constants.GRAPHING_AREA_FONT_SIZE * 0.5f, OriginY + Constants.GRAPHING_AREA_FONT_SIZE, HorizontalAlignment.Left);         // x axis zero
@@ -370,11 +350,11 @@ public class GraphingArea : IDrawable {
     }
 
     private void DrawLine(ICanvas canvas, RectF dirtyRect, Line line, Color color, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels) {
-        float spacingRatio = xSpacingValue * ySpacingPixels / (xSpacingPixels * ySpacingValue);
+        float spacingRatio = Exponentiate(xSpacingValue) * ySpacingPixels / (xSpacingPixels * Exponentiate(ySpacingValue));
 
         // These values are defined in terms of pixels
         float gradient = (float)line.GetGradient() * spacingRatio;
-        float yIntercept = (float)line.GetYIntercept() * ySpacingPixels / ySpacingValue;
+        float yIntercept = (float)line.GetYIntercept() * ySpacingPixels / Exponentiate(ySpacingValue);
 
         canvas.StrokeSize = 3;
         canvas.StrokeColor = color;
@@ -382,8 +362,8 @@ public class GraphingArea : IDrawable {
     }
 
     private void DrawDataPoints(ICanvas canvas, RectF dirtyRect, DataPoint[] dataPoints, float OriginX, float OriginY, float xSpacingPixels, float ySpacingPixels) {
-        float xScale = xSpacingPixels / xSpacingValue;
-        float yScale = ySpacingPixels / ySpacingValue;
+        float xScale = xSpacingPixels / Exponentiate(xSpacingValue);
+        float yScale = ySpacingPixels / Exponentiate(ySpacingValue);
         canvas.StrokeColor =
             Application.Current.RequestedTheme == AppTheme.Light
             ? Colors.Black
@@ -405,5 +385,9 @@ public class GraphingArea : IDrawable {
             canvas.DrawLine(xPixels - 3f, yPixels - uncYPixels, xPixels + 3f, yPixels - uncYPixels);
             canvas.DrawLine(xPixels - 3f, yPixels + uncYPixels, xPixels + 3f, yPixels + uncYPixels);
         }
+    }
+
+    private static float Exponentiate(Pair<int, int> pair) {
+        return (float)(Math.Pow(10.0, pair.second) * pair.first);
     }
 }
