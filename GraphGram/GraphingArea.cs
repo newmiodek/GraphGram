@@ -382,10 +382,15 @@ public class GraphingArea : IDrawable {
             canvas.DrawLine(xPixels - uncXPixels, yPixels, xPixels + uncXPixels, yPixels);
             canvas.DrawLine(xPixels, yPixels - uncYPixels, xPixels, yPixels + uncYPixels);
 
-            canvas.DrawLine(xPixels - uncXPixels, yPixels - 3f, xPixels - uncXPixels, yPixels + 3f);
-            canvas.DrawLine(xPixels + uncXPixels, yPixels - 3f, xPixels + uncXPixels, yPixels + 3f);
-            canvas.DrawLine(xPixels - 3f, yPixels - uncYPixels, xPixels + 3f, yPixels - uncYPixels);
-            canvas.DrawLine(xPixels - 3f, yPixels + uncYPixels, xPixels + 3f, yPixels + uncYPixels);
+            if(goWithErrorBoxes) {
+                canvas.DrawRectangle(xPixels - uncXPixels, yPixels - uncYPixels, 2f * uncXPixels, 2f * uncYPixels);
+            }
+            else {
+                canvas.DrawLine(xPixels - uncXPixels, yPixels - 3f, xPixels - uncXPixels, yPixels + 3f);
+                canvas.DrawLine(xPixels + uncXPixels, yPixels - 3f, xPixels + uncXPixels, yPixels + 3f);
+                canvas.DrawLine(xPixels - 3f, yPixels - uncYPixels, xPixels + 3f, yPixels - uncYPixels);
+                canvas.DrawLine(xPixels - 3f, yPixels + uncYPixels, xPixels + 3f, yPixels + uncYPixels);
+            }
         }
     }
 }
