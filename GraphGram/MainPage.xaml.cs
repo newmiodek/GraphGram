@@ -149,11 +149,11 @@ public partial class MainPage : ContentPage {
     private void ErrorBarsFlyoutClicked(object sender, EventArgs eventArgs) {
         if(goWithErrorBoxes) {
             goWithErrorBoxes = false;
-            errorBarsBoxesToggle.Text = "Switch to error boxes";
+            errorBarsBoxesToggle.Text = "Error Boxes\t";
         }
         else {
             goWithErrorBoxes = true;
-            errorBarsBoxesToggle.Text = "Switch to error bars";
+            errorBarsBoxesToggle.Text = "Error Boxes\t\u2713";  // Check mark
         }
         UpdateGraph();
     }
@@ -161,11 +161,11 @@ public partial class MainPage : ContentPage {
     private void SteepestLineFlyoutClicked(object sender, EventArgs eventArgs) {
         if(drawSteepestLine) {
             drawSteepestLine = false;
-            steepestLineDrawToggle.Text = "Not drawing the Steepest Line\tTurn On";
+            steepestLineDrawToggle.Text = "Steepest Line\t";
         }
         else {
             drawSteepestLine = true;
-            steepestLineDrawToggle.Text = "Drawing the Steepest Line\t\tTurn Off";
+            steepestLineDrawToggle.Text = "Steepest Line\t\u2713";  // Check mark
         }
         UpdateGraphPreferences();
     }
@@ -173,11 +173,11 @@ public partial class MainPage : ContentPage {
     private void LeastSteepLineFlyoutClicked(object sender, EventArgs eventArgs) {
         if(drawLeastSteepLine) {
             drawLeastSteepLine = false;
-            leastSteepLineDrawToggle.Text = "Not drawing the Least Steep Line\tTurn On";
+            leastSteepLineDrawToggle.Text = "Least Steep Line\t";
         }
         else {
             drawLeastSteepLine = true;
-            leastSteepLineDrawToggle.Text = "Drawing the Least Steep Line\tTurn Off";
+            leastSteepLineDrawToggle.Text = "Least Steep Line\t\u2713"; // Check mark
         }
         UpdateGraphPreferences();
     }
@@ -185,11 +185,11 @@ public partial class MainPage : ContentPage {
     private void BestFitLineFlyoutClicked(object sender, EventArgs eventArgs) {
         if(drawBestFitLine) {
             drawBestFitLine = false;
-            bestFitLineDrawToggle.Text = "Not drawing the Line of Best Fit\tTurn On";
+            bestFitLineDrawToggle.Text = "Line of Best Fit\t";
         }
         else {
             drawBestFitLine = true;
-            bestFitLineDrawToggle.Text = "Drawing the Line of Best Fit\tTurn Off";
+            bestFitLineDrawToggle.Text = "Line of Best Fit\t\u2713";  // Check mark
         }
         UpdateGraphPreferences();
     }

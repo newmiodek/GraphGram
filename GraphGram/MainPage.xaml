@@ -34,21 +34,21 @@
         </MenuBarItem>
         <MenuBarItem Text="Graph">
             <MenuFlyoutItem x:Name="errorBarsBoxesToggle"
-                            Text="Switch to error boxes"
+                            Text="Error Boxes&#x0009;"
                             Clicked="ErrorBarsFlyoutClicked" />
 
             <MenuFlyoutSeparator />
 
             <MenuFlyoutItem x:Name="bestFitLineDrawToggle"
-                            Text="Drawing the Line of Best Fit&#x0009;Turn Off"
+                            Text="Line of Best Fit&#x0009;&#x2713;"
                             Clicked="BestFitLineFlyoutClicked" />
             
             <MenuFlyoutItem x:Name="steepestLineDrawToggle"
-                            Text="Not drawing the Steepest Line&#x0009;Turn On"
+                            Text="Steepest Line&#x0009;"
                             Clicked="SteepestLineFlyoutClicked" />
             
             <MenuFlyoutItem x:Name="leastSteepLineDrawToggle"
-                            Text="Not drawing the Least Steep Line&#x0009;Turn On"
+                            Text="Least Steep Line&#x0009;"
                             Clicked="LeastSteepLineFlyoutClicked" />
         </MenuBarItem>
         <MenuBarItem Text="Settings">
