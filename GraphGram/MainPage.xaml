@@ -34,7 +34,7 @@
         </MenuBarItem>
         <MenuBarItem Text="Settings">
             <MenuFlyoutItem x:Name="errorBarsBoxesToggle"
-                            Text="Make lines fit in error boxes"
+                            Text="Switch to error boxes"
                             Clicked="ErrorBarsFlyoutClicked" />
         </MenuBarItem>
         <MenuBarItem Text="Help">

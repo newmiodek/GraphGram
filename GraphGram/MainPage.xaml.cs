@@ -135,11 +135,11 @@ public partial class MainPage : ContentPage {
     private void ErrorBarsFlyoutClicked(object sender, EventArgs eventArgs) {
         if(goWithErrorBoxes) {
             goWithErrorBoxes = false;
-            errorBarsBoxesToggle.Text = "Make lines fit in error boxes";
+            errorBarsBoxesToggle.Text = "Switch to error boxes";
         }
         else {
             goWithErrorBoxes = true;
-            errorBarsBoxesToggle.Text = "Make lines fit in error bars";
+            errorBarsBoxesToggle.Text = "Switch to error bars";
         }
         UpdateGraph();
     }
