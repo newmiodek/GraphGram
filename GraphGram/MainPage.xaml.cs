@@ -11,17 +11,25 @@ public partial class MainPage : ContentPage {
     private Entry yHeaderEntry;
 
     private bool goWithErrorBoxes;
+
     private bool drawSteepestLine;
     private bool drawLeastSteepLine;
     private bool drawBestFitLine;
+    private SigFigsOrDecPoints sfdp;
+    private int precision;  // 1000 means auto
 
     public MainPage() {
 
         InitializeComponent();
         goWithErrorBoxes = false;
+
         drawSteepestLine = false;
         drawLeastSteepLine = false;
         drawBestFitLine = true;
+        sfdp = SigFigsOrDecPoints.SF;
+        precision = 1000;
+
+        UpdateGraphPreferences();
 
         // <Creating the data table>
         entryTable = new Entry[Constants.DEFAULT_ROW_COUNT, 4];
@@ -117,7 +125,9 @@ public partial class MainPage : ContentPage {
         ((GraphingArea)GraphingAreaView.Drawable).PassPreferences(
             drawSteepestLine,
             drawLeastSteepLine,
-            drawBestFitLine);
+            drawBestFitLine,
+            sfdp,
+            precision);
         GraphingAreaView.Invalidate();
     }
 
@@ -194,4 +204,55 @@ public partial class MainPage : ContentPage {
         UpdateGraphPreferences();
     }
 
+    private async void ChoosePrecisionClicked(object sender, EventArgs eventArgs) {
+        bool autoORcustom = precision == 1000; // Auto if true, custom if false
+        string response = await DisplayActionSheet(
+            "Choose Mode", "CANCEL", null,
+            "Auto" + (autoORcustom ? " (Current)" : ""),
+            "Custom" + (autoORcustom ? "" : " (Current)"));
+        if(response == null) return;
+        else if(response == "Auto") {
+            sfdp = SigFigsOrDecPoints.SF;
+            precision = 1000;
+        }
+        else if(response == "Custom" || response == "Custom (Current)") {
+            string response2 = await DisplayActionSheet(
+                "Choose Precision Style", "CANCEL", null,
+                "Significant Figures" + (response == "Custom (Current)" && sfdp == SigFigsOrDecPoints.SF ? " (Current)" : ""),
+                "Decimal Points" + (response == "Custom (Current)" && sfdp == SigFigsOrDecPoints.DP ? " (Current)" : ""));
+            if(response2 == null) return;
+            else if(response2 == "Significant Figures" || response2 == "Significant Figures (Current)") {
+                string response3 = await DisplayPromptAsync(
+                    "Significant Figures", "Enter the Number of Significant Figures",
+                    cancel: "CANCEL", maxLength: 2);
+                if(response3 == null) return;
+                int sf;
+                if(int.TryParse(response3, out sf) && sf > 0) {
+                    sfdp = SigFigsOrDecPoints.SF;
+                    precision = sf;
+                    UpdateGraphPreferences();
+                    await DisplayAlert("Changes Applied", "Output precision has been changed to " + sf.ToString() + " significant figures.", "OK");
+                }
+                else {
+                    await DisplayAlert("Bad Input", "Bad input has been entered. The number of significant figures has to be a whole, positive number.", "OK");
+                }
+            }
+            else if(response2 == "Decimal Points" || response2 == "Decimal Points (Current)") {
+                string response3 = await DisplayPromptAsync(
+                    "Decimal Points", "Enter the Number of Decimal Points",
+                    cancel: "CANCEL", maxLength: 2);
+                if(response3 == null) return;
+                int dp;
+                if(int.TryParse(response3, out dp)) {
+                    sfdp = SigFigsOrDecPoints.DP;
+                    precision = dp;
+                    UpdateGraphPreferences();
+                    await DisplayAlert("Changes Applied", "Output precision has been changed to " + dp.ToString() + " decimal points.", "OK");
+                }
+                else {
+                    await DisplayAlert("Bad Input", "Bad input has been entered. The number of decimal points has to be a number.", "OK");
+                }
+            }
+        }
+    }
 }

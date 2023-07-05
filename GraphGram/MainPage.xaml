@@ -51,8 +51,9 @@
                             Text="Least Steep Line&#x0009;"
                             Clicked="LeastSteepLineFlyoutClicked" />
         </MenuBarItem>
-        <MenuBarItem Text="Settings">
-            <MenuFlyoutItem Text="foo" />
+        <MenuBarItem Text="Analyze">
+            <MenuFlyoutItem Text="Choose Output Precision..." 
+                            Clicked="ChoosePrecisionClicked" />
         </MenuBarItem>
         <MenuBarItem Text="Help">
             <MenuFlyoutItem Text="foo" />

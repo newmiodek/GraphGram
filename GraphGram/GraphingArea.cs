@@ -102,7 +102,7 @@ public class GraphingArea : IDrawable {
         ySpacingValue = CalculateSpacingValue(yRange);
     }
 
-    public void PassPreferences(bool drawSteepestLine, bool drawLeastSteepLine, bool drawBestFitLine) {
+    public void PassPreferences(bool drawSteepestLine, bool drawLeastSteepLine, bool drawBestFitLine, SigFigsOrDecPoints sfdp, int precision) {
         this.drawSteepestLine = drawSteepestLine;
         this.drawLeastSteepLine = drawLeastSteepLine;
         this.drawBestFitLine = drawBestFitLine;
