@@ -32,10 +32,27 @@
         <MenuBarItem Text="View">
             <MenuFlyoutItem Text="foo" />
         </MenuBarItem>
-        <MenuBarItem Text="Settings">
+        <MenuBarItem Text="Graph">
             <MenuFlyoutItem x:Name="errorBarsBoxesToggle"
                             Text="Switch to error boxes"
                             Clicked="ErrorBarsFlyoutClicked" />
+
+            <MenuFlyoutSeparator />
+
+            <MenuFlyoutItem x:Name="bestFitLineDrawToggle"
+                            Text="Drawing the Line of Best Fit&#x0009;Turn Off"
+                            Clicked="BestFitLineFlyoutClicked" />
+            
+            <MenuFlyoutItem x:Name="steepestLineDrawToggle"
+                            Text="Not drawing the Steepest Line&#x0009;Turn On"
+                            Clicked="SteepestLineFlyoutClicked" />
+            
+            <MenuFlyoutItem x:Name="leastSteepLineDrawToggle"
+                            Text="Not drawing the Least Steep Line&#x0009;Turn On"
+                            Clicked="LeastSteepLineFlyoutClicked" />
+        </MenuBarItem>
+        <MenuBarItem Text="Settings">
+            <MenuFlyoutItem Text="foo" />
         </MenuBarItem>
         <MenuBarItem Text="Help">
             <MenuFlyoutItem Text="foo" />

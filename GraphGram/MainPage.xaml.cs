@@ -11,11 +11,17 @@ public partial class MainPage : ContentPage {
     private Entry yHeaderEntry;
 
     private bool goWithErrorBoxes;
+    private bool drawSteepestLine;
+    private bool drawLeastSteepLine;
+    private bool drawBestFitLine;
 
     public MainPage() {
 
         InitializeComponent();
         goWithErrorBoxes = false;
+        drawSteepestLine = false;
+        drawLeastSteepLine = false;
+        drawBestFitLine = true;
 
         // <Creating the data table>
         entryTable = new Entry[Constants.DEFAULT_ROW_COUNT, 4];
@@ -107,6 +113,14 @@ public partial class MainPage : ContentPage {
         yInterceptOutput.Text = graphingArea.GetYIntercept();
     }
 
+    private void UpdateGraphPreferences() {
+        ((GraphingArea)GraphingAreaView.Drawable).PassPreferences(
+            drawSteepestLine,
+            drawLeastSteepLine,
+            drawBestFitLine);
+        GraphingAreaView.Invalidate();
+    }
+
     private void SwitchXHeaderToEntry(object sender, EventArgs e) {
         xHeaderContentView.Content = xHeaderEntry;
     }
@@ -143,4 +157,41 @@ public partial class MainPage : ContentPage {
         }
         UpdateGraph();
     }
+
+    private void SteepestLineFlyoutClicked(object sender, EventArgs eventArgs) {
+        if(drawSteepestLine) {
+            drawSteepestLine = false;
+            steepestLineDrawToggle.Text = "Not drawing the Steepest Line\tTurn On";
+        }
+        else {
+            drawSteepestLine = true;
+            steepestLineDrawToggle.Text = "Drawing the Steepest Line\t\tTurn Off";
+        }
+        UpdateGraphPreferences();
+    }
+
+    private void LeastSteepLineFlyoutClicked(object sender, EventArgs eventArgs) {
+        if(drawLeastSteepLine) {
+            drawLeastSteepLine = false;
+            leastSteepLineDrawToggle.Text = "Not drawing the Least Steep Line\tTurn On";
+        }
+        else {
+            drawLeastSteepLine = true;
+            leastSteepLineDrawToggle.Text = "Drawing the Least Steep Line\tTurn Off";
+        }
+        UpdateGraphPreferences();
+    }
+
+    private void BestFitLineFlyoutClicked(object sender, EventArgs eventArgs) {
+        if(drawBestFitLine) {
+            drawBestFitLine = false;
+            bestFitLineDrawToggle.Text = "Not drawing the Line of Best Fit\tTurn On";
+        }
+        else {
+            drawBestFitLine = true;
+            bestFitLineDrawToggle.Text = "Drawing the Line of Best Fit\tTurn Off";
+        }
+        UpdateGraphPreferences();
+    }
+
 }

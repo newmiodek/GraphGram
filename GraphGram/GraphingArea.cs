@@ -11,6 +11,10 @@ public class GraphingArea : IDrawable {
 
     private bool goWithErrorBoxes = false;
 
+    private bool drawSteepestLine = false;
+    private bool drawLeastSteepLine = false;
+    private bool drawBestFitLine = true;
+
     // consider changing them to floats
     private double minX = 0.0;
     private double maxX = 100.0;
@@ -98,6 +102,12 @@ public class GraphingArea : IDrawable {
         ySpacingValue = CalculateSpacingValue(yRange);
     }
 
+    public void PassPreferences(bool drawSteepestLine, bool drawLeastSteepLine, bool drawBestFitLine) {
+        this.drawSteepestLine = drawSteepestLine;
+        this.drawLeastSteepLine = drawLeastSteepLine;
+        this.drawBestFitLine = drawBestFitLine;
+    }
+
     public void SetXAxisTitle(string xTitle) {
         this.xTitleString = xTitle;
         isXTitleSupStringUpToDate = false;
@@ -122,11 +132,14 @@ public class GraphingArea : IDrawable {
 
         if(isInputValid && isInitiated) {
             DrawDataPoints(canvas, dirtyRect, dataPoints, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
-            DrawLine(canvas, dirtyRect, lineData.GetLeastSteepLine(), Colors.Red, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
-            DrawLine(canvas, dirtyRect, lineData.GetSteepestLine(), Colors.Green, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
-            DrawLine(canvas, dirtyRect, lineData.GetLineOfBestFit(),
-                Application.Current.RequestedTheme == AppTheme.Light ? Colors.Black : Colors.White,
-                OriginX, OriginY, xSpacingPixels, ySpacingPixels);
+            if(drawLeastSteepLine)
+                DrawLine(canvas, dirtyRect, lineData.GetLeastSteepLine(), Colors.Red, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
+            if(drawSteepestLine)
+                DrawLine(canvas, dirtyRect, lineData.GetSteepestLine(), Colors.Green, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
+            if(drawBestFitLine)
+                DrawLine(canvas, dirtyRect, lineData.GetLineOfBestFit(),
+                    Application.Current.RequestedTheme == AppTheme.Light ? Colors.Black : Colors.White,
+                    OriginX, OriginY, xSpacingPixels, ySpacingPixels);
         }
 
         DrawAxisMarks(canvas, dirtyRect, OriginX, OriginY, xSpacingPixels, ySpacingPixels, xSpacingValue, ySpacingValue);
