@@ -112,7 +112,7 @@ public class GraphingArea : IDrawable {
         float OriginX = CalculateOriginX(dirtyRect);
         float OriginY = CalculateOriginY(dirtyRect);
 
-        float xSpacingPixels = dirtyRect.Width  * (1f - 2f * Constants.PADDING) / MathF.Ceiling((float)xRange / xSpacingValue.GetFloatValue());
+        float xSpacingPixels = dirtyRect.Width * (1f - 2f * Constants.PADDING) / MathF.Ceiling((float)xRange / xSpacingValue.GetFloatValue());
         float ySpacingPixels = dirtyRect.Height * (1f - 2f * Constants.PADDING) / MathF.Ceiling((float)yRange / ySpacingValue.GetFloatValue());
         // </Calculations>
 
@@ -124,7 +124,9 @@ public class GraphingArea : IDrawable {
             DrawDataPoints(canvas, dirtyRect, dataPoints, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
             DrawLine(canvas, dirtyRect, lineData.GetLeastSteepLine(), Colors.Red, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
             DrawLine(canvas, dirtyRect, lineData.GetSteepestLine(), Colors.Green, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
-            DrawLine(canvas, dirtyRect, lineData.GetLineOfBestFit(), Application.Current.RequestedTheme == AppTheme.Light ? Colors.Black : Colors.White, OriginX, OriginY, xSpacingPixels, ySpacingPixels);
+            DrawLine(canvas, dirtyRect, lineData.GetLineOfBestFit(),
+                Application.Current.RequestedTheme == AppTheme.Light ? Colors.Black : Colors.White,
+                OriginX, OriginY, xSpacingPixels, ySpacingPixels);
         }
 
         DrawAxisMarks(canvas, dirtyRect, OriginX, OriginY, xSpacingPixels, ySpacingPixels, xSpacingValue, ySpacingValue);
@@ -160,19 +162,19 @@ public class GraphingArea : IDrawable {
 
     private float CalculateOriginX(RectF dirtyRect) {
         float OriginX;
-        if(minX >= 0)                   OriginX = dirtyRect.Right * Constants.PADDING;
-        else if(minX < 0 && maxX > 0)   OriginX = dirtyRect.Right * 
-                                            ((1f - 2f * Constants.PADDING) * (float)(-minX / (maxX - minX)) + Constants.PADDING);
-        else                            OriginX = dirtyRect.Right * (1f - Constants.PADDING);
+        if(minX >= 0) OriginX = dirtyRect.Right * Constants.PADDING;
+        else if(minX < 0 && maxX > 0)
+            OriginX = dirtyRect.Right * ((1f - 2f * Constants.PADDING) * (float)(-minX / (maxX - minX)) + Constants.PADDING);
+        else OriginX = dirtyRect.Right * (1f - Constants.PADDING);
         return OriginX;
     }
 
     private float CalculateOriginY(RectF dirtyRect) {
         float OriginY;
-        if(minY >= 0)                   OriginY = dirtyRect.Bottom * (1f - Constants.PADDING);
-        else if(minY < 0 && maxY > 0)   OriginY = dirtyRect.Bottom *
-                                            ((1f - 2f * Constants.PADDING) * (float)(maxY / (maxY - minY)) + Constants.PADDING);
-        else                            OriginY = dirtyRect.Bottom * Constants.PADDING;
+        if(minY >= 0) OriginY = dirtyRect.Bottom * (1f - Constants.PADDING);
+        else if(minY < 0 && maxY > 0)
+            OriginY = dirtyRect.Bottom * ((1f - 2f * Constants.PADDING) * (float)(maxY / (maxY - minY)) + Constants.PADDING);
+        else OriginY = dirtyRect.Bottom * Constants.PADDING;
         return OriginY;
     }
 
@@ -215,7 +217,7 @@ public class GraphingArea : IDrawable {
     }
 
     private void DrawXAxis(ICanvas canvas, RectF dirtyRect, float OriginY) {
-        canvas.StrokeColor = 
+        canvas.StrokeColor =
             Application.Current.RequestedTheme == AppTheme.Light
             ? Colors.Black
             : Colors.White;
@@ -227,7 +229,7 @@ public class GraphingArea : IDrawable {
     }
 
     private void DrawYAxis(ICanvas canvas, RectF dirtyRect, float OriginX) {
-        canvas.StrokeColor = 
+        canvas.StrokeColor =
             Application.Current.RequestedTheme == AppTheme.Light
             ? Colors.Black
             : Colors.White;
@@ -244,8 +246,6 @@ public class GraphingArea : IDrawable {
             ? Color.FromRgb(0xB0, 0xB0, 0xB0)
             : Color.FromRgb(0x30, 0x30, 0x30);
 
-
-            //Color.FromRgb(0x30, 0x30, 0x30);
         canvas.StrokeSize = 1f;
 
         // Vertical lines to the LEFT of the origin
