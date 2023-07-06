@@ -29,23 +29,49 @@ public class LineData {
                steepYIntercept = 0,
                leastSteepGradient = 0,
                leastSteepYIntercept = 0;
-
+        
         for(int i = 0; i < outlierCategories.Count; i++) {
             if(outlierCategories[i].Count == 0) continue;
 
             outlierCount = i;
-            steepGradient = outlierCategories[i][0].GetGradient();
-            steepYIntercept = outlierCategories[i][0].GetYIntercept();
-            leastSteepGradient = outlierCategories[i][0].GetGradient();
-            leastSteepYIntercept = outlierCategories[i][0].GetYIntercept();
-            for(int j = 1; j < outlierCategories[i].Count; j++) {
-                if(outlierCategories[i][j].GetGradient() > steepGradient) {
-                    steepGradient = outlierCategories[i][j].GetGradient();
-                    steepYIntercept = outlierCategories[i][j].GetYIntercept();
+
+            List<OutlierPermutation> outlierPermutations = new List<OutlierPermutation>();
+
+            for(int j = 0; j < outlierCategories[i].Count; j++) {
+                OutlierPermutation permutation = new OutlierPermutation(outlierCategories[i][j].GetIntersections());
+
+                bool isThere = false;
+                for(int k = 0; k < outlierPermutations.Count; k++) {
+                    if(outlierPermutations[k].AreIntersectionsEqual(permutation.GetIntersections())) {
+                        isThere = true;
+                        outlierPermutations[k].IncrementOccurences();
+                        break;
+                    }
                 }
-                if(outlierCategories[i][j].GetGradient() < leastSteepGradient) {
-                    leastSteepGradient = outlierCategories[i][j].GetGradient();
-                    leastSteepYIntercept = outlierCategories[i][j].GetYIntercept();
+                if(!isThere) outlierPermutations.Add(permutation);
+            }
+
+            int maxOccurencesIndex = 0;
+            for(int j = 1; j < outlierPermutations.Count; j++) {
+                if(outlierPermutations[j].GetOccurences() > outlierPermutations[maxOccurencesIndex].GetOccurences()) {
+                    maxOccurencesIndex = j;
+                }
+            }
+
+            steepGradient = double.MinValue;
+            steepYIntercept = double.MaxValue;
+            leastSteepGradient = double.MaxValue;
+            leastSteepYIntercept = double.MinValue;
+            for(int j = 0; j < outlierCategories[i].Count; j++) {
+                if(outlierPermutations[maxOccurencesIndex].AreIntersectionsEqual(outlierCategories[i][j].GetIntersections())) {
+                    if(outlierCategories[i][j].GetGradient() > steepGradient) {
+                        steepGradient = outlierCategories[i][j].GetGradient();
+                        steepYIntercept = outlierCategories[i][j].GetYIntercept();
+                    }
+                    if(outlierCategories[i][j].GetGradient() < leastSteepGradient) {
+                        leastSteepGradient = outlierCategories[i][j].GetGradient();
+                        leastSteepYIntercept = outlierCategories[i][j].GetYIntercept();
+                    }
                 }
             }
 
