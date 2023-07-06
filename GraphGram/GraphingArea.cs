@@ -14,6 +14,8 @@ public class GraphingArea : IDrawable {
     private bool drawSteepestLine = false;
     private bool drawLeastSteepLine = false;
     private bool drawBestFitLine = true;
+    private SigFigsOrDecPoints sfdp = SigFigsOrDecPoints.SF;
+    private int precision = 1000;
 
     // consider changing them to floats
     private double minX = 0.0;
@@ -106,6 +108,8 @@ public class GraphingArea : IDrawable {
         this.drawSteepestLine = drawSteepestLine;
         this.drawLeastSteepLine = drawLeastSteepLine;
         this.drawBestFitLine = drawBestFitLine;
+        this.sfdp = sfdp;
+        this.precision = precision;
     }
 
     public void SetXAxisTitle(string xTitle) {
@@ -157,18 +161,36 @@ public class GraphingArea : IDrawable {
 
     public string GetGradient() {
         if(isInputValid && isInitiated) {
-            return lineData.GetLineOfBestFit().GetGradient().ToString()
-                 + " \u00B1 "
-                 + lineData.GetGradientUncertainty().ToString();
+            string gradBody;
+            string gradUnc;
+            if(sfdp == SigFigsOrDecPoints.DP) {
+                gradBody = DPToString(lineData.GetLineOfBestFit().GetGradient(), precision);
+                gradUnc = DPToString(lineData.GetGradientUncertainty(), precision);
+            }
+            else {  // TODO significant figures
+                gradBody = "";
+                gradUnc = "";
+            }
+
+            return gradBody + " \u00B1 " + gradUnc;
         }
         return "-- \u00B1 --";
     }
 
     public string GetYIntercept() {
         if(isInputValid && isInitiated) {
-            return lineData.GetLineOfBestFit().GetYIntercept().ToString()
-                 + " \u00B1 "
-                 + lineData.GetYInterceptUncertainty().ToString();
+            string yintBody;
+            string yintUnc;
+            if(sfdp == SigFigsOrDecPoints.DP) {
+                yintBody = DPToString(lineData.GetLineOfBestFit().GetYIntercept(), precision);
+                yintUnc = DPToString(lineData.GetYInterceptUncertainty(), precision);
+            }
+            else {  // TODO significant figures
+                yintBody = "";
+                yintUnc = "";
+            }
+
+            return yintBody + " \u00B1 " + yintUnc;
         }
         return "-- \u00B1 --";
     }
@@ -405,5 +427,53 @@ public class GraphingArea : IDrawable {
                 canvas.DrawLine(xPixels - 3f, yPixels + uncYPixels, xPixels + 3f, yPixels + uncYPixels);
             }
         }
+    }
+
+    private string DPToString(double val, int dp) {
+        string processedBody;
+        string body = val.ToString(Constants.NO_SCI_FORMAT);
+        int bodyDotIndex = body.Length;
+        for(int i = 0; i < body.Length; i++) {
+            if(body[i] == '.') {
+                bodyDotIndex = i;
+                break;
+            }
+        }
+        if(dp > 0) {
+            int originalDP = Math.Max(body.Length - bodyDotIndex - 1, 0);
+
+            if(originalDP < dp) {
+                processedBody = body + (bodyDotIndex == body.Length ? "." : "");
+                for(int i = dp - originalDP; i > 0; i--) {
+                    processedBody += "0";
+                }
+            }
+            else if(originalDP == dp) {
+                processedBody = body;
+            }
+            else {  // originalDP > dp
+                processedBody = val.ToString("0." + new string('#', dp));
+                bool hasDot = false;
+                for(int i = 0; i < processedBody.Length; i++) {
+                    if(processedBody[i] == '.') {
+                        hasDot = true;
+                        break;
+                    }
+                }
+                if(!hasDot) processedBody += ".";
+                while(processedBody.Length < bodyDotIndex + 1 + dp) processedBody += "0";
+            }
+        }
+        else if(dp == 0) {
+            processedBody = val.ToString("#");
+        }
+        else {  // dp < 0
+            double shifter = 1.0;
+            for(int i = 0; i < -dp; i++) shifter *= 10.0;
+            string shiftedVal = (val / shifter).ToString("#");
+            if(shiftedVal.Length == 0) shiftedVal = "0";
+            processedBody = (int.Parse(shiftedVal) * ((int)shifter)).ToString();
+        }
+        return processedBody;
     }
 }

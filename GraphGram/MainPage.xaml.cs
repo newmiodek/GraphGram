@@ -122,13 +122,17 @@ public partial class MainPage : ContentPage {
     }
 
     private void UpdateGraphPreferences() {
-        ((GraphingArea)GraphingAreaView.Drawable).PassPreferences(
+        GraphingArea graphingArea = (GraphingArea)GraphingAreaView.Drawable;
+        graphingArea.PassPreferences(
             drawSteepestLine,
             drawLeastSteepLine,
             drawBestFitLine,
             sfdp,
             precision);
+        
         GraphingAreaView.Invalidate();
+        gradientOutput.Text = graphingArea.GetGradient();
+        yInterceptOutput.Text = graphingArea.GetYIntercept();
     }
 
     private void SwitchXHeaderToEntry(object sender, EventArgs e) {

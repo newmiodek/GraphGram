@@ -18,4 +18,6 @@ public static class Constants {
             { 2, (Math.Log10(2.0) + Math.Log10(5.0)) / 2.0 },   // Halfway between log(2) and log(5)
             { 5, (Math.Log10(5) + 1.0) / 2.0}                   // Halfway between log(5) and 1
         };
+    // Put NO_SCI_FORMAT in a ToString() to prevent formatting to scientific notation
+    public static readonly string NO_SCI_FORMAT = "0." + new string('#', 339);  
 }
