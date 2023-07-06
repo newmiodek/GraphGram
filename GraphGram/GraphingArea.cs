@@ -164,8 +164,8 @@ public class GraphingArea : IDrawable {
             string gradBody;
             string gradUnc;
             if(sfdp == SigFigsOrDecPoints.DP) {
-                gradBody = DPToString(lineData.GetLineOfBestFit().GetGradient(), precision);
-                gradUnc = DPToString(lineData.GetGradientUncertainty(), precision);
+                gradBody = PrecisionTools.DPToString(lineData.GetLineOfBestFit().GetGradient(), precision);
+                gradUnc = PrecisionTools.DPToString(lineData.GetGradientUncertainty(), precision);
             }
             else {  // TODO significant figures
                 gradBody = "";
@@ -182,8 +182,8 @@ public class GraphingArea : IDrawable {
             string yintBody;
             string yintUnc;
             if(sfdp == SigFigsOrDecPoints.DP) {
-                yintBody = DPToString(lineData.GetLineOfBestFit().GetYIntercept(), precision);
-                yintUnc = DPToString(lineData.GetYInterceptUncertainty(), precision);
+                yintBody = PrecisionTools.DPToString(lineData.GetLineOfBestFit().GetYIntercept(), precision);
+                yintUnc = PrecisionTools.DPToString(lineData.GetYInterceptUncertainty(), precision);
             }
             else {  // TODO significant figures
                 yintBody = "";
@@ -429,51 +429,4 @@ public class GraphingArea : IDrawable {
         }
     }
 
-    private string DPToString(double val, int dp) {
-        string processedBody;
-        string body = val.ToString(Constants.NO_SCI_FORMAT);
-        int dotIndex = body.Length;
-        for(int i = 0; i < body.Length; i++) {
-            if(body[i] == '.') {
-                dotIndex = i;
-                break;
-            }
-        }
-        if(dp > 0) {
-            int originalDP = Math.Max(body.Length - dotIndex - 1, 0);
-
-            if(originalDP < dp) {
-                processedBody = body + (dotIndex == body.Length ? "." : "");
-                for(int i = dp - originalDP; i > 0; i--) {
-                    processedBody += "0";
-                }
-            }
-            else if(originalDP == dp) {
-                processedBody = body;
-            }
-            else {  // originalDP > dp
-                processedBody = val.ToString("0." + new string('#', dp));
-                bool hasDot = false;
-                for(int i = 0; i < processedBody.Length; i++) {
-                    if(processedBody[i] == '.') {
-                        hasDot = true;
-                        break;
-                    }
-                }
-                if(!hasDot) processedBody += ".";
-                while(processedBody.Length < dotIndex + 1 + dp) processedBody += "0";
-            }
-        }
-        else if(dp == 0) {
-            processedBody = val.ToString("#");
-        }
-        else {  // dp < 0
-            double shifter = 1.0;
-            for(int i = 0; i < -dp; i++) shifter *= 10.0;
-            string shiftedVal = (val / shifter).ToString("#");
-            if(shiftedVal.Length == 0) shiftedVal = "0";
-            processedBody = (int.Parse(shiftedVal) * ((int)shifter)).ToString();
-        }
-        return processedBody;
-    }
 }
