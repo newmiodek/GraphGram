@@ -432,18 +432,18 @@ public class GraphingArea : IDrawable {
     private string DPToString(double val, int dp) {
         string processedBody;
         string body = val.ToString(Constants.NO_SCI_FORMAT);
-        int bodyDotIndex = body.Length;
+        int dotIndex = body.Length;
         for(int i = 0; i < body.Length; i++) {
             if(body[i] == '.') {
-                bodyDotIndex = i;
+                dotIndex = i;
                 break;
             }
         }
         if(dp > 0) {
-            int originalDP = Math.Max(body.Length - bodyDotIndex - 1, 0);
+            int originalDP = Math.Max(body.Length - dotIndex - 1, 0);
 
             if(originalDP < dp) {
-                processedBody = body + (bodyDotIndex == body.Length ? "." : "");
+                processedBody = body + (dotIndex == body.Length ? "." : "");
                 for(int i = dp - originalDP; i > 0; i--) {
                     processedBody += "0";
                 }
@@ -461,7 +461,7 @@ public class GraphingArea : IDrawable {
                     }
                 }
                 if(!hasDot) processedBody += ".";
-                while(processedBody.Length < bodyDotIndex + 1 + dp) processedBody += "0";
+                while(processedBody.Length < dotIndex + 1 + dp) processedBody += "0";
             }
         }
         else if(dp == 0) {
