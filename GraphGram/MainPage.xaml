@@ -67,7 +67,9 @@
             <ColumnDefinition Width="{StaticResource dataTableWidth}" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-
+        
+        <!-- Think about changing stuff to TableView -->
+        
         <Grid BackgroundColor="{AppThemeBinding Light=Black, Dark=White}"
               RowSpacing="1"
               ColumnSpacing="1"
