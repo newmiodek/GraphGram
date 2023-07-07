@@ -6,8 +6,14 @@
     xmlns:local="clr-namespace:GraphGram"
     Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar>
+        <ShellContent Title="Graph"
+                      Icon="axes.png"
+                      ContentTemplate="{DataTemplate local:MainPage}"
+                      Route="MainPage" />
+        <ShellContent Title="Analysis"
+                      Icon="calc.png"
+                      ContentTemplate="{DataTemplate local:Analysis}" />
+    </TabBar>
 
 </Shell>
