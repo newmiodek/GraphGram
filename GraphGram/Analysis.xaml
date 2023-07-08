@@ -30,6 +30,20 @@
                IsReadOnly="True"
                Text="-- &#x00B1; --"
                FontSize="30" />
+        
+        <Label Text=" "
+               FontSize="30" />
+
+        <Label Text="Outliers"
+               HorizontalOptions="Start"
+               FontSize="30" />
+
+        <Entry x:Name="outlierIndicesEntry"
+               WidthRequest="667"
+               HorizontalOptions="Start"
+               IsReadOnly="True"
+               Text="--"
+               FontSize="30" />
     </VerticalStackLayout>
     
 </ContentPage>

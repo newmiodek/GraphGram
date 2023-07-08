@@ -173,8 +173,25 @@ public class GraphingArea : IDrawable {
         return "-- \u00B1 --";
     }
 
+    private string GetOutliers() {
+        // Here outliers are represented with their one-based indices
+        if(isInputValid && isInitiated) {
+            string toStringedOutliers;
+            if(lineData.GetOutliers().Length > 0) {
+                toStringedOutliers = "Row" + (lineData.GetOutliers().Length > 1 ? "s " : " ");
+                for(int i = 0; i < lineData.GetOutliers().Length; i++) {
+                    toStringedOutliers += (lineData.GetOutliers()[i] + 1).ToString();
+                    if(i != lineData.GetOutliers().Length - 1) toStringedOutliers += ", ";
+                }
+            }
+            else toStringedOutliers = "No outliers";
+            return toStringedOutliers;
+        }
+        return "--";
+    }
+
     public GraphResults GetGraphResults() {
-        return new GraphResults(GetGradient(), GetYIntercept(), "!GetOutliers() is not implemented yet!");
+        return new GraphResults(GetGradient(), GetYIntercept(), GetOutliers());
     }
 
     private float CalculateOriginX(RectF dirtyRect) {

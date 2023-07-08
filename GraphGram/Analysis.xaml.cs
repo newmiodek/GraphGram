@@ -11,10 +11,12 @@ public partial class Analysis : ContentPage {
 		WeakReferenceMessenger.Default.Send(gradientRequest);
 		gradientEntry.Text = gradientRequest.Response.GetGradient();
 		yInterceptEntry.Text = gradientRequest.Response.GetYIntercept();
+		outlierIndicesEntry.Text = gradientRequest.Response.GetOutliers();
 
 		WeakReferenceMessenger.Default.Register<UpdateGraphResultsMessage>(this, (r, m) => {
 			gradientEntry.Text = m.Value.GetGradient();
 			yInterceptEntry.Text = m.Value.GetYIntercept();
+			outlierIndicesEntry.Text = m.Value.GetOutliers();
 		});
 	}
 }
