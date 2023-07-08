@@ -155,7 +155,7 @@ public class GraphingArea : IDrawable {
 
     }
 
-    public string GetGradient() {
+    private string GetGradient() {
         if(isInputValid && isInitiated) {
             return lineData.GetLineOfBestFit().GetGradient().ToString()
                  + " \u00B1 "
@@ -164,13 +164,34 @@ public class GraphingArea : IDrawable {
         return "-- \u00B1 --";
     }
 
-    public string GetYIntercept() {
+    private string GetYIntercept() {
         if(isInputValid && isInitiated) {
             return lineData.GetLineOfBestFit().GetYIntercept().ToString()
                  + " \u00B1 "
                  + lineData.GetYInterceptUncertainty().ToString();
         }
         return "-- \u00B1 --";
+    }
+
+    private string GetOutliers() {
+        // Here outliers are represented with their one-based indices
+        if(isInputValid && isInitiated) {
+            string toStringedOutliers;
+            if(lineData.GetOutliers().Length > 0) {
+                toStringedOutliers = "Row" + (lineData.GetOutliers().Length > 1 ? "s " : " ");
+                for(int i = 0; i < lineData.GetOutliers().Length; i++) {
+                    toStringedOutliers += (lineData.GetOutliers()[i] + 1).ToString();
+                    if(i != lineData.GetOutliers().Length - 1) toStringedOutliers += ", ";
+                }
+            }
+            else toStringedOutliers = "No outliers";
+            return toStringedOutliers;
+        }
+        return "--";
+    }
+
+    public GraphResults GetGraphResults() {
+        return new GraphResults(GetGradient(), GetYIntercept(), GetOutliers());
     }
 
     private float CalculateOriginX(RectF dirtyRect) {

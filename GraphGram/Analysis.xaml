@@ -2,13 +2,48 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GraphGram.Analysis"
-             Title="Analysis">
-    
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+             Title="">
+
+    <VerticalStackLayout Margin="10"
+                         Spacing="5">
+        <Label Text="Gradient"
+               HorizontalOptions="Start"
+               FontSize="30" />
+
+        <Entry x:Name="gradientEntry"
+               WidthRequest="667"
+               HorizontalOptions="Start"
+               IsReadOnly="True"
+               Text="-- &#x00B1; --"
+               FontSize="30" />
+
+        <Label Text=" "
+               FontSize="30" />
+
+        <Label Text="Y-Intercept"
+               HorizontalOptions="Start"
+               FontSize="30" />
+
+        <Entry x:Name="yInterceptEntry"
+               WidthRequest="667"
+               HorizontalOptions="Start"
+               IsReadOnly="True"
+               Text="-- &#x00B1; --"
+               FontSize="30" />
+        
+        <Label Text=" "
+               FontSize="30" />
+
+        <Label Text="Outliers"
+               HorizontalOptions="Start"
+               FontSize="30" />
+
+        <Entry x:Name="outlierIndicesEntry"
+               WidthRequest="667"
+               HorizontalOptions="Start"
+               IsReadOnly="True"
+               Text="--"
+               FontSize="30" />
     </VerticalStackLayout>
     
 </ContentPage>

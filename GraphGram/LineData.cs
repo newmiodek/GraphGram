@@ -5,7 +5,7 @@ public class LineData {
     private Line lineOfBestFit;
     private double gradientUncertainty;
     private double yInterceptUncertainty;
-    private int outlierCount;
+    private int[] outliers; // Here outliers are represented by their zero-based indices
 
     public LineData(DataPoint[] dataPoints, bool goWithErrorBoxes) {
         LinePermutation[] lines;
@@ -33,8 +33,6 @@ public class LineData {
         for(int i = 0; i < outlierCategories.Count; i++) {
             if(outlierCategories[i].Count == 0) continue;
 
-            outlierCount = i;
-
             List<OutlierPermutation> outlierPermutations = new List<OutlierPermutation>();
 
             for(int j = 0; j < outlierCategories[i].Count; j++) {
@@ -55,6 +53,14 @@ public class LineData {
             for(int j = 1; j < outlierPermutations.Count; j++) {
                 if(outlierPermutations[j].GetOccurences() > outlierPermutations[maxOccurencesIndex].GetOccurences()) {
                     maxOccurencesIndex = j;
+                }
+            }
+
+            outliers = new int[i];
+            for(int j = 0, k = 0; k < i; j++) {
+                if(!outlierPermutations[maxOccurencesIndex].GetIntersections()[j]) {
+                    outliers[k] = j;
+                    k++;
                 }
             }
 
@@ -292,6 +298,9 @@ public class LineData {
     public double GetYInterceptUncertainty() {
         return yInterceptUncertainty;
     }
+    public int[] GetOutliers() {
+        return outliers;
+    }
 
     public override string ToString() {
         string toStringed = "LineData {\n"
@@ -300,7 +309,7 @@ public class LineData {
                           + "Line of Best Fit: " + lineOfBestFit.ToString() + "\n"
                           + "Gradient Uncertainty: " + gradientUncertainty.ToString() + "\n"
                           + "Y-Intercept Uncertainty: " + yInterceptUncertainty.ToString() + "\n"
-                          + "Outlier Count: " + outlierCount.ToString() + "\n"
+                          + "Outliers: " + outliers.ToString() + "\n"
                           + "}";
 
 

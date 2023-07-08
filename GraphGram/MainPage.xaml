@@ -23,43 +23,6 @@
         <local:TableHeaderGraphicSide x:Key="yUncertaintyHeader" />
     </ContentPage.Resources>
 
-    <ContentPage.MenuBarItems>
-        <MenuBarItem Text="File">
-            <MenuFlyoutItem Text="foo" />
-        </MenuBarItem>
-        <MenuBarItem Text="Edit">
-            <MenuFlyoutItem Text="foo" />
-        </MenuBarItem>
-        <MenuBarItem Text="View">
-            <MenuFlyoutItem Text="foo" />
-        </MenuBarItem>
-        <MenuBarItem Text="Graph">
-            <MenuFlyoutItem x:Name="errorBarsBoxesToggle"
-                            Text="Error Boxes&#x0009;"
-                            Clicked="ErrorBarsFlyoutClicked" />
-
-            <MenuFlyoutSeparator />
-
-            <MenuFlyoutItem x:Name="bestFitLineDrawToggle"
-                            Text="Line of Best Fit&#x0009;&#x2713;"
-                            Clicked="BestFitLineFlyoutClicked" />
-            
-            <MenuFlyoutItem x:Name="steepestLineDrawToggle"
-                            Text="Steepest Line&#x0009;"
-                            Clicked="SteepestLineFlyoutClicked" />
-            
-            <MenuFlyoutItem x:Name="leastSteepLineDrawToggle"
-                            Text="Least Steep Line&#x0009;"
-                            Clicked="LeastSteepLineFlyoutClicked" />
-        </MenuBarItem>
-        <MenuBarItem Text="Settings">
-            <MenuFlyoutItem Text="foo" />
-        </MenuBarItem>
-        <MenuBarItem Text="Help">
-            <MenuFlyoutItem Text="foo" />
-        </MenuBarItem>
-    </ContentPage.MenuBarItems>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -87,7 +50,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="{StaticResource cellHeight}" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="84" />
+                <RowDefinition Height="140" />
             </Grid.RowDefinitions>
 
             <BoxView Color="{AppThemeBinding Light=White, Dark=Black}"
@@ -132,56 +95,39 @@
                 </Grid>
             </ScrollView>
 
-            <Grid BackgroundColor="{AppThemeBinding Light='#B0B0B0', Dark='#404040'}"
-                  RowSpacing="1"
-                  ColumnSpacing="1"
-                  Grid.Row="2"
-                  Grid.ColumnSpan="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="5*" />
-                </Grid.ColumnDefinitions>
-
-                <ContentView BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
-                             Grid.Row="0"
-                             Grid.Column="0">
-                    <Label Text="Gradient: "
-                           BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
-                           HorizontalOptions="Start"
-                           VerticalOptions="Center"
-                           Padding="6" />
-                </ContentView>
-                <ContentView BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
-                             Grid.Row="0"
-                             Grid.Column="1">
-                    <Entry x:Name="gradientOutput"
-                       BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
-                       IsReadOnly="True"
-                       Text="-- &#x00B1; --" />
-                </ContentView>
-
-                <ContentView BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
-                             Grid.Row="1"
-                             Grid.Column="0" >
-                    <Label Text="Y-Intercept: "
-                       BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
-                       HorizontalOptions="Start"
-                       VerticalOptions="Center"
-                       Padding="6"/>
-                </ContentView>
-                <ContentView BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
-                             Grid.Row="1"
-                             Grid.Column="1">
-                    <Entry x:Name="yInterceptOutput"
-                       BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
-                       IsReadOnly="True"
-                       Text="-- &#x00B1; --" />
-                </ContentView>
-            </Grid>
+            <VerticalStackLayout BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+                                 Grid.Row="2"
+                                 Grid.ColumnSpan="5">
+                <HorizontalStackLayout HeightRequest="35">
+                    <CheckBox x:Name="bestFitLineCheckBox"
+                              Color="{AppThemeBinding Light=Black, Dark=White}"
+                              CheckedChanged="CheckBoxClicked"
+                              IsChecked="True" />
+                    <Label Text="Line of Best Fit"
+                           VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout HeightRequest="35">
+                    <CheckBox x:Name="steepestLineCheckBox"
+                              Color="{AppThemeBinding Light=Black, Dark=White}"
+                              CheckedChanged="CheckBoxClicked" />
+                    <Label Text="Steepest Line"
+                           VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout HeightRequest="35">
+                    <CheckBox x:Name="leastSteepLineCheckBox"
+                              Color="{AppThemeBinding Light=Black, Dark=White}"
+                              CheckedChanged="CheckBoxClicked" />
+                    <Label Text="Least Steep Line"
+                           VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout HeightRequest="35">
+                    <CheckBox x:Name="errorBoxesCheckBox"
+                              Color="{AppThemeBinding Light=Black, Dark=White}"
+                              CheckedChanged="CheckBoxClicked" />
+                    <Label Text="Error Boxes"
+                           VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
         </Grid>
         <GraphicsView x:Name="GraphingAreaView"
                       Drawable="{StaticResource graphingArea}"
