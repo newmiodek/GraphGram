@@ -1,4 +1,7 @@
-﻿namespace GraphGram;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
+
+namespace GraphGram;
 
 public partial class MainPage : ContentPage {
 
@@ -102,6 +105,10 @@ public partial class MainPage : ContentPage {
             xUncertaintyHeaderGraphicsView.Invalidate();
             yUncertaintyHeaderGraphicsView.Invalidate();
         };
+
+        WeakReferenceMessenger.Default.Register<RequestMessage<GraphResults>>(this, (r, m) => {
+            m.Reply(((GraphingArea)GraphingAreaView.Drawable).GetGraphResults());
+        });
     }
 
     private void UpdateGraph() {
@@ -109,8 +116,7 @@ public partial class MainPage : ContentPage {
         graphingArea.PassDataTable(entryTable, goWithErrorBoxes);
         GraphingAreaView.Invalidate();
 
-        //gradientOutput.Text = graphingArea.GetGradient();
-        //yInterceptOutput.Text = graphingArea.GetYIntercept();
+        WeakReferenceMessenger.Default.Send(new UpdateGraphResultsMessage(graphingArea.GetGraphResults()));
     }
 
     private void UpdateGraphPreferences() {
