@@ -155,7 +155,7 @@ public class GraphingArea : IDrawable {
 
     }
 
-    public string GetGradient() {
+    private string GetGradient() {
         if(isInputValid && isInitiated) {
             return lineData.GetLineOfBestFit().GetGradient().ToString()
                  + " \u00B1 "
@@ -164,13 +164,17 @@ public class GraphingArea : IDrawable {
         return "-- \u00B1 --";
     }
 
-    public string GetYIntercept() {
+    private string GetYIntercept() {
         if(isInputValid && isInitiated) {
             return lineData.GetLineOfBestFit().GetYIntercept().ToString()
                  + " \u00B1 "
                  + lineData.GetYInterceptUncertainty().ToString();
         }
         return "-- \u00B1 --";
+    }
+
+    public GraphResults GetGraphResults() {
+        return new GraphResults(GetGradient(), GetYIntercept(), "!GetOutliers() is not implemented yet!");
     }
 
     private float CalculateOriginX(RectF dirtyRect) {
