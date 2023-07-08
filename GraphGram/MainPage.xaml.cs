@@ -109,8 +109,8 @@ public partial class MainPage : ContentPage {
         graphingArea.PassDataTable(entryTable, goWithErrorBoxes);
         GraphingAreaView.Invalidate();
 
-        gradientOutput.Text = graphingArea.GetGradient();
-        yInterceptOutput.Text = graphingArea.GetYIntercept();
+        //gradientOutput.Text = graphingArea.GetGradient();
+        //yInterceptOutput.Text = graphingArea.GetYIntercept();
     }
 
     private void UpdateGraphPreferences() {
@@ -146,52 +146,24 @@ public partial class MainPage : ContentPage {
         yUncertaintyHeaderGraphicsView.Invalidate();
     }
 
-    private void ErrorBarsFlyoutClicked(object sender, EventArgs eventArgs) {
-        if(goWithErrorBoxes) {
-            goWithErrorBoxes = false;
-            errorBarsBoxesToggle.Text = "Error Boxes\t";
+    private void CheckBoxClicked(object sender, CheckedChangedEventArgs e) {
+        CheckBox checkBoxSender = (CheckBox)sender;
+        if(checkBoxSender == bestFitLineCheckBox) {
+            drawBestFitLine = e.Value;
+            UpdateGraphPreferences();
         }
-        else {
-            goWithErrorBoxes = true;
-            errorBarsBoxesToggle.Text = "Error Boxes\t\u2713";  // Check mark
+        else if(checkBoxSender == steepestLineCheckBox) {
+            drawSteepestLine = e.Value;
+            UpdateGraphPreferences();
         }
-        UpdateGraph();
-    }
-
-    private void SteepestLineFlyoutClicked(object sender, EventArgs eventArgs) {
-        if(drawSteepestLine) {
-            drawSteepestLine = false;
-            steepestLineDrawToggle.Text = "Steepest Line\t";
+        else if(checkBoxSender == leastSteepLineCheckBox) {
+            drawLeastSteepLine = e.Value;
+            UpdateGraphPreferences();
         }
-        else {
-            drawSteepestLine = true;
-            steepestLineDrawToggle.Text = "Steepest Line\t\u2713";  // Check mark
+        else if(checkBoxSender == errorBoxesCheckBox) {
+            goWithErrorBoxes = e.Value;
+            UpdateGraph();
         }
-        UpdateGraphPreferences();
-    }
-
-    private void LeastSteepLineFlyoutClicked(object sender, EventArgs eventArgs) {
-        if(drawLeastSteepLine) {
-            drawLeastSteepLine = false;
-            leastSteepLineDrawToggle.Text = "Least Steep Line\t";
-        }
-        else {
-            drawLeastSteepLine = true;
-            leastSteepLineDrawToggle.Text = "Least Steep Line\t\u2713"; // Check mark
-        }
-        UpdateGraphPreferences();
-    }
-
-    private void BestFitLineFlyoutClicked(object sender, EventArgs eventArgs) {
-        if(drawBestFitLine) {
-            drawBestFitLine = false;
-            bestFitLineDrawToggle.Text = "Line of Best Fit\t";
-        }
-        else {
-            drawBestFitLine = true;
-            bestFitLineDrawToggle.Text = "Line of Best Fit\t\u2713";  // Check mark
-        }
-        UpdateGraphPreferences();
     }
 
 }
