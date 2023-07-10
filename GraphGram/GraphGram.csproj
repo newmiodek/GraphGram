@@ -49,6 +49,7 @@
 
 	<ItemGroup>
 		<None Remove="Resources\Images\axes.svg" />
+		<None Remove="Resources\Images\ay.svg" />
 		<None Remove="Resources\Images\calc.svg" />
 	</ItemGroup>
 
@@ -58,6 +59,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<MauiXaml Update="AboutPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Analysis.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

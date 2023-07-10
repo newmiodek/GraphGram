@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GraphGram.AboutPage"
+             Title="">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="myOrange">#FCA311</Color>
+            <Style x:Key="standOut" TargetType="Span">
+                <Setter Property="TextColor" Value="{StaticResource myOrange}" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="MaximumWidthRequest" Value="800" />
+                <Setter Property="HorizontalTextAlignment" Value="Start" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView HorizontalOptions="Center">
+        <VerticalStackLayout>
+
+            <Label Text="GraphGram"
+               FontSize="72"
+               FontAttributes="Bold"
+               TextColor="{StaticResource myOrange}"
+               BackgroundColor="#14213D"
+               HeightRequest="150"
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Center" />
+            
+            <Label Text=" "
+               FontSize="30" />
+
+            <Label FontSize="Header">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="What is " />
+                        <Span Text="GraphGram"
+                          TextColor="{StaticResource myOrange}" />
+                        <Span Text="?" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label FontSize="16"
+               HorizontalOptions="CenterAndExpand"
+               MaximumWidthRequest="800">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span FontSize="24"
+                          Style="{StaticResource standOut}"
+                          Text="GraphGram" />
+                        <Span Text=" is a tool that allows you to generate " />
+                        <Span Style="{StaticResource standOut}"
+                          Text="graphs" />
+                        <Span Text=" based on data you provide, draw " />
+                        <Span Style="{StaticResource standOut}"
+                          Text="lines of best fit" />
+                        <Span Text=" that take into account the " />
+                        <Span Style="{StaticResource standOut}"
+                          Text="uncertainties" />
+                        <Span Text=" of the data, and calculate " />
+                        <Span Style="{StaticResource standOut}"
+                          Text="gradients" />
+                        <Span Text=" and " />
+                        <Span Style="{StaticResource standOut}"
+                          Text="y-intercepts" />
+                        <Span Text=" (along with their " />
+                        <Span Style="{StaticResource standOut}"
+                          Text="uncertainties" />
+                        <Span Text="), positions of any potential " />
+                        <Span Style="{StaticResource standOut}"
+                          Text="outliers" />
+                        <Span Text=", as well as coefficients of the " />
+                        <Span Style="{StaticResource standOut}"
+                          Text="steepest" />
+                        <Span Text=" and the " />
+                        <Span Style="{StaticResource standOut}"
+                          Text="least steep lines" />
+                        <Span Text="." />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
