@@ -155,71 +155,26 @@ public class GraphingArea : IDrawable {
 
     }
 
-    private string GetGradient() {
+    public GraphResults GetGraphResults() {
         if(isInputValid && isInitiated) {
-            return lineData.GetLineOfBestFit().GetGradient().ToString()
-                 + " \u00B1 "
-                 + lineData.GetGradientUncertainty().ToString();
-        }
-        return "-- \u00B1 --";
-    }
-
-    private string GetYIntercept() {
-        if(isInputValid && isInitiated) {
-            return lineData.GetLineOfBestFit().GetYIntercept().ToString()
-                 + " \u00B1 "
-                 + lineData.GetYInterceptUncertainty().ToString();
-        }
-        return "-- \u00B1 --";
-    }
-
-    private string GetOutliers() {
-        // Here outliers are represented with their one-based indices
-        if(isInputValid && isInitiated) {
-            string toStringedOutliers;
+            string gradient = lineData.GetLineOfBestFit().GetGradient().ToString() + " \u00B1 " + lineData.GetGradientUncertainty().ToString();
+            string yIntercept = lineData.GetLineOfBestFit().GetYIntercept().ToString() + " \u00B1 " + lineData.GetYInterceptUncertainty().ToString();
+            string outliers;
             if(lineData.GetOutliers().Length > 0) {
-                toStringedOutliers = "Row" + (lineData.GetOutliers().Length > 1 ? "s " : " ");
+                outliers = "Row" + (lineData.GetOutliers().Length > 1 ? "s " : " ");
                 for(int i = 0; i < lineData.GetOutliers().Length; i++) {
-                    toStringedOutliers += (lineData.GetOutliers()[i] + 1).ToString();
-                    if(i != lineData.GetOutliers().Length - 1) toStringedOutliers += ", ";
+                    outliers += (lineData.GetOutliers()[i] + 1).ToString();
+                    if(i != lineData.GetOutliers().Length - 1) outliers += ", ";
                 }
             }
-            else toStringedOutliers = "No outliers";
-            return toStringedOutliers;
+            else outliers = "No outliers";
+            string steepestGradient = lineData.GetSteepestLine().GetGradient().ToString();
+            string steepestYIntercept = lineData.GetSteepestLine().GetYIntercept().ToString();
+            string leastSteepGradient = lineData.GetLeastSteepLine().GetGradient().ToString();
+            string leastSteepYintercept = lineData.GetLeastSteepLine().GetYIntercept().ToString();
+            return new GraphResults(gradient, yIntercept, outliers, steepestGradient, steepestYIntercept, leastSteepGradient, leastSteepYintercept);
         }
-        return "--";
-    }
-
-    private string GetSteepestGradient() {
-        if(isInputValid && isInitiated) {
-            return lineData.GetSteepestLine().GetGradient().ToString();
-        }
-        return "--";
-    }
-
-    private string GetSteepestYIntercept() {
-        if(isInputValid && isInitiated) {
-            return lineData.GetSteepestLine().GetYIntercept().ToString();
-        }
-        return "--";
-    }
-
-    private string GetLeastSteepGradient() {
-        if(isInputValid && isInitiated) {
-            return lineData.GetLeastSteepLine().GetGradient().ToString();
-        }
-        return "--";
-    }
-
-    private string GetLeastSteepYIntercept() {
-        if(isInputValid && isInitiated) {
-            return lineData.GetLeastSteepLine().GetYIntercept().ToString();
-        }
-        return "--";
-    }
-
-    public GraphResults GetGraphResults() {
-        return new GraphResults(GetGradient(), GetYIntercept(), GetOutliers(), GetSteepestGradient(), GetSteepestYIntercept(), GetLeastSteepGradient(), GetLeastSteepYIntercept());
+        return new GraphResults("-- \u00B1 --", "-- \u00B1 --", "--", "--", "--", "--", "--");
     }
 
     private float CalculateOriginX(RectF dirtyRect) {
