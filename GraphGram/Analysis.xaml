@@ -10,11 +10,11 @@
             <x:Double x:Key="smallHeader">20</x:Double>
             <x:Double x:Key="displayWidth">650</x:Double>
             <Style TargetType="Label">
-                <Setter Property="HorizontalOptions" Value="Start" />
                 <Setter Property="FontSize" Value="{StaticResource smallHeader}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
             </Style>
             <Style TargetType="Entry">
-                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="IsReadOnly" Value="True" />
                 <Setter Property="WidthRequest" Value="{StaticResource displayWidth}" />
                 <Setter Property="FontSize" Value="{StaticResource smallHeader}" />
@@ -22,12 +22,15 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ScrollView>
-        <VerticalStackLayout Margin="10"
-                             Spacing="5">
+    <ScrollView HorizontalOptions="Center">
+        <VerticalStackLayout Spacing="5">
             <Label Text="Primary Results"
-               FontAttributes="Bold"
-               FontSize="{StaticResource bigHeader}" />
+                   TextColor="{StaticResource myOrange}"
+                   BackgroundColor="{StaticResource myDarkBlue}"
+                   HeightRequest="83"
+                   VerticalTextAlignment="Center"
+                   FontAttributes="Bold"
+                   FontSize="{StaticResource bigHeader}" />
             
             <Label Text=" " />
 
@@ -58,48 +61,54 @@
             <Entry x:Name="outlierIndicesEntry"
                Text="--" />
 
-            <Label Text=" " />
-            <Label Text=" " />
+            <Label Text=" " 
+                   FontSize="80"/>
 
             <Label Text="Worst Fit Lines"
-               FontAttributes="Bold"
-               FontSize="{StaticResource bigHeader}" />
+                   TextColor="{StaticResource myOrange}"
+                   BackgroundColor="{StaticResource myDarkBlue}"
+                   HeightRequest="83"
+                   VerticalTextAlignment="Center"
+                   FontAttributes="Bold"
+                   FontSize="{StaticResource bigHeader}" />
 
             <Label Text=" " />
 
             <Label Text="Steepest Line"
-               FontSize="{StaticResource mediumHeader}" />
+                   TextColor="{StaticResource myLightOrange}"
+                   FontSize="{StaticResource mediumHeader}" />
 
             <Label Text=" " />
 
             <Label Text="Steepest Line's Gradient" />
 
             <Entry x:Name="steepestGradientEntry"
-               Text="--" />
+                   Text="--" />
                 
 
             <Label Text="Steepest Line's Y-Intercept" />
 
             <Entry x:Name="steepestYInterceptEntry"
-               Text="--" />
+                   Text="--" />
 
             <Label Text=" " />
             <Label Text=" " />
 
             <Label Text="Least Steep Line"
-               FontSize="{StaticResource mediumHeader}" />
+                   TextColor="{StaticResource myLightOrange}"
+                   FontSize="{StaticResource mediumHeader}" />
 
             <Label Text=" " />
 
             <Label Text="Least Steep Line's Gradient" />
 
             <Entry x:Name="leastSteepGradientEntry"
-               Text="--" />
+                   Text="--" />
 
             <Label Text="Least Steep Line's Y-Intercept" />
 
             <Entry x:Name="leastSteepYInterceptEntry"
-               Text="--" />
+                   Text="--" />
 
             <Label Text=" "
                    FontSize="100" />

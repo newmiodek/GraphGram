@@ -6,7 +6,6 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Color x:Key="myOrange">#FCA311</Color>
             <Style x:Key="standOut" TargetType="Span">
                 <Setter Property="TextColor" Value="{StaticResource myOrange}" />
             </Style>
@@ -24,7 +23,7 @@
                FontSize="72"
                FontAttributes="Bold"
                TextColor="{StaticResource myOrange}"
-               BackgroundColor="#14213D"
+               BackgroundColor="{StaticResource myDarkBlue}"
                HeightRequest="150"
                HorizontalTextAlignment="Center"
                VerticalTextAlignment="Center" />
