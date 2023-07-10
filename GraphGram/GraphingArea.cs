@@ -190,8 +190,36 @@ public class GraphingArea : IDrawable {
         return "--";
     }
 
+    private string GetSteepestGradient() {
+        if(isInputValid && isInitiated) {
+            return lineData.GetSteepestLine().GetGradient().ToString();
+        }
+        return "--";
+    }
+
+    private string GetSteepestYIntercept() {
+        if(isInputValid && isInitiated) {
+            return lineData.GetSteepestLine().GetYIntercept().ToString();
+        }
+        return "--";
+    }
+
+    private string GetLeastSteepGradient() {
+        if(isInputValid && isInitiated) {
+            return lineData.GetLeastSteepLine().GetGradient().ToString();
+        }
+        return "--";
+    }
+
+    private string GetLeastSteepYIntercept() {
+        if(isInputValid && isInitiated) {
+            return lineData.GetLeastSteepLine().GetYIntercept().ToString();
+        }
+        return "--";
+    }
+
     public GraphResults GetGraphResults() {
-        return new GraphResults(GetGradient(), GetYIntercept(), GetOutliers());
+        return new GraphResults(GetGradient(), GetYIntercept(), GetOutliers(), GetSteepestGradient(), GetSteepestYIntercept(), GetLeastSteepGradient(), GetLeastSteepYIntercept());
     }
 
     private float CalculateOriginX(RectF dirtyRect) {

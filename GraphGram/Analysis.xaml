@@ -3,47 +3,107 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GraphGram.Analysis"
              Title="">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <x:Double x:Key="bigHeader">40</x:Double>
+            <x:Double x:Key="mediumHeader">28</x:Double>
+            <x:Double x:Key="smallHeader">20</x:Double>
+            <x:Double x:Key="displayWidth">650</x:Double>
+            <Style TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="FontSize" Value="{StaticResource smallHeader}" />
+            </Style>
+            <Style TargetType="Entry">
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="IsReadOnly" Value="True" />
+                <Setter Property="WidthRequest" Value="{StaticResource displayWidth}" />
+                <Setter Property="FontSize" Value="{StaticResource smallHeader}" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-    <VerticalStackLayout Margin="10"
-                         Spacing="5">
-        <Label Text="Gradient"
-               HorizontalOptions="Start"
-               FontSize="30" />
+    <ScrollView>
+        <VerticalStackLayout Margin="10"
+                             Spacing="5">
+            <Label Text="Primary Results"
+               FontAttributes="Bold"
+               FontSize="{StaticResource bigHeader}" />
+            
+            <Label Text=" " />
 
-        <Entry x:Name="gradientEntry"
-               WidthRequest="667"
-               HorizontalOptions="Start"
-               IsReadOnly="True"
-               Text="-- &#x00B1; --"
-               FontSize="30" />
+            <Label Text="Best Fit Line's Gradient" />
 
-        <Label Text=" "
-               FontSize="30" />
+            <!-- This zero-width and zero-height grid with an entry is here,
+                 because when the background was clicked the program focused the first entry on the page,
+                 but I wanted it to unfocus any entry. This weird hack solves this. -->
+            <Grid ColumnDefinitions="0"
+                  RowDefinitions="0">
+                <Entry />
+            </Grid>
 
-        <Label Text="Y-Intercept"
-               HorizontalOptions="Start"
-               FontSize="30" />
+            <Entry x:Name="gradientEntry"
+               Text="-- &#x00B1; --" />
 
-        <Entry x:Name="yInterceptEntry"
-               WidthRequest="667"
-               HorizontalOptions="Start"
-               IsReadOnly="True"
-               Text="-- &#x00B1; --"
-               FontSize="30" />
-        
-        <Label Text=" "
-               FontSize="30" />
+            <Label Text=" " />
 
-        <Label Text="Outliers"
-               HorizontalOptions="Start"
-               FontSize="30" />
+            <Label Text="Best Fit Line's Y-Intercept" />
 
-        <Entry x:Name="outlierIndicesEntry"
-               WidthRequest="667"
-               HorizontalOptions="Start"
-               IsReadOnly="True"
-               Text="--"
-               FontSize="30" />
-    </VerticalStackLayout>
-    
+            <Entry x:Name="yInterceptEntry"
+               Text="-- &#x00B1; --" />
+
+            <Label Text=" " />
+
+            <Label Text="Outliers" />
+
+            <Entry x:Name="outlierIndicesEntry"
+               Text="--" />
+
+            <Label Text=" " />
+            <Label Text=" " />
+
+            <Label Text="Worst Fit Lines"
+               FontAttributes="Bold"
+               FontSize="{StaticResource bigHeader}" />
+
+            <Label Text=" " />
+
+            <Label Text="Steepest Line"
+               FontSize="{StaticResource mediumHeader}" />
+
+            <Label Text=" " />
+
+            <Label Text="Steepest Line's Gradient" />
+
+            <Entry x:Name="steepestGradientEntry"
+               Text="--" />
+                
+
+            <Label Text="Steepest Line's Y-Intercept" />
+
+            <Entry x:Name="steepestYInterceptEntry"
+               Text="--" />
+
+            <Label Text=" " />
+            <Label Text=" " />
+
+            <Label Text="Least Steep Line"
+               FontSize="{StaticResource mediumHeader}" />
+
+            <Label Text=" " />
+
+            <Label Text="Least Steep Line's Gradient" />
+
+            <Entry x:Name="leastSteepGradientEntry"
+               Text="--" />
+
+            <Label Text="Least Steep Line's Y-Intercept" />
+
+            <Entry x:Name="leastSteepYInterceptEntry"
+               Text="--" />
+
+            <Label Text=" "
+                   FontSize="100" />
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>
