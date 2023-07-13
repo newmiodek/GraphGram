@@ -155,7 +155,7 @@
                         <Span Text=" is rendered invalid. " />
                         <Span Text="GraphGram stops reading"
                               Style="{StaticResource standOut}" />
-                        <Span Text=" the data table after encountering an invalid row, meaning that if you have 10 rows of data and there is an invalid cell in the 6th row, only the first 5 rows will be read." />
+                        <Span Text=" the data table after encountering an invalid row, meaning that if you have 10 rows of data and there is an invalid cell in the 6th row, only the first 5 rows will be read. If less than 2 rows get marked as valid, nothing will be drawn on the graph." />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -274,6 +274,29 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
+            <Label Text=" "
+                   FontSize="20" />
+
+            <Label Text="Change the Theme"
+                   FontSize="25"
+                   TextColor="{AppThemeBinding Light={StaticResource myOrange0}, Dark={StaticResource myOrange2}}"/>
+            <Label Text=" "
+                   FontSize="10" />
+            <Label FontSize="16"
+                   LineHeight="2">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="GraphGram"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" is available in both the light and the dark theme. The theme automatically adjusts to your " />
+                        <Span Text="system theme"
+                              Style="{StaticResource standOut}" />
+                        <Span Text="." />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label Text=" "
+                   FontSize="20"/>
             
             <Label Text=" "
                    FontSize="30" />
