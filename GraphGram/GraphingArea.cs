@@ -149,7 +149,7 @@ public class GraphingArea : IDrawable {
             canvas.FontColor = Colors.Red;
             canvas.FontSize = Constants.GRAPHING_AREA_FONT_SIZE;
             canvas.Font = Constants.FONT;
-            canvas.DrawString("Invalid input", 100f, 100f, HorizontalAlignment.Left);
+            canvas.DrawString("Too few valid rows to draw anything", dirtyRect.Width / 2f, dirtyRect.Height / 2f, HorizontalAlignment.Center);
             return;
         }
 
