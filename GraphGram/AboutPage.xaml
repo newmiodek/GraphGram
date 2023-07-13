@@ -7,7 +7,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="standOut" TargetType="Span">
-                <Setter Property="TextColor" Value="{StaticResource myOrange}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource myOrange0}, Dark={StaticResource myOrange2}}" />
             </Style>
             <Style TargetType="Label">
                 <Setter Property="MaximumWidthRequest" Value="800" />
@@ -16,9 +16,9 @@
             <Style TargetType="Button">
                 <Setter Property="Text" Value="Open Link" />
                 <Setter Property="WidthRequest" Value="100" />
-                <Setter Property="BackgroundColor" Value="{StaticResource myDarkBlue}" />
-                <Setter Property="TextColor" Value="{StaticResource myOrange}" />
-                <Setter Property="BorderColor" Value="{StaticResource myDarkDarkBlue}" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource myOrange2}, Dark={StaticResource myDarkBlue}}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark={StaticResource myOrange2}}" />
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource myOrange0}, Dark={StaticResource myDarkDarkBlue}}" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -29,8 +29,8 @@
             <Label Text="GraphGram"
                FontSize="72"
                FontAttributes="Bold"
-               TextColor="{StaticResource myOrange}"
-               BackgroundColor="{StaticResource myDarkBlue}"
+               TextColor="{AppThemeBinding Light=Black, Dark={StaticResource myOrange2}}"
+               BackgroundColor="{AppThemeBinding Light={StaticResource myOrange2}, Dark={StaticResource myDarkBlue}}"
                HeightRequest="150"
                HorizontalTextAlignment="Center"
                VerticalTextAlignment="Center" />
@@ -43,7 +43,7 @@
                     <FormattedString>
                         <Span Text="What is " />
                         <Span Text="GraphGram"
-                              TextColor="{StaticResource myOrange}" />
+                              TextColor="{AppThemeBinding Light={StaticResource myOrange0}, Dark={StaticResource myOrange2}}" />
                         <Span Text="?" />
                     </FormattedString>
                 </Label.FormattedText>
@@ -171,7 +171,7 @@
             
             <Label Text="Change Column Titles"
                    FontSize="25"
-                   TextColor="{StaticResource myOrange}"/>
+                   TextColor="{AppThemeBinding Light={StaticResource myOrange0}, Dark={StaticResource myOrange2}}"/>
             <Label Text=" "
                    FontSize="10" />
             <Label FontSize="16"
@@ -202,7 +202,7 @@
 
             <Label Text="Add Exponents to Titles"
                    FontSize="25"
-                   TextColor="{StaticResource myOrange}"/>
+                   TextColor="{AppThemeBinding Light={StaticResource myOrange0}, Dark={StaticResource myOrange2}}"/>
             <Label Text=" "
                    FontSize="10" />
             <Label FontSize="16"
@@ -239,7 +239,7 @@
 
             <Label Text="Write Shorter Inputs"
                    FontSize="25"
-                   TextColor="{StaticResource myOrange}"/>
+                   TextColor="{AppThemeBinding Light={StaticResource myOrange0}, Dark={StaticResource myOrange2}}"/>
             <Label Text=" "
                    FontSize="10" />
             <Label FontSize="16"
@@ -303,7 +303,7 @@
 
             <Label Text="CommunityToolkit.Mvvm"
                    FontSize="25"
-                   TextColor="{StaticResource myOrange}"/>
+                   TextColor="{AppThemeBinding Light={StaticResource myOrange0}, Dark={StaticResource myOrange2}}"/>
             <Label Text=" "
                    FontSize="10" />
             <Label Text="Click to view the license of CommunityToolkit.Mvvm"
@@ -322,7 +322,7 @@
 
             <Label Text="Inkscape"
                    FontSize="25"
-                   TextColor="{StaticResource myOrange}"/>
+                   TextColor="{AppThemeBinding Light={StaticResource myOrange0}, Dark={StaticResource myOrange2}}"/>
             <Label Text=" "
                    FontSize="10" />
             <Label Text="Click to view the license of Inkscape"
@@ -341,7 +341,7 @@
 
             <Label Text=".NET Multiplatform App UI"
                    FontSize="25"
-                   TextColor="{StaticResource myOrange}"/>
+                   TextColor="{AppThemeBinding Light={StaticResource myOrange0}, Dark={StaticResource myOrange2}}"/>
             <Label Text=" "
                    FontSize="10" />
             <Label Text="Click to view the license of .NET Multiplatform App UI"

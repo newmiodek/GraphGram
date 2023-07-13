@@ -25,8 +25,8 @@
     <ScrollView HorizontalOptions="Center">
         <VerticalStackLayout Spacing="5">
             <Label Text="Primary Results"
-                   TextColor="{StaticResource myOrange}"
-                   BackgroundColor="{StaticResource myDarkBlue}"
+                   TextColor="{AppThemeBinding Light=Black, Dark={StaticResource myOrange2}}"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource myOrange2}, Dark={StaticResource myDarkBlue}}"
                    HeightRequest="83"
                    VerticalTextAlignment="Center"
                    FontAttributes="Bold"
@@ -65,8 +65,8 @@
                    FontSize="80"/>
 
             <Label Text="Worst Fit Lines"
-                   TextColor="{StaticResource myOrange}"
-                   BackgroundColor="{StaticResource myDarkBlue}"
+                   TextColor="{AppThemeBinding Light=Black, Dark={StaticResource myOrange2}}"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource myOrange2}, Dark={StaticResource myDarkBlue}}"
                    HeightRequest="83"
                    VerticalTextAlignment="Center"
                    FontAttributes="Bold"
@@ -75,7 +75,8 @@
             <Label Text=" " />
 
             <Label Text="Steepest Line"
-                   TextColor="{StaticResource myLightOrange}"
+                   TextColor="{AppThemeBinding Light=Black, Dark={StaticResource myOrange4}}"
+                   FontAttributes="Bold"
                    FontSize="{StaticResource mediumHeader}" />
 
             <Label Text=" " />
@@ -95,7 +96,8 @@
             <Label Text=" " />
 
             <Label Text="Least Steep Line"
-                   TextColor="{StaticResource myLightOrange}"
+                   TextColor="{AppThemeBinding Light=Black, Dark={StaticResource myOrange4}}"
+                   FontAttributes="Bold"
                    FontSize="{StaticResource mediumHeader}" />
 
             <Label Text=" " />

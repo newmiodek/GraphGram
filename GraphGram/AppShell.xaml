@@ -5,8 +5,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:GraphGram"
     Shell.FlyoutBehavior="Disabled"
-    Shell.TabBarBackgroundColor="{AppThemeBinding Light={StaticResource myLightBlue}, Dark={StaticResource myDarkDarkBlue}}"
-    Shell.TabBarForegroundColor="{AppThemeBinding Light=Black, Dark={StaticResource myOrange}}">
+    Shell.TabBarBackgroundColor="{AppThemeBinding Light={StaticResource myOrange3}, Dark={StaticResource myDarkDarkBlue}}"
+    Shell.TabBarForegroundColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource myOrange2}}">
+    
+    
 
     <TabBar>
         <ShellContent Title="Graph"

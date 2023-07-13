@@ -53,26 +53,26 @@
                 <RowDefinition Height="140" />
             </Grid.RowDefinitions>
 
-            <BoxView Color="{AppThemeBinding Light={StaticResource myGray}, Dark={StaticResource myDarkBlue}}"
+            <BoxView Color="{AppThemeBinding Light={StaticResource myOrange2}, Dark={StaticResource myDarkBlue}}"
                      Grid.Column="0" />
 
             <ContentView x:Name="xHeaderContentView"
-                         BackgroundColor="{AppThemeBinding Light={StaticResource myGray}, Dark={StaticResource myDarkBlue}}"
+                         BackgroundColor="{AppThemeBinding Light={StaticResource myOrange2}, Dark={StaticResource myDarkBlue}}"
                          Grid.Column="1" />
             <!-- Content added in the code-behind -->
 
             <ContentView x:Name="yHeaderContentView"
-                         BackgroundColor="{AppThemeBinding Light={StaticResource myGray}, Dark={StaticResource myDarkBlue}}"
+                         BackgroundColor="{AppThemeBinding Light={StaticResource myOrange2}, Dark={StaticResource myDarkBlue}}"
                          Grid.Column="2" />
             <!-- Content added in the code-behind -->
 
-            <ContentView BackgroundColor="{AppThemeBinding Light={StaticResource myGray}, Dark={StaticResource myDarkBlue}}"
+            <ContentView BackgroundColor="{AppThemeBinding Light={StaticResource myOrange2}, Dark={StaticResource myDarkBlue}}"
                          Grid.Column="3">
                 <GraphicsView x:Name="xUncertaintyHeaderGraphicsView"
                               Drawable="{StaticResource xUncertaintyHeader}" />
             </ContentView>
 
-            <ContentView BackgroundColor="{AppThemeBinding Light={StaticResource myGray}, Dark={StaticResource myDarkBlue}}"
+            <ContentView BackgroundColor="{AppThemeBinding Light={StaticResource myOrange2}, Dark={StaticResource myDarkBlue}}"
                          Grid.Column="4">
                 <GraphicsView x:Name="yUncertaintyHeaderGraphicsView"
                               Drawable="{StaticResource yUncertaintyHeader}" />
@@ -100,7 +100,7 @@
                                  Grid.ColumnSpan="5">
                 <HorizontalStackLayout HeightRequest="35">
                     <CheckBox x:Name="bestFitLineCheckBox"
-                              Color="{AppThemeBinding Light=Black, Dark={StaticResource myOrange}}"
+                              Color="{AppThemeBinding Light=Black, Dark={StaticResource myOrange2}}"
                               CheckedChanged="CheckBoxClicked"
                               IsChecked="True" />
                     <Label Text="Line of Best Fit"
@@ -108,21 +108,21 @@
                 </HorizontalStackLayout>
                 <HorizontalStackLayout HeightRequest="35">
                     <CheckBox x:Name="steepestLineCheckBox"
-                              Color="{AppThemeBinding Light=Black, Dark={StaticResource myOrange}}"
+                              Color="{AppThemeBinding Light=Black, Dark={StaticResource myOrange2}}"
                               CheckedChanged="CheckBoxClicked" />
                     <Label Text="Steepest Line"
                            VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout HeightRequest="35">
                     <CheckBox x:Name="leastSteepLineCheckBox"
-                              Color="{AppThemeBinding Light=Black, Dark={StaticResource myOrange}}"
+                              Color="{AppThemeBinding Light=Black, Dark={StaticResource myOrange2}}"
                               CheckedChanged="CheckBoxClicked" />
                     <Label Text="Least Steep Line"
                            VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout HeightRequest="35">
                     <CheckBox x:Name="errorBoxesCheckBox"
-                              Color="{AppThemeBinding Light=Black, Dark={StaticResource myOrange}}"
+                              Color="{AppThemeBinding Light=Black, Dark={StaticResource myOrange2}}"
                               CheckedChanged="CheckBoxClicked" />
                     <Label Text="Error Boxes"
                            VerticalOptions="Center" />
