@@ -55,7 +55,7 @@ public partial class MainPage : ContentPage {
                 int localJ = 1 * j;
                 int localI = 1 * i;
 
-                entryTable[localI, localJ] = new Entry();
+                entryTable[localI, localJ] = new Entry { IsSpellCheckEnabled = false, IsTextPredictionEnabled = false};
                 entryTable[localI, localJ].SetAppThemeColor(Entry.BackgroundColorProperty, Colors.White, Colors.Black);
                 entryTable[localI, localJ].SetAppThemeColor(Entry.TextColorProperty, Colors.Black, Colors.White);
 
@@ -84,14 +84,22 @@ public partial class MainPage : ContentPage {
         ((TableHeaderGraphicSide)xHeaderGraphicsView.Drawable).SetText("x");
         xHeaderGraphicsView.StartInteraction += SwitchXHeaderToEntry;
         xHeaderContentView.Content = xHeaderGraphicsView;
-        xHeaderEntry = new Entry { Text = ((TableHeaderGraphicSide)xHeaderGraphicsView.Drawable).GetText() };
+        xHeaderEntry = new Entry {
+            Text = ((TableHeaderGraphicSide)xHeaderGraphicsView.Drawable).GetText(),
+            IsSpellCheckEnabled = false,
+            IsTextPredictionEnabled = false
+        };
         xHeaderEntry.ReturnCommand = new Command(SwitchXHeaderToGraphicsView);
 
         yHeaderGraphicsView = new GraphicsView { Drawable = new TableHeaderGraphicSide() };
         ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).SetText("y");
         yHeaderGraphicsView.StartInteraction += SwitchYHeaderToEntry;
         yHeaderContentView.Content = yHeaderGraphicsView;
-        yHeaderEntry = new Entry { Text = ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).GetText() };
+        yHeaderEntry = new Entry {
+            Text = ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).GetText(),
+            IsSpellCheckEnabled = false,
+            IsTextPredictionEnabled = false
+        };
         yHeaderEntry.ReturnCommand = new Command(SwitchYHeaderToGraphicsView);
 
         ((TableHeaderGraphicSide)xUncertaintyHeaderGraphicsView.Drawable).SetText("\u0394x");
