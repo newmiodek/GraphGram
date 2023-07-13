@@ -13,6 +13,13 @@
                 <Setter Property="MaximumWidthRequest" Value="800" />
                 <Setter Property="HorizontalTextAlignment" Value="Start" />
             </Style>
+            <Style TargetType="Button">
+                <Setter Property="Text" Value="Open Link" />
+                <Setter Property="WidthRequest" Value="100" />
+                <Setter Property="BackgroundColor" Value="{StaticResource myDarkBlue}" />
+                <Setter Property="TextColor" Value="{StaticResource myOrange}" />
+                <Setter Property="BorderColor" Value="{StaticResource myDarkDarkBlue}" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -29,57 +36,327 @@
                VerticalTextAlignment="Center" />
             
             <Label Text=" "
-               FontSize="30" />
+                   FontSize="30" />
 
             <Label FontSize="Header">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="What is " />
                         <Span Text="GraphGram"
-                          TextColor="{StaticResource myOrange}" />
+                              TextColor="{StaticResource myOrange}" />
                         <Span Text="?" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
+
+            <Label Text=" "
+                   FontSize="20" />
+
             <Label FontSize="16"
-               HorizontalOptions="CenterAndExpand"
-               MaximumWidthRequest="800">
+                   LineHeight="2">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span FontSize="24"
-                          Style="{StaticResource standOut}"
-                          Text="GraphGram" />
-                        <Span Text=" is a tool that allows you to generate " />
-                        <Span Style="{StaticResource standOut}"
-                          Text="graphs" />
-                        <Span Text=" based on data you provide, draw " />
-                        <Span Style="{StaticResource standOut}"
-                          Text="lines of best fit" />
+                        <Span Text="GraphGram"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" is a tool that allows you to generate graphs based on data you provide, draw " />
+                        <Span Text="lines of best fit" 
+                              Style="{StaticResource standOut}" />
                         <Span Text=" that take into account the " />
-                        <Span Style="{StaticResource standOut}"
-                          Text="uncertainties" />
-                        <Span Text=" of the data, and calculate " />
-                        <Span Style="{StaticResource standOut}"
-                          Text="gradients" />
-                        <Span Text=" and " />
-                        <Span Style="{StaticResource standOut}"
-                          Text="y-intercepts" />
-                        <Span Text=" (along with their " />
-                        <Span Style="{StaticResource standOut}"
-                          Text="uncertainties" />
-                        <Span Text="), positions of any potential " />
-                        <Span Style="{StaticResource standOut}"
-                          Text="outliers" />
-                        <Span Text=", as well as coefficients of the " />
-                        <Span Style="{StaticResource standOut}"
-                          Text="steepest" />
+                        <Span Text="uncertainties"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" of the data, and calculate their gradients and y-intercepts (along with their " />
+                        <Span Text="uncertainties"
+                              Style="{StaticResource standOut}" />
+                        <Span Text="), positions of any potential outliers, as well as coefficients of the " />
+                        <Span Text="steepest"
+                              Style="{StaticResource standOut}" />
                         <Span Text=" and the " />
-                        <Span Style="{StaticResource standOut}"
-                          Text="least steep lines" />
+                        <Span Text="least steep lines"
+                              Style="{StaticResource standOut}" />
                         <Span Text="." />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
+
+            <Label Text=" "
+                   FontSize="30" />
+
+            <Label FontSize="Header"
+                   Text="How does it work?" />
+
+            <Label Text=" "
+                   FontSize="20" />
+
+            <Label FontSize="16"
+                   LineHeight="2">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="All you need to do is go to the " />
+                        <Span Text="Graph"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" tab, put all of your data into the table on the left-hand side, and click " />
+                        <Span Text="Enter"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" while having one of the table cells selected. " />
+                        <Span Text="GraphGram"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" will take your data and perform all of the necessary calculations for you. The results of these calculations will take the form of a graph placed to the right of the data table, and a list of values in the " />
+                        <Span Text="Analysis"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" tab." />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label Text=" "
+                   FontSize="16" />
+            <Label FontSize="16"
+                   LineHeight="2">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="You can choose what exactly gets drawn on the graph - you can toggle the visibility of the line of best fit, the steepest line, and the least steep line. You can also choose whether the calculations on the data should be performed using the data points' " />
+                        <Span Text="error bars"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" or the " />
+                        <Span Text="error boxes"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=". The check boxes to make these choices are placed below the data table." />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            
+            <Label Text=" "
+                   FontSize="30" />
+
+            <Label FontSize="Header"
+                   Text="Rules of the Data Table" />
+
+            <Label Text=" "
+                   FontSize="20" />
+
+            <Label FontSize="16"
+                   LineHeight="2">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="When " />
+                        <Span Text="GraphGram"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" reads the data from the data table it follows a certain set of rules. It goes row by row, starting from the top and working its way down from there. When reading a row, it determines whether the data in this row is valid, and for it to be so, the cells must contain a " />
+                        <Span Text="real number"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" and use a " />
+                        <Span Text="period (.)"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" as the decimal separator. Also, the " />
+                        <Span Text="uncertainties must be non-negative"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=". If the data in at least one of the cells in a row fails to follow these rules, the " />
+                        <Span Text="whole row"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" is rendered invalid. " />
+                        <Span Text="GraphGram stops reading"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" the data table after encountering an invalid row, meaning that if you have 10 rows of data and there is an invalid cell in the 6th row, only the first 5 rows will be read." />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label Text=" "
+                   FontSize="30" />
+
+            <Label FontSize="Header"
+                   Text="Tips and Tricks" />
+
+            <Label Text=" "
+                   FontSize="20"/>
+            
+            <Label Text="Change Column Titles"
+                   FontSize="25"
+                   TextColor="{StaticResource myOrange}"/>
+            <Label Text=" "
+                   FontSize="10" />
+            <Label FontSize="16"
+                   LineHeight="2">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="You can change the titles of the data table's " />
+                        <Span Text="x"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" and " />
+                        <Span Text="y"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" columns. Click on the cell with the title you'd like to change, click it again to select it, write your preferred title, and confirm by clicking " />
+                        <Span Text="Enter"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=". Your change will also be automatically applied to the corresponding " />
+                        <Span Text="uncertainty title"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" and to the " />
+                        <Span Text="graph"
+                              Style="{StaticResource standOut}" />
+                        <Span Text="." />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label Text=" "
+                   FontSize="20"/>
+
+            <Label Text="Add Exponents to Titles"
+                   FontSize="25"
+                   TextColor="{StaticResource myOrange}"/>
+            <Label Text=" "
+                   FontSize="10" />
+            <Label FontSize="16"
+                   LineHeight="2">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="You can add exponents to the titles of the data table's columns by adding " />
+                        <Span Text="^(...)"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" to the title and putting your desired exponent between the braces. This will " />
+                        <Span Text="raise"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" the content between the braces slightly higher and make the font " />
+                        <Span Text="smaller"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=". You can add " />
+                        <Span Text="more than one"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" exponent in a single title. For example, your title can be " />
+                        <Span Text="x^(2)"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=", " />
+                        <Span Text="abc^(def)"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" or " />
+                        <Span Text="n^(q)m^(p)"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=". Keep in mind that exponents can't be put inside other exponents." />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label Text=" "
+                   FontSize="20"/>
+
+            <Label Text="Write Shorter Inputs"
+                   FontSize="25"
+                   TextColor="{StaticResource myOrange}"/>
+            <Label Text=" "
+                   FontSize="10" />
+            <Label FontSize="16"
+                   LineHeight="2">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="When your data consists of very large or very small numbers, putting them into " />
+                        <Span Text="GraphGram"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" may make the program look cluttered. For example, the numbers on the " />
+                        <Span Text="x-axis"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" may overlap, or the numbers on the " />
+                        <Span Text="y-axis"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" may stick out of the graph's area. In order to fix this, it is advised to change the units of the data in the data table. By this it is meant that a number like " />
+                        <Span Text="0.00000075"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=", which is expressed in " />
+                        <Span Text="meters"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=", can be converted to " />
+                        <Span Text="750 nanometers"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=". " />
+                        <Span Text="Be careful!"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" Changing the units of your data will also have an effect on the calculated values in the " />
+                        <Span Text="Analysis"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" tab, which you will have to take into account when doing any calculations later on." />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            
+            <Label Text=" "
+                   FontSize="30" />
+
+            <Label FontSize="Header"
+                   Text="License Information" />
+
+            <Label Text=" "
+                   FontSize="20"/>
+
+            <Label FontSize="16"
+                   LineHeight="2">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="GraphGram"
+                              Style="{StaticResource standOut}"/>
+                        <Span Text=" has been developed with the help of a few " />
+                        <Span Text="open source"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" projects. Here is the license information about each of them:" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label Text=" "
+                   FontSize="20" />
+
+            <Label Text="CommunityToolkit.Mvvm"
+                   FontSize="25"
+                   TextColor="{StaticResource myOrange}"/>
+            <Label Text=" "
+                   FontSize="10" />
+            <Label Text="Click to view the license of CommunityToolkit.Mvvm"
+                   FontSize="16"
+                   LineHeight="2" />
+
+            <Grid MaximumWidthRequest="800"
+                  HorizontalOptions="Center"
+                  ColumnDefinitions="100, 700">
+                <Button x:Name="CommunityToolkitMvvmButton"
+                        Clicked="LicenseButtonClick" />
+            </Grid>
+            
+            <Label Text=" "
+                   FontSize="20"/>
+
+            <Label Text="Inkscape"
+                   FontSize="25"
+                   TextColor="{StaticResource myOrange}"/>
+            <Label Text=" "
+                   FontSize="10" />
+            <Label Text="Click to view the license of Inkscape"
+                   FontSize="16"
+                   LineHeight="2" />
+
+            <Grid MaximumWidthRequest="800"
+                  HorizontalOptions="Center"
+                  ColumnDefinitions="100, 700">
+                <Button x:Name="InkscapeButton"
+                        Clicked="LicenseButtonClick" />
+            </Grid>
+            
+            <Label Text=" "
+                   FontSize="20"/>
+
+            <Label Text=".NET Multiplatform App UI"
+                   FontSize="25"
+                   TextColor="{StaticResource myOrange}"/>
+            <Label Text=" "
+                   FontSize="10" />
+            <Label Text="Click to view the license of .NET Multiplatform App UI"
+                   FontSize="16"
+                   LineHeight="2" />
+
+            <Grid MaximumWidthRequest="800"
+                  HorizontalOptions="Center"
+                  ColumnDefinitions="100, 700">
+                <Button x:Name="MauiButton"
+                        Clicked="LicenseButtonClick" />
+            </Grid>
+            
+            <Label Text=" "
+                   FontSize="100" />
         </VerticalStackLayout>
     </ScrollView>
 
