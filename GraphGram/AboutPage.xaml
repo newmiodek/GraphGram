@@ -32,6 +32,7 @@
                TextColor="{AppThemeBinding Light=Black, Dark={StaticResource myOrange2}}"
                BackgroundColor="{AppThemeBinding Light={StaticResource myOrange2}, Dark={StaticResource myDarkBlue}}"
                HeightRequest="150"
+               MaximumWidthRequest="100000000"
                HorizontalTextAlignment="Center"
                VerticalTextAlignment="Center" />
             

@@ -18,6 +18,9 @@
         <ShellContent Title="Analysis"
                       Icon="calc.png"
                       ContentTemplate="{DataTemplate local:Analysis}" />
+        <ShellContent Title="Import Export"
+                      Icon="imex.png"
+                      ContentTemplate="{DataTemplate local:ImportExport}" />
         <ShellContent Title="About"
                       Icon="ay.png"
                       ContentTemplate="{DataTemplate local:AboutPage}" />

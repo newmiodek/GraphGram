@@ -117,6 +117,21 @@ public partial class MainPage : ContentPage {
         WeakReferenceMessenger.Default.Register<RequestMessage<GraphResults>>(this, (r, m) => {
             m.Reply(((GraphingArea)GraphingAreaView.Drawable).GetGraphResults());
         });
+
+        WeakReferenceMessenger.Default.Register<ImportDataMessage>(this, (r, m) => {
+            for(int i = 0; i < m.Value.GetLength(0); i++) {
+                for(int j = 0; j < 4; j++) {
+                    string new_text;
+                    if(m.Value[i, j] == null) {
+                        new_text = "";
+                    }
+                    else {
+                        new_text = m.Value[i, j].ToString();
+                    }
+                    entryTable[i, j].Text = new_text;
+                }
+            }
+        });
     }
 
     private void UpdateGraph() {
