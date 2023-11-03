@@ -37,9 +37,11 @@
                VerticalTextAlignment="Center"
                FontAttributes="Bold"
                FontSize="{StaticResource bigHeader}" />
+        <Label Text="" />
         <Button Text="Import data to table"
                 HorizontalOptions="Center"
                 Clicked="StartFilePicker" />
+        <Label Text="" />
         <Button Text="Export data from table"
                 HorizontalOptions="Center"
                 Clicked="StartFileSaver" />

@@ -1,7 +1,9 @@
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Threading;
 
@@ -14,8 +16,18 @@ public partial class ImportExport : ContentPage {
 
 	private async void StartFilePicker(object sender, EventArgs e) {
 		PickOptions options = new PickOptions();
-		await PickAndShow(options);
-	}
+
+        var tokenSource = new CancellationTokenSource();
+        CancellationToken ct = tokenSource.Token;
+
+        var fileSaverResult = await PickAndShow(options);
+        if(fileSaverResult != null) {
+            await Toast.Make("Data successfully imported to the table").Show(ct);
+        }
+        else {
+            await Toast.Make("Failed to import data").Show(ct);
+        }
+    }
 
 	private async Task<FileResult> PickAndShow(PickOptions options) {
 		try {
@@ -25,23 +37,6 @@ public partial class ImportExport : ContentPage {
 				using var stream_reader = new StreamReader(stream);
 				string text = stream_reader.ReadToEnd();
 				float?[,] decoded = DecodeCVS(text);
-				/*string inserted_text = "";
-				bool found_null = false;
-				for(int i = 0; i < decoded.GetLength(0); i++) {
-					for(int j = 0; j < 4; j++) {
-						if(decoded[i, j] == null) {
-                            found_null = true;
-                            break;
-                        }
-						inserted_text += decoded[i, j].ToString() + " ";
-                    }
-					if(found_null) {
-						break;
-					}
-					inserted_text += "\r\n";
-				}
-				Debug.WriteLine(inserted_text);
-				textfield.Text = inserted_text;*/
                 WeakReferenceMessenger.Default.Send(new ImportDataMessage(decoded));
             }
 			return result;
@@ -57,7 +52,7 @@ public partial class ImportExport : ContentPage {
 		float?[,] output = new float?[Constants.DEFAULT_ROW_COUNT, 4];
 		bool decode_failed = false;
 		for(int i = 0; i < cvs.Length; i++) {
-			if(cvs[i] == ' ') {
+			if(cvs[i] == '\t') {
 				Debug.WriteLine("Option 1");
 				float parsed_number;
 				if(!float.TryParse(current_number, out parsed_number)) {
@@ -127,7 +122,10 @@ public partial class ImportExport : ContentPage {
 	}
 
 	private async void StartFileSaver(object sender, EventArgs e) {
-        using var stream = new MemoryStream(Encoding.Default.GetBytes("Hello from the Community Toolkit!"));
+		RequestMessage<string> tableRequest = new RequestMessage<string>();
+		WeakReferenceMessenger.Default.Send(tableRequest);
+
+        using var stream = new MemoryStream(Encoding.Default.GetBytes(tableRequest.Response));
 
 		var tokenSource = new CancellationTokenSource();
 		CancellationToken ct = tokenSource.Token;

@@ -2,5 +2,5 @@
 
 namespace GraphGram;
 public class ImportDataMessage : ValueChangedMessage<float?[,]> {
-    public ImportDataMessage(float?[,] value) : base(value) { }
+    public ImportDataMessage(float?[,] data) : base(data) { }
 }

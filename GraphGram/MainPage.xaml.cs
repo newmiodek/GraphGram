@@ -131,6 +131,29 @@ public partial class MainPage : ContentPage {
                     entryTable[i, j].Text = new_text;
                 }
             }
+            UpdateGraph();
+        });
+
+        WeakReferenceMessenger.Default.Register<RequestMessage<string>>(this, (r, m) => {
+            string for_export = "";
+            for(int i = 0; i < Constants.DEFAULT_ROW_COUNT; i++) {
+                float next_num;
+                string line = "";
+
+                for(int j = 0; j < 3; j++) {
+                    if(!float.TryParse(entryTable[i, j].Text, out next_num)) {
+                        break;
+                    }
+                    line += next_num.ToString() + "\t";
+                }
+                if(!float.TryParse(entryTable[i, 3].Text, out next_num)) {
+                    break;
+                }
+                line += next_num.ToString() + "\n";
+
+                for_export += line;
+            }
+            m.Reply(for_export);
         });
     }
 

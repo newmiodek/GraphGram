@@ -124,7 +124,32 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            
+            <Label Text=" "
+                   FontSize="16" />
+            <Label FontSize="16"
+                   LineHeight="2">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="If you want to easily share your datasets with others or import data into your table then go to the " />
+                        <Span Text="Import Export"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" tab. There you will find the appropriate buttons for each action. " />
+                        <Span Text="Note"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=": " />
+                        <Span Text="GraphGram"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" exports data in a specific format and expects the files it imports to be in that format as well. The format is the following: numbers expressed just as they would be in the table with a " />
+                        <Span Text="Tab"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" (&quot;\t&quot;) after each number (except the last number in a row) and an " />
+                        <Span Text="Enter"
+                              Style="{StaticResource standOut}" />
+                        <Span Text=" (&quot;\r&quot;, &quot;\n&quot;, or &quot;\r\n&quot;) after each row." />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
             <Label Text=" "
                    FontSize="30" />
 
