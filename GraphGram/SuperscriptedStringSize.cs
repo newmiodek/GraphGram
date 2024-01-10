@@ -1,28 +1,35 @@
 ﻿namespace GraphGram;
 public class SuperscriptedStringSize {
-    public float[] Widths { get; private set; }
-    public float TotalWidth { get; private set; }
+    private float[] widths;
+    private float totalWidth;
 
     public SuperscriptedStringSize(ICanvas canvas, SuperscriptedSegment[] supString, float fontSize) {
-        TotalWidth = 0f;
+        totalWidth = 0f;
 
         if(supString == null) {
-            Widths = null;
+            widths = null;
             return;
         }
 
-        Widths = new float[supString.Length];
+        widths = new float[supString.Length];
 
         for(int i = 0; i < supString.Length; i++) {
             if(supString[i].IsSuperscript()) {
-                Widths[i] = canvas.GetStringSize(supString[i].GetText(), Constants.SUPERSCRIPT_FONT, fontSize * Constants.SUPERSCRIPT_RATIO).Width;
+                widths[i] = canvas.GetStringSize(supString[i].GetText(), Constants.SUPERSCRIPT_FONT, fontSize * Constants.SUPERSCRIPT_RATIO).Width;
             }
             else {
-                Widths[i] = canvas.GetStringSize(supString[i].GetText(), Constants.FONT, fontSize).Width;
+                widths[i] = canvas.GetStringSize(supString[i].GetText(), Constants.FONT, fontSize).Width;
             }
 
-            if(i != 0) TotalWidth += Constants.SUPERSCRIPT_SEPARATION;
-            TotalWidth += Widths[i];
+            if(i != 0) totalWidth += Constants.SUPERSCRIPT_SEPARATION;
+            totalWidth += widths[i];
         }
+    }
+
+    public float GetSingleWidth(int index) {
+        return widths[index];
+    }
+    public float GetTotalWidth() {
+        return totalWidth;
     }
 }

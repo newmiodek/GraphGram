@@ -1,23 +1,23 @@
 ﻿namespace GraphGram;
 public class OutlierPermutation {
     private bool[] intersections;
-    private int occurences;
+    private int occurrences;
 
     public OutlierPermutation(bool[] intersections) {
         this.intersections = intersections;
-        occurences = 1;
+        occurrences = 1;
     }
 
     public bool[] GetIntersections() {
         return intersections;
     }
 
-    public int GetOccurences() {
-        return occurences;
+    public int GetOccurrences() {
+        return occurrences;
     }
 
-    public void IncrementOccurences() {
-        occurences++;
+    public void IncrementOccurrences() {
+        occurrences++;
     }
 
     public bool AreIntersectionsEqual(bool[] other) {   // You could do this with hashes

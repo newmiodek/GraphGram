@@ -46,7 +46,7 @@ public class SuperscriptedString {
 
         SuperscriptedStringSize size = this.GetSize(canvas, fontsize);
 
-        float horizontalPosition = dirtyRect.Left + dirtyRect.Width / 2f - size.TotalWidth / 2f;
+        float horizontalPosition = dirtyRect.Left + dirtyRect.Width / 2f - size.GetTotalWidth() / 2f;
 
         for(int i = 0; i < this.supString.Length; i++) {
             if(this.supString[i].IsSuperscript()) {
@@ -59,7 +59,7 @@ public class SuperscriptedString {
                 canvas.FontSize = fontsize;
                 canvas.DrawString(this.supString[i].GetText(), horizontalPosition, dirtyRect.Top + dirtyRect.Height / 2f + fontsize / 2f, HorizontalAlignment.Left);
             }
-            horizontalPosition += size.Widths[i] + Constants.SUPERSCRIPT_SEPARATION;
+            horizontalPosition += size.GetSingleWidth(i) + Constants.SUPERSCRIPT_SEPARATION;
         }
     }
 

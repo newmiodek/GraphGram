@@ -350,15 +350,15 @@ public class GraphingArea : IDrawable {
         SuperscriptedStringSize yTitleSupStringSize = yTitleSupString.GetSize(canvas, Constants.GRAPHING_AREA_FONT_SIZE);
 
         RectF xTitleDirtyRect = new RectF(
-            dirtyRect.Right - Constants.GRAPHING_AREA_FONT_SIZE - xTitleSupStringSize.TotalWidth,
+            dirtyRect.Right - Constants.GRAPHING_AREA_FONT_SIZE - xTitleSupStringSize.GetTotalWidth(),
             OriginY - Constants.GRAPHING_AREA_FONT_SIZE * 3f,
-            xTitleSupStringSize.TotalWidth,
+            xTitleSupStringSize.GetTotalWidth(),
             Constants.GRAPHING_AREA_FONT_SIZE * 3f);
 
         RectF yTitleDirtyRect = new RectF(
             OriginX + Constants.GRAPHING_AREA_FONT_SIZE,
             dirtyRect.Top,
-            yTitleSupStringSize.TotalWidth,
+            yTitleSupStringSize.GetTotalWidth(),
             Constants.GRAPHING_AREA_FONT_SIZE * 3f);
 
         xTitleSupString.Draw(canvas, xTitleDirtyRect, Constants.GRAPHING_AREA_FONT_SIZE);

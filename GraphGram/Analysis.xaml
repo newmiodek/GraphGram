@@ -22,7 +22,8 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ScrollView HorizontalOptions="Center">
+    <ScrollView x:Name="mainScrollView"
+                HorizontalOptions="Center">
         <VerticalStackLayout Spacing="5">
             <Label Text="Primary Results"
                    TextColor="{AppThemeBinding Light=Black, Dark={StaticResource myOrange2}}"

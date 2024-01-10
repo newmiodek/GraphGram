@@ -42,7 +42,7 @@ public class LineData {
                 for(int k = 0; k < outlierPermutations.Count; k++) {
                     if(outlierPermutations[k].AreIntersectionsEqual(permutation.GetIntersections())) {
                         isThere = true;
-                        outlierPermutations[k].IncrementOccurences();
+                        outlierPermutations[k].IncrementOccurrences();
                         break;
                     }
                 }
@@ -51,7 +51,7 @@ public class LineData {
 
             int maxOccurencesIndex = 0;
             for(int j = 1; j < outlierPermutations.Count; j++) {
-                if(outlierPermutations[j].GetOccurences() > outlierPermutations[maxOccurencesIndex].GetOccurences()) {
+                if(outlierPermutations[j].GetOccurrences() > outlierPermutations[maxOccurencesIndex].GetOccurrences()) {
                     maxOccurencesIndex = j;
                 }
             }

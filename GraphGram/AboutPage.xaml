@@ -23,7 +23,8 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ScrollView HorizontalOptions="Center">
+    <ScrollView x:Name="mainScrollView"
+                HorizontalOptions="Center">
         <VerticalStackLayout>
 
             <Label Text="GraphGram"

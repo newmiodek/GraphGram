@@ -50,59 +50,42 @@ public partial class ImportExport : ContentPage {
 		int column = 0;
 		string current_number = "";
 		float?[,] output = new float?[Constants.DEFAULT_ROW_COUNT, 4];
-		bool decode_failed = false;
 		for(int i = 0; i < cvs.Length; i++) {
 			if(cvs[i] == '\t') {
-				Debug.WriteLine("Option 1");
 				float parsed_number;
 				if(!float.TryParse(current_number, out parsed_number)) {
-					Debug.WriteLine("Decode Failed\nLast char = \"" + cvs[i] + "\"");
-                    decode_failed = true;
 					break;
 				}
 				output[row, column] = parsed_number;
 				column++;
 				if(column > 3) {
-                    Debug.WriteLine("Decode Failed\nLast char = \"" + cvs[i] + "\"");
-                    decode_failed = true;
 					break;
 				}
 				current_number = "";
 			}
 			else if(cvs[i] == '\r') {
-                Debug.WriteLine("Option 2");
                 float parsed_number;
 				if(!float.TryParse(current_number, out parsed_number)) {
-                    Debug.WriteLine("Decode Failed\nLast char = \"" + cvs[i] + "\"");
-                    decode_failed = true;
 					break;
 				}
 				output[row, column] = parsed_number;
 				if(column != 3) {
-                    Debug.WriteLine("Decode Failed\nLast char = \"" + cvs[i] + "\"");
-                    decode_failed = true;
 					break;
 				}
 				column = 0;
 				row++;
 				current_number = "";
 				if(i + 1 < cvs.Length && cvs[i + 1] == '\n') {
-                    Debug.WriteLine("Option 2.5");
                     i++;
 				}
 			}
 			else if(cvs[i] == '\n') {
-                Debug.WriteLine("Option 3");
                 float parsed_number;
 				if(!float.TryParse(current_number, out parsed_number)) {
-                    Debug.WriteLine("Decode Failed\nLast char = \"" + cvs[i] + "\"");
-                    decode_failed = true;
 					break;
 				}
 				output[row, column] = parsed_number;
 				if(column != 3) {
-                    Debug.WriteLine("Decode Failed\nLast char = \"" + cvs[i] + "\"");
-                    decode_failed = true;
 					break;
 				}
 				column = 0;
@@ -112,11 +95,8 @@ public partial class ImportExport : ContentPage {
 			else if(cvs[i] == '0' || cvs[i] == '1' || cvs[i] == '2' || cvs[i] == '3' || cvs[i] == '4' ||
 					cvs[i] == '5' || cvs[i] == '6' || cvs[i] == '7' || cvs[i] == '8' || cvs[i] == '9' ||
 					cvs[i] == '.' || cvs[i] == '-' || cvs[i] == '+' || cvs[i] == 'e' || cvs[i] == 'E') {
-                Debug.WriteLine("Option 4");
-                Debug.WriteLine("Got char '" + cvs[i] + "'");
 				current_number += cvs[i];
 			}
-
 		}
 		return output;
 	}
@@ -130,7 +110,7 @@ public partial class ImportExport : ContentPage {
 		var tokenSource = new CancellationTokenSource();
 		CancellationToken ct = tokenSource.Token;
 
-        var fileSaverResult = await FileSaver.Default.SaveAsync("test.txt", stream, ct);
+        var fileSaverResult = await FileSaver.Default.SaveAsync("test.cvs", stream, ct);
         if(fileSaverResult.IsSuccessful) {
             await Toast.Make($"The file was saved successfully to location: {fileSaverResult.FilePath}").Show(ct);
         }
