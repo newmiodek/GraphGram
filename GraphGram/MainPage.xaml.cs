@@ -30,7 +30,7 @@ public partial class MainPage : ContentPage {
         entryTable = new Entry[Constants.DEFAULT_ROW_COUNT, 4];
 
         for(int i = 0; i < Constants.DEFAULT_ROW_COUNT; i++) {
-            DataTable.AddRowDefinition(new RowDefinition((double)Resources["cellHeight"]));
+            dataTable.AddRowDefinition(new RowDefinition((double)Resources["cellHeight"]));
 
             Label rowNumberLabel = new Label {
                 Text = (i + 1).ToString(),
@@ -43,8 +43,8 @@ public partial class MainPage : ContentPage {
             BoxView rowNumberLabelBackground = new BoxView();
             rowNumberLabelBackground.SetAppThemeColor(BoxView.ColorProperty, Colors.White, Colors.Black);
 
-            DataTable.Add(rowNumberLabelBackground, 0, i);
-            DataTable.Add(rowNumberLabel, 0, i);
+            dataTable.Add(rowNumberLabelBackground, 0, i);
+            dataTable.Add(rowNumberLabel, 0, i);
 
             for(int j = 0; j < 4; j++) {
                 /* Local equivalents of j and i are made here
@@ -74,7 +74,7 @@ public partial class MainPage : ContentPage {
                 };
                 entryContentView.SetAppThemeColor(ContentView.BackgroundColorProperty, Colors.White, Colors.Black);
 
-                DataTable.Add(entryContentView, localJ + 1, localI);
+                dataTable.Add(entryContentView, localJ + 1, localI);
             }
         }
         // </Creating the data table>
@@ -107,7 +107,7 @@ public partial class MainPage : ContentPage {
         // </Implementing custom headers>
 
         Application.Current.RequestedThemeChanged += (sender, eventArgs) => {
-            GraphingAreaView.Invalidate();
+            graphingAreaView.Invalidate();
             xHeaderGraphicsView.Invalidate();
             yHeaderGraphicsView.Invalidate();
             xUncertaintyHeaderGraphicsView.Invalidate();
@@ -115,7 +115,7 @@ public partial class MainPage : ContentPage {
         };
 
         WeakReferenceMessenger.Default.Register<RequestMessage<GraphResults>>(this, (r, m) => {
-            m.Reply(((GraphingArea)GraphingAreaView.Drawable).GetGraphResults());
+            m.Reply(((GraphingArea)graphingAreaView.Drawable).GetGraphResults());
         });
 
         WeakReferenceMessenger.Default.Register<ImportDataMessage>(this, (r, m) => {
@@ -158,19 +158,19 @@ public partial class MainPage : ContentPage {
     }
 
     private void UpdateGraph() {
-        GraphingArea graphingArea = (GraphingArea)GraphingAreaView.Drawable;
+        GraphingArea graphingArea = (GraphingArea)graphingAreaView.Drawable;
         graphingArea.PassDataTable(entryTable, goWithErrorBoxes);
-        GraphingAreaView.Invalidate();
+        graphingAreaView.Invalidate();
 
         WeakReferenceMessenger.Default.Send(new UpdateGraphResultsMessage(graphingArea.GetGraphResults()));
     }
 
     private void UpdateGraphPreferences() {
-        ((GraphingArea)GraphingAreaView.Drawable).PassPreferences(
+        ((GraphingArea)graphingAreaView.Drawable).PassPreferences(
             drawSteepestLine,
             drawLeastSteepLine,
             drawBestFitLine);
-        GraphingAreaView.Invalidate();
+        graphingAreaView.Invalidate();
     }
 
     private void SwitchXHeaderToEntry(object sender, EventArgs e) {
@@ -182,8 +182,8 @@ public partial class MainPage : ContentPage {
     private void SwitchXHeaderToGraphicsView() {
         ((TableHeaderGraphicSide)xHeaderGraphicsView.Drawable).SetText(xHeaderEntry.Text);
         xHeaderContentView.Content = xHeaderGraphicsView;
-        ((GraphingArea)GraphingAreaView.Drawable).SetXAxisTitle(xHeaderEntry.Text);
-        GraphingAreaView.Invalidate();
+        ((GraphingArea)graphingAreaView.Drawable).SetXAxisTitle(xHeaderEntry.Text);
+        graphingAreaView.Invalidate();
 
         ((TableHeaderGraphicSide)xUncertaintyHeaderGraphicsView.Drawable).SetText("\u0394" + xHeaderEntry.Text);
         xUncertaintyHeaderGraphicsView.Invalidate();
@@ -191,8 +191,8 @@ public partial class MainPage : ContentPage {
     private void SwitchYHeaderToGraphicsView() {
         ((TableHeaderGraphicSide)yHeaderGraphicsView.Drawable).SetText(yHeaderEntry.Text);
         yHeaderContentView.Content = yHeaderGraphicsView;
-        ((GraphingArea)GraphingAreaView.Drawable).SetYAxisTitle(yHeaderEntry.Text);
-        GraphingAreaView.Invalidate();
+        ((GraphingArea)graphingAreaView.Drawable).SetYAxisTitle(yHeaderEntry.Text);
+        graphingAreaView.Invalidate();
 
         ((TableHeaderGraphicSide)yUncertaintyHeaderGraphicsView.Drawable).SetText("\u0394" + yHeaderEntry.Text);
         yUncertaintyHeaderGraphicsView.Invalidate();
