@@ -22,10 +22,10 @@ public partial class ImportExport : ContentPage {
 
         var fileSaverResult = await PickAndShow(options);
         if(fileSaverResult != null) {
-            await Toast.Make("Data successfully imported to the table").Show(ct);
+            await Toast.Make("Data has been imported to the table").Show(ct);
         }
         else {
-            await Toast.Make("Failed to import data").Show(ct);
+            await Toast.Make("There was an issue while importing data").Show(ct);
         }
     }
 
@@ -101,7 +101,7 @@ public partial class ImportExport : ContentPage {
 		return output;
 	}
 
-	private async void StartFileSaver(object sender, EventArgs e) {
+    private async void StartFileSaver(object sender, EventArgs e) {
 		RequestMessage<string> tableRequest = new RequestMessage<string>();
 		WeakReferenceMessenger.Default.Send(tableRequest);
 
@@ -110,12 +110,12 @@ public partial class ImportExport : ContentPage {
 		var tokenSource = new CancellationTokenSource();
 		CancellationToken ct = tokenSource.Token;
 
-        var fileSaverResult = await FileSaver.Default.SaveAsync("test.cvs", stream, ct);
-        if(fileSaverResult.IsSuccessful) {
-            await Toast.Make($"The file was saved successfully to location: {fileSaverResult.FilePath}").Show(ct);
+        var result = await FileSaver.Default.SaveAsync("data.cvs", stream, ct);
+        if(result.IsSuccessful) {
+            await Toast.Make($"The file was saved at: {result.FilePath}").Show(ct);
         }
         else {
-            await Toast.Make($"The file was not saved successfully with error: {fileSaverResult.Exception.Message}").Show(ct);
+            await Toast.Make($"There was an issue while saving the file: {result.Exception.Message}").Show(ct);
         }
     }
 }
