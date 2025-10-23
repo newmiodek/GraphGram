@@ -4,5 +4,4 @@ GraphGram is a tool that allows you to generate graphs from existing data, draw 
 
 # Presentation
 
-https://github.com/user-attachments/assets/b152554d-cf28-4e49-b056-42eba1bb927f
-
+https://github.com/user-attachments/assets/3825a376-1aba-47ce-adde-07d05ecdf534
